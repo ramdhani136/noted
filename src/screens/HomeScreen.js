@@ -47,7 +47,7 @@ const HomeScreen = () => {
           //   borderWidth: 1,
           //   borderColor: 'red',
           // }}
-          dateNumberStyle={{color: '#000000', paddingTop: 10}}
+          dateNumberStyle={{color: '#444', paddingTop: 10}}
           dateNameStyle={{color: '#BBBBBB'}}
           highlightDateNumberStyle={{
             color: '#fff',
@@ -125,7 +125,7 @@ const HomeScreen = () => {
                   width: '80%',
                   fontWeight: 'bold',
                   fontSize: 16,
-                  color: 'black',
+                  color: '#666',
                 }}>
                 Dinner
               </Text>
@@ -163,7 +163,7 @@ const HomeScreen = () => {
                   width: '80%',
                   fontWeight: 'bold',
                   fontSize: 16,
-                  color: 'black',
+                  color: '#666',
                 }}>
                 Meeting
               </Text>
