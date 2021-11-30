@@ -10,6 +10,7 @@ import Layout from '../components/organism/Layout';
 import CalendarStrip from 'react-native-calendar-strip';
 import moment from 'moment';
 import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const HomeScreen = () => {
   const [markedDate, setMarkedDate] = useState([]);
@@ -92,7 +93,7 @@ const HomeScreen = () => {
         <ScrollView
           style={{
             width: '100%',
-            height: 411,
+            height: 415,
 
             // borderWidth: 1,
             // borderColor: 'blue',
@@ -145,6 +146,14 @@ const HomeScreen = () => {
                   }}>
                   Meeting
                 </Text>
+                <MaterialIcons
+                  name="alarm-on"
+                  style={{
+                    fontSize: 23,
+                    marginLeft: -20,
+                    color: '#ccc',
+                  }}
+                />
               </View>
               <Text style={{width: '80%', color: '#888'}}>
                 2021/11/30 - 07.00am | Having meeting with clients
@@ -685,6 +694,14 @@ const HomeScreen = () => {
                   }}>
                   Meeting
                 </Text>
+                <MaterialIcons
+                  name="alarm-on"
+                  style={{
+                    fontSize: 23,
+                    marginLeft: -20,
+                    color: '#ccc',
+                  }}
+                />
               </View>
               <Text style={{width: '80%', color: '#888'}}>
                 2021/11/30 - 07.00am | Having meeting with clients
