@@ -9,6 +9,7 @@ import {
 import Layout from '../components/organism/Layout';
 import CalendarStrip from 'react-native-calendar-strip';
 import moment from 'moment';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 const HomeScreen = () => {
   const [markedDate, setMarkedDate] = useState([]);
@@ -32,7 +33,7 @@ const HomeScreen = () => {
           calendarAnimation={{type: 'sequence', duration: 30}}
           daySelectionAnimation={{
             type: 'background',
-            duration: 200,
+            duration: 100,
           }}
           style={{
             height: 150,
@@ -120,17 +121,33 @@ const HomeScreen = () => {
                 shadowRadius: 2,
                 elevation: 1,
               }}>
-              <Text
+              <View
                 style={{
-                  width: '80%',
-                  fontWeight: 'bold',
-                  fontSize: 16,
-                  color: '#666',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
                 }}>
-                Dinner
-              </Text>
+                <Entypo
+                  name="controller-record"
+                  style={{
+                    marginRight: 4,
+                    fontSize: 12,
+                    marginLeft: 10,
+                    color: 'whitesmoke',
+                  }}
+                />
+                <Text
+                  style={{
+                    width: '80%',
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                    color: '#666',
+                  }}>
+                  Meeting
+                </Text>
+              </View>
               <Text style={{width: '80%', color: '#888'}}>
-                2021/11/30 - 06.00am | Having dinner with Ocean Direction
+                2021/11/30 - 07.00am | Having meeting with clients
               </Text>
             </View>
           </TouchableOpacity>
@@ -158,15 +175,787 @@ const HomeScreen = () => {
                 shadowRadius: 2,
                 elevation: 1,
               }}>
-              <Text
+              <View
                 style={{
-                  width: '80%',
-                  fontWeight: 'bold',
-                  fontSize: 16,
-                  color: '#666',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
                 }}>
-                Meeting
+                <Entypo
+                  name="controller-record"
+                  style={{
+                    marginRight: 4,
+                    fontSize: 12,
+                    marginLeft: 10,
+                    color: 'whitesmoke',
+                  }}
+                />
+                <Text
+                  style={{
+                    width: '80%',
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                    color: '#666',
+                  }}>
+                  Meeting
+                </Text>
+              </View>
+              <Text style={{width: '80%', color: '#888'}}>
+                2021/11/30 - 07.00am | Having meeting with clients
               </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View
+              style={{
+                display: 'flex',
+                width: '93%',
+                height: 110,
+                borderWidth: 1,
+                marginHorizontal: 12,
+                borderRadius: 5,
+                marginBottom: 15,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+                borderRightWidth: 4,
+                borderTopColor: '#eee',
+                borderLeftColor: '#eee',
+                borderBottomColor: '#eee',
+                borderRightColor: '#E2DC00',
+                shadowColor: '#000',
+                shadowOffset: {width: 0, height: 2},
+                shadowOpacity: 0.8,
+                shadowRadius: 2,
+                elevation: 1,
+              }}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Entypo
+                  name="controller-record"
+                  style={{
+                    marginRight: 4,
+                    fontSize: 12,
+                    marginLeft: 10,
+                    color: 'whitesmoke',
+                  }}
+                />
+                <Text
+                  style={{
+                    width: '80%',
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                    color: '#666',
+                  }}>
+                  Meeting
+                </Text>
+              </View>
+              <Text style={{width: '80%', color: '#888'}}>
+                2021/11/30 - 07.00am | Having meeting with clients
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View
+              style={{
+                display: 'flex',
+                width: '93%',
+                height: 110,
+                borderWidth: 1,
+                marginHorizontal: 12,
+                borderRadius: 5,
+                marginBottom: 15,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+                borderRightWidth: 4,
+                borderTopColor: '#eee',
+                borderLeftColor: '#eee',
+                borderBottomColor: '#eee',
+                borderRightColor: '#E2DC00',
+                shadowColor: '#000',
+                shadowOffset: {width: 0, height: 2},
+                shadowOpacity: 0.8,
+                shadowRadius: 2,
+                elevation: 1,
+              }}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Entypo
+                  name="controller-record"
+                  style={{
+                    marginRight: 4,
+                    fontSize: 12,
+                    marginLeft: 10,
+                    color: 'whitesmoke',
+                  }}
+                />
+                <Text
+                  style={{
+                    width: '80%',
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                    color: '#666',
+                  }}>
+                  Meeting
+                </Text>
+              </View>
+              <Text style={{width: '80%', color: '#888'}}>
+                2021/11/30 - 07.00am | Having meeting with clients
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View
+              style={{
+                display: 'flex',
+                width: '93%',
+                height: 110,
+                borderWidth: 1,
+                marginHorizontal: 12,
+                borderRadius: 5,
+                marginBottom: 15,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+                borderRightWidth: 4,
+                borderTopColor: '#eee',
+                borderLeftColor: '#eee',
+                borderBottomColor: '#eee',
+                borderRightColor: '#E2DC00',
+                shadowColor: '#000',
+                shadowOffset: {width: 0, height: 2},
+                shadowOpacity: 0.8,
+                shadowRadius: 2,
+                elevation: 1,
+              }}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Entypo
+                  name="controller-record"
+                  style={{
+                    marginRight: 4,
+                    fontSize: 12,
+                    marginLeft: 10,
+                    color: 'whitesmoke',
+                  }}
+                />
+                <Text
+                  style={{
+                    width: '80%',
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                    color: '#666',
+                  }}>
+                  Meeting
+                </Text>
+              </View>
+              <Text style={{width: '80%', color: '#888'}}>
+                2021/11/30 - 07.00am | Having meeting with clients
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View
+              style={{
+                display: 'flex',
+                width: '93%',
+                height: 110,
+                borderWidth: 1,
+                marginHorizontal: 12,
+                borderRadius: 5,
+                marginBottom: 15,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+                borderRightWidth: 4,
+                borderTopColor: '#eee',
+                borderLeftColor: '#eee',
+                borderBottomColor: '#eee',
+                borderRightColor: '#E2DC00',
+                shadowColor: '#000',
+                shadowOffset: {width: 0, height: 2},
+                shadowOpacity: 0.8,
+                shadowRadius: 2,
+                elevation: 1,
+              }}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Entypo
+                  name="controller-record"
+                  style={{
+                    marginRight: 4,
+                    fontSize: 12,
+                    marginLeft: 10,
+                    color: 'whitesmoke',
+                  }}
+                />
+                <Text
+                  style={{
+                    width: '80%',
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                    color: '#666',
+                  }}>
+                  Meeting
+                </Text>
+              </View>
+              <Text style={{width: '80%', color: '#888'}}>
+                2021/11/30 - 07.00am | Having meeting with clients
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View
+              style={{
+                display: 'flex',
+                width: '93%',
+                height: 110,
+                borderWidth: 1,
+                marginHorizontal: 12,
+                borderRadius: 5,
+                marginBottom: 15,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+                borderRightWidth: 4,
+                borderTopColor: '#eee',
+                borderLeftColor: '#eee',
+                borderBottomColor: '#eee',
+                borderRightColor: '#E2DC00',
+                shadowColor: '#000',
+                shadowOffset: {width: 0, height: 2},
+                shadowOpacity: 0.8,
+                shadowRadius: 2,
+                elevation: 1,
+              }}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Entypo
+                  name="controller-record"
+                  style={{
+                    marginRight: 4,
+                    fontSize: 12,
+                    marginLeft: 10,
+                    color: 'whitesmoke',
+                  }}
+                />
+                <Text
+                  style={{
+                    width: '80%',
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                    color: '#666',
+                  }}>
+                  Meeting
+                </Text>
+              </View>
+              <Text style={{width: '80%', color: '#888'}}>
+                2021/11/30 - 07.00am | Having meeting with clients
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View
+              style={{
+                display: 'flex',
+                width: '93%',
+                height: 110,
+                borderWidth: 1,
+                marginHorizontal: 12,
+                borderRadius: 5,
+                marginBottom: 15,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+                borderRightWidth: 4,
+                borderTopColor: '#eee',
+                borderLeftColor: '#eee',
+                borderBottomColor: '#eee',
+                borderRightColor: '#E2DC00',
+                shadowColor: '#000',
+                shadowOffset: {width: 0, height: 2},
+                shadowOpacity: 0.8,
+                shadowRadius: 2,
+                elevation: 1,
+              }}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Entypo
+                  name="controller-record"
+                  style={{
+                    marginRight: 4,
+                    fontSize: 12,
+                    marginLeft: 10,
+                    color: 'whitesmoke',
+                  }}
+                />
+                <Text
+                  style={{
+                    width: '80%',
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                    color: '#666',
+                  }}>
+                  Meeting
+                </Text>
+              </View>
+              <Text style={{width: '80%', color: '#888'}}>
+                2021/11/30 - 07.00am | Having meeting with clients
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View
+              style={{
+                display: 'flex',
+                width: '93%',
+                height: 110,
+                borderWidth: 1,
+                marginHorizontal: 12,
+                borderRadius: 5,
+                marginBottom: 15,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+                borderRightWidth: 4,
+                borderTopColor: '#eee',
+                borderLeftColor: '#eee',
+                borderBottomColor: '#eee',
+                borderRightColor: '#E2DC00',
+                shadowColor: '#000',
+                shadowOffset: {width: 0, height: 2},
+                shadowOpacity: 0.8,
+                shadowRadius: 2,
+                elevation: 1,
+              }}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Entypo
+                  name="controller-record"
+                  style={{
+                    marginRight: 4,
+                    fontSize: 12,
+                    marginLeft: 10,
+                    color: 'whitesmoke',
+                  }}
+                />
+                <Text
+                  style={{
+                    width: '80%',
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                    color: '#666',
+                  }}>
+                  Meeting
+                </Text>
+              </View>
+              <Text style={{width: '80%', color: '#888'}}>
+                2021/11/30 - 07.00am | Having meeting with clients
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View
+              style={{
+                display: 'flex',
+                width: '93%',
+                height: 110,
+                borderWidth: 1,
+                marginHorizontal: 12,
+                borderRadius: 5,
+                marginBottom: 15,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+                borderRightWidth: 4,
+                borderTopColor: '#eee',
+                borderLeftColor: '#eee',
+                borderBottomColor: '#eee',
+                borderRightColor: '#E2DC00',
+                shadowColor: '#000',
+                shadowOffset: {width: 0, height: 2},
+                shadowOpacity: 0.8,
+                shadowRadius: 2,
+                elevation: 1,
+              }}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Entypo
+                  name="controller-record"
+                  style={{
+                    marginRight: 4,
+                    fontSize: 12,
+                    marginLeft: 10,
+                    color: 'whitesmoke',
+                  }}
+                />
+                <Text
+                  style={{
+                    width: '80%',
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                    color: '#666',
+                  }}>
+                  Meeting
+                </Text>
+              </View>
+              <Text style={{width: '80%', color: '#888'}}>
+                2021/11/30 - 07.00am | Having meeting with clients
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View
+              style={{
+                display: 'flex',
+                width: '93%',
+                height: 110,
+                borderWidth: 1,
+                marginHorizontal: 12,
+                borderRadius: 5,
+                marginBottom: 15,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+                borderRightWidth: 4,
+                borderTopColor: '#eee',
+                borderLeftColor: '#eee',
+                borderBottomColor: '#eee',
+                borderRightColor: '#E2DC00',
+                shadowColor: '#000',
+                shadowOffset: {width: 0, height: 2},
+                shadowOpacity: 0.8,
+                shadowRadius: 2,
+                elevation: 1,
+              }}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Entypo
+                  name="controller-record"
+                  style={{
+                    marginRight: 4,
+                    fontSize: 12,
+                    marginLeft: 10,
+                    color: 'whitesmoke',
+                  }}
+                />
+                <Text
+                  style={{
+                    width: '80%',
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                    color: '#666',
+                  }}>
+                  Meeting
+                </Text>
+              </View>
+              <Text style={{width: '80%', color: '#888'}}>
+                2021/11/30 - 07.00am | Having meeting with clients
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View
+              style={{
+                display: 'flex',
+                width: '93%',
+                height: 110,
+                borderWidth: 1,
+                marginHorizontal: 12,
+                borderRadius: 5,
+                marginBottom: 15,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+                borderRightWidth: 4,
+                borderTopColor: '#eee',
+                borderLeftColor: '#eee',
+                borderBottomColor: '#eee',
+                borderRightColor: '#E2DC00',
+                shadowColor: '#000',
+                shadowOffset: {width: 0, height: 2},
+                shadowOpacity: 0.8,
+                shadowRadius: 2,
+                elevation: 1,
+              }}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Entypo
+                  name="controller-record"
+                  style={{
+                    marginRight: 4,
+                    fontSize: 12,
+                    marginLeft: 10,
+                    color: 'whitesmoke',
+                  }}
+                />
+                <Text
+                  style={{
+                    width: '80%',
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                    color: '#666',
+                  }}>
+                  Meeting
+                </Text>
+              </View>
+              <Text style={{width: '80%', color: '#888'}}>
+                2021/11/30 - 07.00am | Having meeting with clients
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View
+              style={{
+                display: 'flex',
+                width: '93%',
+                height: 110,
+                borderWidth: 1,
+                marginHorizontal: 12,
+                borderRadius: 5,
+                marginBottom: 15,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+                borderRightWidth: 4,
+                borderTopColor: '#eee',
+                borderLeftColor: '#eee',
+                borderBottomColor: '#eee',
+                borderRightColor: '#E2DC00',
+                shadowColor: '#000',
+                shadowOffset: {width: 0, height: 2},
+                shadowOpacity: 0.8,
+                shadowRadius: 2,
+                elevation: 1,
+              }}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Entypo
+                  name="controller-record"
+                  style={{
+                    marginRight: 4,
+                    fontSize: 12,
+                    marginLeft: 10,
+                    color: 'whitesmoke',
+                  }}
+                />
+                <Text
+                  style={{
+                    width: '80%',
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                    color: '#666',
+                  }}>
+                  Meeting
+                </Text>
+              </View>
+              <Text style={{width: '80%', color: '#888'}}>
+                2021/11/30 - 07.00am | Having meeting with clients
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View
+              style={{
+                display: 'flex',
+                width: '93%',
+                height: 110,
+                borderWidth: 1,
+                marginHorizontal: 12,
+                borderRadius: 5,
+                marginBottom: 15,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+                borderRightWidth: 4,
+                borderTopColor: '#eee',
+                borderLeftColor: '#eee',
+                borderBottomColor: '#eee',
+                borderRightColor: '#E2DC00',
+                shadowColor: '#000',
+                shadowOffset: {width: 0, height: 2},
+                shadowOpacity: 0.8,
+                shadowRadius: 2,
+                elevation: 1,
+              }}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Entypo
+                  name="controller-record"
+                  style={{
+                    marginRight: 4,
+                    fontSize: 12,
+                    marginLeft: 10,
+                    color: 'whitesmoke',
+                  }}
+                />
+                <Text
+                  style={{
+                    width: '80%',
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                    color: '#666',
+                  }}>
+                  Meeting
+                </Text>
+              </View>
+              <Text style={{width: '80%', color: '#888'}}>
+                2021/11/30 - 07.00am | Having meeting with clients
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View
+              style={{
+                display: 'flex',
+                width: '93%',
+                height: 110,
+                borderWidth: 1,
+                marginHorizontal: 12,
+                borderRadius: 5,
+                marginBottom: 15,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+                borderRightWidth: 4,
+                borderTopColor: '#eee',
+                borderLeftColor: '#eee',
+                borderBottomColor: '#eee',
+                borderRightColor: '#E2DC00',
+                shadowColor: '#000',
+                shadowOffset: {width: 0, height: 2},
+                shadowOpacity: 0.8,
+                shadowRadius: 2,
+                elevation: 1,
+              }}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Entypo
+                  name="controller-record"
+                  style={{
+                    marginRight: 4,
+                    fontSize: 12,
+                    marginLeft: 10,
+                    color: 'whitesmoke',
+                  }}
+                />
+                <Text
+                  style={{
+                    width: '80%',
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                    color: '#666',
+                  }}>
+                  Meeting
+                </Text>
+              </View>
+              <Text style={{width: '80%', color: '#888'}}>
+                2021/11/30 - 07.00am | Having meeting with clients
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View
+              style={{
+                display: 'flex',
+                width: '93%',
+                height: 110,
+                borderWidth: 1,
+                marginHorizontal: 12,
+                borderRadius: 5,
+                marginBottom: 15,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+                borderRightWidth: 4,
+                borderTopColor: '#eee',
+                borderLeftColor: '#eee',
+                borderBottomColor: '#eee',
+                borderRightColor: '#E2DC00',
+                shadowColor: '#000',
+                shadowOffset: {width: 0, height: 2},
+                shadowOpacity: 0.8,
+                shadowRadius: 2,
+                elevation: 1,
+              }}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Entypo
+                  name="controller-record"
+                  style={{
+                    marginRight: 4,
+                    fontSize: 12,
+                    marginLeft: 10,
+                    color: 'whitesmoke',
+                  }}
+                />
+                <Text
+                  style={{
+                    width: '80%',
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                    color: '#666',
+                  }}>
+                  Meeting
+                </Text>
+              </View>
               <Text style={{width: '80%', color: '#888'}}>
                 2021/11/30 - 07.00am | Having meeting with clients
               </Text>
