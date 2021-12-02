@@ -46,10 +46,6 @@ const HomeScreen = () => {
             color: '#000000',
             fontSize: 14,
           }}
-          // innerStyle={{
-          //   borderWidth: 1,
-          //   borderColor: 'red',
-          // }}
           dateNumberStyle={{color: '#444', paddingTop: 10}}
           dateNameStyle={{color: '#BBBBBB'}}
           highlightDateNumberStyle={{
@@ -77,8 +73,6 @@ const HomeScreen = () => {
           iconLeft={require('../assets/left-arrow.png')}
           iconRight={require('../assets/right-arrow.png')}
           iconContainer={{flex: 0.1}}
-          // If you get this error => undefined is not an object (evaluating 'datesList[_this.state.numVisibleDays - 1].date')
-          // temp: https://github.com/BugiDev/react-native-calendar-strip/issues/303#issuecomment-864510769
           markedDates={markedDate}
           selectedDate={currentDate}
           // scrollable={true}
@@ -152,13 +146,13 @@ const HomeScreen = () => {
                 <MaterialIcons
                   name="alarm-on"
                   style={{
-                    fontSize: 20,
+                    fontSize: 19,
                     marginLeft: -20,
                     color: '#ccc',
                   }}
                 />
               </View>
-              <Text style={{width: '80%', color: '#999'}}>
+              <Text style={{width: '80%', color: '#aaa', fontSize: 14}}>
                 2021/11/30 - 07.00am | Dinner with mr.Ujo
               </Text>
             </View>
@@ -212,7 +206,7 @@ const HomeScreen = () => {
                   Zoom Meeting
                 </Text>
               </View>
-              <Text style={{width: '80%', color: '#999'}}>
+              <Text style={{width: '80%', color: '#aaa', fontSize: 14}}>
                 2021/11/30 - 07.00am | With PT. Ekatunggal Tunas Mandiri
               </Text>
             </View>
@@ -266,7 +260,7 @@ const HomeScreen = () => {
                   Meeting
                 </Text>
               </View>
-              <Text style={{width: '80%', color: '#999'}}>
+              <Text style={{width: '80%', color: '#aaa', fontSize: 14.5}}>
                 2021/11/30 - 07.00am | Having meeting with clients
               </Text>
             </View>
