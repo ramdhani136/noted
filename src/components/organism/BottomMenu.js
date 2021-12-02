@@ -13,8 +13,9 @@ const BottomMenu = () => {
         display: 'flex',
         justifyContent: 'space-around',
         backgroundColor: '#222D31',
+        // backgroundColor: '#fff',
         flexDirection: 'row',
-        paddingHorizontal: 10,
+        paddingHorizontal: 5,
         borderTopWidth: 1,
       }}>
       <TouchableOpacity
