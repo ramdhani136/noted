@@ -14,7 +14,7 @@ const Layout = ({Child}) => {
         <View style={{flex: 1}}>
           <Child />
         </View>
-        <BottomMenu></BottomMenu>
+        {/* <BottomMenu></BottomMenu> */}
       </View>
     </>
   );
