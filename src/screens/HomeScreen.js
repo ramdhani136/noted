@@ -12,9 +12,33 @@ import moment from 'moment';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {FloatingButton} from '../components/organism';
+import {useNavigation} from '@react-navigation/native';
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
   const [markedDate, setMarkedDate] = useState([]);
+  // const [markedDate, setMarkedDate] = useState([
+  //   {
+  //     date: '12/04/2021',
+  //     dots: [
+  //       {
+  //         key: 1,
+  //         color: '#ff9898',
+  //         selectedDotColor: '#ff6d6d',
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     date: '12/05/2021',
+  //     dots: [
+  //       {
+  //         key: 1,
+  //         color: '#ff9898',
+  //         selectedDotColor: '#ff6d6d',
+  //       },
+  //     ],
+  //   },
+  // ]);
   const [currentDate, setCurrentDate] = useState(
     `${moment().format('YYYY')}-${moment().format('MM')}-${moment().format(
       'DD',
@@ -28,14 +52,20 @@ const HomeScreen = () => {
     },
   ];
 
+  const handleCreate = () => {
+    navigation.navigate('CreateSchedule');
+  };
+
   const ViewHome = () => {
     return (
       <SafeAreaView style={{backgroundColor: 'white', position: 'relative'}}>
         <CalendarStrip
-          calendarAnimation={{type: 'sequence', duration: 40}}
+          calendarAnimation={{type: 'sequence', duration: 30}}
           daySelectionAnimation={{
-            type: 'background',
-            duration: 80,
+            type: 'border',
+            duration: 200,
+            borderWidth: 1,
+            borderHighlightColor: 'white',
           }}
           style={{
             height: 150,
@@ -125,21 +155,21 @@ const HomeScreen = () => {
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}>
-                <Entypo
+                {/* <Entypo
                   name="controller-record"
                   style={{
                     marginRight: 4,
                     fontSize: 12,
                     marginLeft: 10,
-                    color: 'whitesmoke',
+                    color: '#ffcc98',
                   }}
-                />
+                /> */}
                 <Text
                   style={{
                     width: '80%',
                     fontWeight: 'bold',
                     fontSize: 16,
-                    color: '#666',
+                    color: '#555',
                   }}>
                   Dinner
                 </Text>
@@ -152,7 +182,7 @@ const HomeScreen = () => {
                   }}
                 />
               </View>
-              <Text style={{width: '80%', color: '#aaa', fontSize: 14}}>
+              <Text style={{width: '80%', color: '#999', fontSize: 13.6}}>
                 2021/11/30 - 07.00am | Dinner with mr.Ujo
               </Text>
             </View>
@@ -187,26 +217,26 @@ const HomeScreen = () => {
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}>
-                <Entypo
+                {/* <Entypo
                   name="controller-record"
                   style={{
                     marginRight: 4,
                     fontSize: 12,
                     marginLeft: 10,
-                    color: 'whitesmoke',
+                    color: '#ffcc98',
                   }}
-                />
+                /> */}
                 <Text
                   style={{
                     width: '80%',
                     fontWeight: 'bold',
                     fontSize: 16,
-                    color: '#666',
+                    color: '#555',
                   }}>
                   Zoom Meeting
                 </Text>
               </View>
-              <Text style={{width: '80%', color: '#aaa', fontSize: 14}}>
+              <Text style={{width: '80%', color: '#999', fontSize: 13.6}}>
                 2021/11/30 - 07.00am | With PT. Ekatunggal Tunas Mandiri
               </Text>
             </View>
@@ -228,7 +258,7 @@ const HomeScreen = () => {
                 borderTopColor: '#eee',
                 borderLeftColor: '#eee',
                 borderBottomColor: '#eee',
-                borderRightColor: '#E2DC00',
+                borderRightColor: '#bfbfbf',
                 shadowColor: '#000',
                 shadowOffset: {width: 0, height: 2},
                 shadowOpacity: 0.8,
@@ -241,32 +271,32 @@ const HomeScreen = () => {
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}>
-                <Entypo
+                {/* <Entypo
                   name="controller-record"
                   style={{
                     marginRight: 4,
                     fontSize: 12,
                     marginLeft: 10,
-                    color: 'whitesmoke',
+                    color: '#bfbfbf',
                   }}
-                />
+                /> */}
                 <Text
                   style={{
                     width: '80%',
                     fontWeight: 'bold',
                     fontSize: 16,
-                    color: '#666',
+                    color: '#555',
                   }}>
                   Meeting
                 </Text>
               </View>
-              <Text style={{width: '80%', color: '#aaa', fontSize: 14.5}}>
+              <Text style={{width: '80%', color: '#999', fontSize: 13.6}}>
                 2021/11/30 - 07.00am | Having meeting with clients
               </Text>
             </View>
           </TouchableOpacity>
         </ScrollView>
-        <FloatingButton />
+        <FloatingButton action={handleCreate} />
       </SafeAreaView>
     );
   };
