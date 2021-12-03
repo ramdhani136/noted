@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Switch,
 } from 'react-native';
 import {Layout} from '../components/organism';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -14,6 +15,14 @@ import {useNavigation} from '@react-navigation/native';
 
 const ViewCreateSchedule = () => {
   const navigation = useNavigation();
+  const [isAlarmSet, setAlarmSet] = useState(false);
+  const [alarmTime, setAlarmTime] = useState(moment().format());
+  const [taskTime, setTaskTime] = useState(moment().format());
+  const [taskText, setTaskText] = useState('');
+  const [notesText, setNotesText] = useState('');
+  const handleAlarmSet = () => {
+    setAlarmSet(!isAlarmSet);
+  };
   const [selectedDay, setSelectedDay] = useState({
     [`${moment().format('YYYY')}-${moment().format('MM')}-${moment().format(
       'DD',
@@ -105,13 +114,17 @@ const ViewCreateSchedule = () => {
               style={{
                 borderLeftWidth: 2,
                 borderColor: '#eee',
-                fontWeight: 'bold',
                 paddingTop: 0,
                 paddingBottom: 0,
-                fontSize: 18,
+                fontSize: 17,
                 paddingLeft: 10,
                 color: '#222D31',
+                fontWeight: 'bold',
               }}
+              onChangeText={setTaskText}
+              value={taskText}
+              placeholderTextColor="#ddd"
+              placeholder="What do you need to do?"
             />
             <Text style={{color: '#bbb', marginTop: 5}}>Suggestion</Text>
             <View
@@ -169,7 +182,7 @@ const ViewCreateSchedule = () => {
               paddingBottom: 10,
               borderColor: '#eee',
             }}>
-            <Text style={{color: '#888', fontSize: 15, marginBottom: 5}}>
+            <Text style={{color: '#9CAAC4', fontSize: 15, marginBottom: 5}}>
               Notes
             </Text>
             <TextInput
@@ -178,12 +191,15 @@ const ViewCreateSchedule = () => {
               style={{
                 paddingTop: 0,
                 paddingBottom: 0,
-                fontSize: 19,
                 color: '#222D31',
                 height: 60,
                 textAlignVertical: 'top',
-                fontSize: 16,
+                fontSize: 17,
               }}
+              onChangeText={setNotesText}
+              value={notesText}
+              placeholderTextColor="#ddd"
+              placeholder="Enter notes about the task."
             />
           </View>
           <View
@@ -195,11 +211,11 @@ const ViewCreateSchedule = () => {
               paddingBottom: 10,
               borderColor: '#eee',
             }}>
-            <Text style={{color: '#888', fontSize: 15, marginBottom: 5}}>
+            <Text style={{color: '#9CAAC4', fontSize: 15, marginBottom: 5}}>
               Times
             </Text>
-            <Text style={{fontSize: 18, paddingTop: 5, paddingBottom: 5}}>
-              12:00 AM
+            <Text style={{fontSize: 17, paddingTop: 5, paddingBottom: 5}}>
+              {moment(taskTime).format('h:mm A')}
             </Text>
           </View>
           <View
@@ -209,12 +225,25 @@ const ViewCreateSchedule = () => {
               marginTop: 10,
               paddingBottom: 10,
             }}>
-            <Text style={{color: '#888', fontSize: 15, marginBottom: 5}}>
+            <Text style={{color: '#9CAAC4', fontSize: 15, marginBottom: 5}}>
               Alarm
             </Text>
-            <Text style={{fontSize: 18, paddingTop: 5, paddingBottom: 5}}>
-              12:00 AM
-            </Text>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <Text style={{fontSize: 17}}>
+                {moment(alarmTime).format('h:mm A')}
+              </Text>
+              <Switch
+                value={isAlarmSet}
+                onValueChange={handleAlarmSet}
+                trackColor={{false: '#767577', true: '#ffcbcc'}}
+                thumbColor={isAlarmSet ? '#ff7f7f' : '#f4f3f4'}
+              />
+            </View>
           </View>
         </View>
       </ScrollView>

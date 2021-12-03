@@ -168,7 +168,7 @@ const HomeScreen = () => {
                   style={{
                     width: '80%',
                     fontWeight: 'bold',
-                    fontSize: 16,
+                    fontSize: 17,
                     color: '#555',
                   }}>
                   Dinner
@@ -230,7 +230,7 @@ const HomeScreen = () => {
                   style={{
                     width: '80%',
                     fontWeight: 'bold',
-                    fontSize: 16,
+                    fontSize: 17,
                     color: '#555',
                   }}>
                   Zoom Meeting
@@ -284,7 +284,7 @@ const HomeScreen = () => {
                   style={{
                     width: '80%',
                     fontWeight: 'bold',
-                    fontSize: 16,
+                    fontSize: 17,
                     color: '#555',
                   }}>
                   Meeting
