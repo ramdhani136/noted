@@ -12,6 +12,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {CalendarList} from 'react-native-calendars';
 import moment from 'moment';
 import {useNavigation} from '@react-navigation/native';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 const ViewCreateSchedule = () => {
   const navigation = useNavigation();
@@ -20,6 +21,7 @@ const ViewCreateSchedule = () => {
   const [taskTime, setTaskTime] = useState(moment().format());
   const [taskText, setTaskText] = useState('');
   const [notesText, setNotesText] = useState('');
+  const [isDateTimePickerVisible, setDateTimePickerVisible] = useState(false);
   const handleAlarmSet = () => {
     setAlarmSet(!isAlarmSet);
   };
@@ -28,12 +30,40 @@ const ViewCreateSchedule = () => {
       'DD',
     )}`]: {
       selected: true,
-      selectedColor: '#2E66E7',
+      selectedColor: '#ff6d6d',
     },
   });
   const [currentDay, setCurrentDay] = useState(moment().format());
+  const showDateTimePicker = modeTime => {
+    setDateTimePickerVisible(true);
+    setWhatTime(modeTime);
+  };
+  const hideDateTimePicker = () => setDateTimePickerVisible(false);
+  const [whatTime, setWhatTime] = useState('');
+
+  const handleDatePicked = date => {
+    const selectedDatePicked = currentDay;
+    const hour = moment(date).hour();
+    const minute = moment(date).minute();
+    const newModifiedDay = moment(selectedDatePicked).hour(hour).minute(minute);
+    hideDateTimePicker();
+    if (whatTime === 'taskTime') {
+      setTaskTime(newModifiedDay);
+    } else {
+      setAlarmTime(newModifiedDay);
+    }
+  };
+
   return (
     <View style={{backgroundColor: '#fffafa', flex: 1}}>
+      <DateTimePicker
+        isVisible={isDateTimePickerVisible}
+        onConfirm={handleDatePicked}
+        onCancel={hideDateTimePicker}
+        mode="time"
+        date={new Date()}
+        isDarkModeEnabled
+      />
       <View
         style={{
           display: 'flex',
@@ -71,7 +101,7 @@ const ViewCreateSchedule = () => {
           // markingType="custom"
           theme={{
             selectedDayBackgroundColor: 'blue',
-            selectedDayTextColor: 'red',
+            selectedDayTextColor: 'white',
             todayTextColor: 'red',
             backgroundColor: '#fffafa',
             calendarBackground: '#fffafa',
@@ -83,7 +113,7 @@ const ViewCreateSchedule = () => {
             setSelectedDay({
               [day.dateString]: {
                 selected: true,
-                selectedColor: '#2E66E7',
+                selectedColor: '#ff6d6d',
               },
             });
             setCurrentDay(day.dateString);
@@ -94,6 +124,7 @@ const ViewCreateSchedule = () => {
           pagingEnabled={true}
           verticalScroll={false}
           calendarWidth={360}
+          markedDates={selectedDay}
 
           // Set custom calendarWidth.
         />
@@ -214,9 +245,11 @@ const ViewCreateSchedule = () => {
             <Text style={{color: '#9CAAC4', fontSize: 15, marginBottom: 5}}>
               Times
             </Text>
-            <Text style={{fontSize: 17, paddingTop: 5, paddingBottom: 5}}>
-              {moment(taskTime).format('h:mm A')}
-            </Text>
+            <TouchableOpacity onPress={() => showDateTimePicker('taskTime')}>
+              <Text style={{fontSize: 17, paddingTop: 5, paddingBottom: 5}}>
+                {moment(taskTime).format('h:mm A')}
+              </Text>
+            </TouchableOpacity>
           </View>
           <View
             style={{
@@ -228,15 +261,18 @@ const ViewCreateSchedule = () => {
             <Text style={{color: '#9CAAC4', fontSize: 15, marginBottom: 5}}>
               Alarm
             </Text>
+
             <View
               style={{
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
               }}>
-              <Text style={{fontSize: 17}}>
-                {moment(alarmTime).format('h:mm A')}
-              </Text>
+              <TouchableOpacity onPress={() => showDateTimePicker('alarm')}>
+                <Text style={{fontSize: 17}}>
+                  {moment(alarmTime).format('h:mm A')}
+                </Text>
+              </TouchableOpacity>
               <Switch
                 value={isAlarmSet}
                 onValueChange={handleAlarmSet}
@@ -246,6 +282,23 @@ const ViewCreateSchedule = () => {
             </View>
           </View>
         </View>
+        <TouchableOpacity
+          style={{
+            borderWidth: 1,
+            width: '72%',
+            marginHorizontal: '13.5%',
+            height: 48,
+            marginBottom: 30,
+            marginTop: 10,
+            borderRadius: 7,
+            backgroundColor: 'red',
+            borderColor: 'red',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text style={{color: 'white'}}>ADD YOUR TASK</Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
