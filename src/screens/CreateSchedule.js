@@ -15,6 +15,7 @@ import moment from 'moment';
 import {useNavigation} from '@react-navigation/native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const ViewCreateSchedule = () => {
   const navigation = useNavigation();
@@ -55,6 +56,35 @@ const ViewCreateSchedule = () => {
     } else {
       setAlarmTime(newModifiedDay);
     }
+  };
+
+  const [imageUri, setImageUri] = useState('');
+
+  const openCamera = () => {
+    let options = {
+      stotageOption: {
+        path: 'images',
+        mediaType: 'photo',
+      },
+      includeBase64: true,
+    };
+
+    launchCamera(options, response => {
+      // console.log('response =', response);
+      if (response.didCancel) {
+        console.log('User canceled image picker');
+      } else if (response.error) {
+        console.log(response.error);
+      } else if (response.customButton) {
+        console.log(response.customButton);
+      } else {
+        const source = {
+          uri: 'data:image/jpeg;base64,' + response.assets[0].base64,
+        };
+        setImageUri(source);
+        // console.log(response.assets[0].base64);
+      }
+    });
   };
 
   return (
@@ -313,7 +343,7 @@ const ViewCreateSchedule = () => {
                 width: 100,
                 justifyContent: 'space-between',
               }}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={openCamera}>
                 <MaterialIcons
                   name="photo-camera"
                   style={{fontSize: 22, marginTop: 2, color: '#bbb'}}
@@ -341,22 +371,14 @@ const ViewCreateSchedule = () => {
               marginHorizontal: '5%',
               marginBottom: 10,
             }}>
-            <TouchableOpacity>
-              <Image
-                style={{width: '100%', height: 210, marginTop: 12}}
-                source={{
-                  uri: 'https://awsimages.detik.net.id/community/media/visual/2016/12/14/e034adf1-4f4f-49b1-9aa0-a97df560a32e.jpg?w=700&q=90',
-                }}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Image
-                style={{width: '100%', height: 210, marginTop: 12}}
-                source={{
-                  uri: 'https://images.pexels.com/photos/2116715/pexels-photo-2116715.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                }}
-              />
-            </TouchableOpacity>
+            {imageUri !== '' && (
+              <TouchableOpacity>
+                <Image
+                  style={{width: '100%', height: 210, marginTop: 12}}
+                  source={imageUri}
+                />
+              </TouchableOpacity>
+            )}
           </View>
         </View>
         <TouchableOpacity
