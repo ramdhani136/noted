@@ -6,6 +6,7 @@ import {
   TextInput,
   ScrollView,
   Switch,
+  Image,
 } from 'react-native';
 import {Layout} from '../components/organism';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -331,6 +332,31 @@ const ViewCreateSchedule = () => {
                 />
               </TouchableOpacity>
             </View>
+          </View>
+          <View
+            style={{
+              marginTop: 5,
+              width: '90%',
+              height: 'auto',
+              marginHorizontal: '5%',
+              marginBottom: 10,
+            }}>
+            <TouchableOpacity>
+              <Image
+                style={{width: '100%', height: 210, marginTop: 12}}
+                source={{
+                  uri: 'https://awsimages.detik.net.id/community/media/visual/2016/12/14/e034adf1-4f4f-49b1-9aa0-a97df560a32e.jpg?w=700&q=90',
+                }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Image
+                style={{width: '100%', height: 210, marginTop: 12}}
+                source={{
+                  uri: 'https://images.pexels.com/photos/2116715/pexels-photo-2116715.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+                }}
+              />
+            </TouchableOpacity>
           </View>
         </View>
         <TouchableOpacity
