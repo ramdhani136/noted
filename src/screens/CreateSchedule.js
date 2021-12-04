@@ -93,7 +93,7 @@ const ViewCreateSchedule = () => {
         animationType="slide"
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
+          // Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}>
         <View
@@ -130,7 +130,9 @@ const ViewCreateSchedule = () => {
               flexDirection: 'row',
               justifyContent: 'flex-end',
             }}>
-            <Text style={{color: '#ddd', marginRight: 5}}>Remove</Text>
+            <Text style={{color: '#ddd', marginRight: 3, fontSize: 15}}>
+              Remove
+            </Text>
             <MaterialIcons
               name="delete"
               style={{color: '#ddd', fontSize: 20, marginRight: 10}}
