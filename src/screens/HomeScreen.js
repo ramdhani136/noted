@@ -58,7 +58,13 @@ const HomeScreen = () => {
 
   const ViewHome = () => {
     return (
-      <SafeAreaView style={{backgroundColor: '#fffafa', position: 'relative'}}>
+      <SafeAreaView
+        style={{
+          backgroundColor: '#fffafa',
+          position: 'relative',
+          borderWidth: 1,
+          height: '100%',
+        }}>
         <CalendarStrip
           calendarAnimation={{type: 'sequence', duration: 30}}
           daySelectionAnimation={{
@@ -120,10 +126,7 @@ const HomeScreen = () => {
         <ScrollView
           style={{
             width: '100%',
-            height: 470,
-
-            // borderWidth: 1,
-            // borderColor: 'blue',
+            height: '100%',
           }}>
           <TouchableOpacity>
             <View
