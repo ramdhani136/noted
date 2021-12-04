@@ -7,6 +7,7 @@ import {
   ScrollView,
   Switch,
   Image,
+  Modal,
 } from 'react-native';
 import {Layout} from '../components/organism';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -58,7 +59,8 @@ const ViewCreateSchedule = () => {
     }
   };
 
-  const [imageUri, setImageUri] = useState('');
+  const [imageUri, setImageUri] = useState([]);
+  const [viewImgUri, setViewImgUri] = useState('');
 
   const openCamera = () => {
     let options = {
@@ -78,17 +80,64 @@ const ViewCreateSchedule = () => {
       } else if (response.customButton) {
         console.log(response.customButton);
       } else {
-        const source = {
-          uri: 'data:image/jpeg;base64,' + response.assets[0].base64,
-        };
-        setImageUri(source);
-        // console.log(response.assets[0].base64);
+        const source = 'data:image/jpeg;base64,' + response.assets[0].base64;
+        setImageUri([...imageUri, {isUri: source}]);
       }
     });
   };
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <View style={{backgroundColor: '#fffafa', flex: 1}}>
+      <Modal
+        animationType="slide"
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View
+          style={{
+            backgroundColor: 'black',
+            width: '100%',
+            height: '100%',
+            position: 'relative',
+          }}>
+          <TouchableOpacity onPress={() => setModalVisible(false)}>
+            <Image
+              resizeMode={'contain'}
+              source={{
+                uri: viewImgUri,
+              }}
+              style={{
+                width: '100%',
+                height: '100%',
+              }}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setImageUri(imageUri.filter(item => item.isUri !== viewImgUri));
+              setModalVisible(false);
+            }}
+            style={{
+              right: 0,
+              height: 45,
+              borderWidth: 1,
+              position: 'absolute',
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+            }}>
+            <Text style={{color: '#ddd', marginRight: 5}}>Remove</Text>
+            <MaterialIcons
+              name="delete"
+              style={{color: '#ddd', fontSize: 20, marginRight: 10}}
+            />
+          </TouchableOpacity>
+        </View>
+      </Modal>
       <DateTimePicker
         isVisible={isDateTimePickerVisible}
         onConfirm={handleDatePicked}
@@ -371,14 +420,22 @@ const ViewCreateSchedule = () => {
               marginHorizontal: '5%',
               marginBottom: 10,
             }}>
-            {imageUri !== '' && (
-              <TouchableOpacity>
-                <Image
-                  style={{width: '100%', height: 210, marginTop: 12}}
-                  source={imageUri}
-                />
-              </TouchableOpacity>
-            )}
+            {imageUri.length > 0 &&
+              imageUri.map((list, key) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
+                    setViewImgUri(list.isUri);
+                  }}
+                  key={key}>
+                  <Image
+                    style={{width: '100%', height: 210, marginTop: 12}}
+                    source={{
+                      uri: list.isUri,
+                    }}
+                  />
+                </TouchableOpacity>
+              ))}
           </View>
         </View>
         <TouchableOpacity
