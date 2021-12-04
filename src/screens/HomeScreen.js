@@ -58,7 +58,7 @@ const HomeScreen = () => {
 
   const ViewHome = () => {
     return (
-      <SafeAreaView style={{backgroundColor: 'white', position: 'relative'}}>
+      <SafeAreaView style={{backgroundColor: '#fffafa', position: 'relative'}}>
         <CalendarStrip
           calendarAnimation={{type: 'sequence', duration: 30}}
           daySelectionAnimation={{
@@ -143,10 +143,10 @@ const HomeScreen = () => {
                 borderLeftColor: '#eee',
                 borderBottomColor: '#eee',
                 borderRightColor: '#E2DC00',
-                shadowColor: '#000',
+                shadowColor: '#666',
                 shadowOffset: {width: 0, height: 2},
                 shadowOpacity: 0.8,
-                shadowRadius: 2,
+                shadowRadius: 5,
                 elevation: 1,
               }}>
               <View
@@ -205,10 +205,10 @@ const HomeScreen = () => {
                 borderLeftColor: '#eee',
                 borderBottomColor: '#eee',
                 borderRightColor: '#E2DC00',
-                shadowColor: '#000',
+                shadowColor: '#666',
                 shadowOffset: {width: 0, height: 2},
                 shadowOpacity: 0.8,
-                shadowRadius: 2,
+                shadowRadius: 5,
                 elevation: 1,
               }}>
               <View
@@ -259,10 +259,10 @@ const HomeScreen = () => {
                 borderLeftColor: '#eee',
                 borderBottomColor: '#eee',
                 borderRightColor: '#bfbfbf',
-                shadowColor: '#000',
+                shadowColor: '#666',
                 shadowOffset: {width: 0, height: 2},
                 shadowOpacity: 0.8,
-                shadowRadius: 2,
+                shadowRadius: 5,
                 elevation: 1,
               }}>
               <View

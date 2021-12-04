@@ -136,11 +136,16 @@ const ViewCreateSchedule = () => {
             height: 'auto',
             marginHorizontal: '5%',
             borderWidth: 1,
-            borderColor: '#ddd',
+            borderColor: '#eee',
             backgroundColor: 'white',
             borderRadius: 20,
             marginBottom: 20,
             paddingBottom: 20,
+            // shadowColor: '#666',
+            // shadowOffset: {width: 0, height: 2},
+            // shadowOpacity: 0.6,
+            // shadowRadius: 2,
+            // elevation: 2,
           }}>
           <View style={{width: '90%', marginHorizontal: '5%', marginTop: 20}}>
             <TextInput
@@ -332,8 +337,8 @@ const ViewCreateSchedule = () => {
           style={{
             borderWidth: 1,
             width: '72%',
-            marginHorizontal: '13.5%',
-            height: 48,
+            marginHorizontal: '14%',
+            height: 46,
             marginBottom: 30,
             marginTop: 10,
             borderRadius: 7,
