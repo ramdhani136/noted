@@ -13,6 +13,7 @@ import {CalendarList} from 'react-native-calendars';
 import moment from 'moment';
 import {useNavigation} from '@react-navigation/native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const ViewCreateSchedule = () => {
   const navigation = useNavigation();
@@ -49,6 +50,7 @@ const ViewCreateSchedule = () => {
     hideDateTimePicker();
     if (whatTime === 'taskTime') {
       setTaskTime(newModifiedDay);
+      setAlarmTime(newModifiedDay);
     } else {
       setAlarmTime(newModifiedDay);
     }
@@ -257,6 +259,8 @@ const ViewCreateSchedule = () => {
               marginHorizontal: '5%',
               marginTop: 10,
               paddingBottom: 10,
+              borderBottomWidth: 1,
+              borderColor: '#eee',
             }}>
             <Text style={{color: '#9CAAC4', fontSize: 15, marginBottom: 5}}>
               Alarm
@@ -279,6 +283,48 @@ const ViewCreateSchedule = () => {
                 trackColor={{false: '#767577', true: '#ffcbcc'}}
                 thumbColor={isAlarmSet ? '#ff7f7f' : '#f4f3f4'}
               />
+            </View>
+          </View>
+          <View
+            style={{
+              width: '90%',
+              marginHorizontal: '5%',
+              marginTop: 10,
+              paddingBottom: 10,
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            <Text style={{color: '#9CAAC4', fontSize: 16, marginBottom: 5}}>
+              Lampiran
+            </Text>
+            <View
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                flexDirection: 'row',
+                width: 100,
+                justifyContent: 'space-between',
+              }}>
+              <TouchableOpacity>
+                <MaterialIcons
+                  name="photo-camera"
+                  style={{fontSize: 22, marginTop: 2, color: '#bbb'}}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <MaterialIcons
+                  name="record-voice-over"
+                  style={{fontSize: 20, color: '#bbb'}}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <MaterialIcons
+                  name="attach-file"
+                  style={{fontSize: 20, color: '#bbb'}}
+                />
+              </TouchableOpacity>
             </View>
           </View>
         </View>
