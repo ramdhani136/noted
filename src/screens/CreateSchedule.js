@@ -86,7 +86,7 @@ const ViewCreateSchedule = () => {
     });
   };
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalRecord, setModalRecord] = useState(true);
+  const [modalRecord, setModalRecord] = useState(false);
 
   return (
     <View style={{backgroundColor: '#fffafa', flex: 1}}>
@@ -141,7 +141,7 @@ const ViewCreateSchedule = () => {
           </TouchableOpacity>
         </View>
       </Modal>
-      <ModalRecord isActive={modalRecord} setActive={setModalRecord} />
+      {/* <ModalRecord isActive={modalRecord} setActive={setModalRecord} /> */}
       <DateTimePicker
         isVisible={isDateTimePickerVisible}
         onConfirm={handleDatePicked}
@@ -393,7 +393,7 @@ const ViewCreateSchedule = () => {
                 display: 'flex',
                 alignItems: 'center',
                 flexDirection: 'row',
-                width: 100,
+                width: 50,
                 justifyContent: 'space-between',
               }}>
               <TouchableOpacity onPress={openCamera}>
@@ -402,12 +402,12 @@ const ViewCreateSchedule = () => {
                   style={{fontSize: 22, marginTop: 2, color: '#bbb'}}
                 />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => setModalRecord(true)}>
+              {/* <TouchableOpacity onPress={() => setModalRecord(true)}>
                 <MaterialIcons
                   name="record-voice-over"
                   style={{fontSize: 20, color: '#bbb'}}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <TouchableOpacity>
                 <MaterialIcons
                   name="attach-file"

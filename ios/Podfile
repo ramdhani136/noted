@@ -16,6 +16,8 @@ target 'noted' do
 
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
+  pod 'RNAudioRecorderPlayer', :path => '../node_modules/react-native-audio-recorder-player'
+
   target 'notedTests' do
     inherit! :complete
     # Pods for testing

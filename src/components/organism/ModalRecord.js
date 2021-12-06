@@ -9,21 +9,74 @@ import {
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
+import AudioRecorderPlayer, {
+  AVEncoderAudioQualityIOSType,
+  AVEncodingOption,
+  AudioEncoderAndroidType,
+  AudioSet,
+  AudioSourceAndroidType,
+} from 'react-native-audio-recorder-player';
 
 const ModalRecord = ({isActive, setActive}) => {
+  const [dataRecord, setDataRecord] = useState({
+    isLoggingIn: false,
+    recordSecs: 0,
+    recordTime: '00:00:00',
+    currentPositionSec: 0,
+    currentDurationSec: 0,
+    playTime: '00:00:00',
+    duration: '00:00:00',
+  });
+
+  const audioRecorderPlayer = new AudioRecorderPlayer();
+
   const [btnStatus, setBtnStatus] = useState({
     recPlay: true,
     recPause: false,
     recStop: false,
   });
 
-  const onRecord = () => {
+  const onRecord = async () => {
     setBtnStatus({
       ...btnStatus,
       recPlay: false,
       recPause: true,
       recStop: true,
     });
+    const audioSet = {
+      AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
+      AudioSourceAndroid: AudioSourceAndroidType.MIC,
+      AVEncoderAudioQualityKeyIOS: AVEncoderAudioQualityIOSType.high,
+      AVNumberOfChannelsKeyIOS: 2,
+      AVFormatIDKeyIOS: AVEncodingOption.aac,
+    };
+    const result = await audioRecorderPlayer.startRecorder();
+    audioRecorderPlayer.addRecordBackListener(e => {
+      setDataRecord({
+        ...dataRecord,
+        recordSecs: e.current_position,
+        recordTime: audioRecorderPlayer.mmssss(Math.floor(e.current_position)),
+      });
+      return;
+    });
+    console.log(result);
+    // const path = 'hello.m4a';
+    // const audioSet = {
+    //   AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
+    //   AudioSourceAndroid: AudioSourceAndroidType.MIC,
+    //   AVEncoderAudioQualityKeyIOS: AVEncoderAudioQualityIOSType.high,
+    //   AVNumberOfChannelsKeyIOS: 2,
+    //   AVFormatIDKeyIOS: AVEncodingOption.aac,
+    // };
+    // const uri = await audioRecorderPlayer.startRecorder(path, audioSet);
+    // audioRecorderPlayer.addRecordBackListener(e => {
+    // setDataRecord({
+    //   ...dataRecord,
+    //   recordSecs: e.current_position,
+    //   recordTime: audioRecorderPlayer.mmssss(Math.floor(e.current_position)),
+    // });
+    // });
+    // console.log(`uri: ${uri}`);
   };
 
   const onRecPause = () => {
@@ -35,13 +88,17 @@ const ModalRecord = ({isActive, setActive}) => {
     });
   };
 
-  const onRecStop = () => {
+  const onRecStop = async () => {
     setBtnStatus({
       ...btnStatus,
       recPlay: true,
       recPause: false,
       recStop: false,
     });
+    const result = await audioRecorderPlayer.stopRecorder();
+    audioRecorderPlayer.removeRecordBackListener();
+    setDataRecord({...dataRecord, recordSecs: 0});
+    console.log(result);
   };
 
   return (
@@ -85,7 +142,7 @@ const ModalRecord = ({isActive, setActive}) => {
                 fontSize: 26,
                 color: 'black',
               }}>
-              00:05:00
+              {dataRecord.recordTime}
             </Text>
             {btnStatus.recPlay && (
               <TouchableOpacity
