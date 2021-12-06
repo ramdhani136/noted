@@ -64,6 +64,18 @@ const ModalRecord = ({isActive, setActive}) => {
           height: '100%',
           display: 'flex',
         }}>
+        <TouchableOpacity onPress={() => setActive(!isActive)}>
+          <MaterialIcons
+            name="arrow-back-ios"
+            style={{
+              textAlign: 'right',
+              marginRight: 10,
+              marginTop: 10,
+              fontSize: 20,
+              color: '#ff6d6d',
+            }}
+          />
+        </TouchableOpacity>
         <View style={{width: '100%', flex: 1}}>
           <View style={{width: '80%', marginHorizontal: '10%'}}>
             <Text
