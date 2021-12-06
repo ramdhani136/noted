@@ -62,7 +62,7 @@ const HomeScreen = () => {
         style={{
           backgroundColor: '#fffafa',
           position: 'relative',
-          borderWidth: 1,
+          // borderWidth: 1,
           height: '100%',
         }}>
         <CalendarStrip
@@ -70,7 +70,7 @@ const HomeScreen = () => {
           daySelectionAnimation={{
             type: 'border',
             duration: 200,
-            borderWidth: 1,
+            // borderWidth: 1,
             borderHighlightColor: 'white',
           }}
           style={{
