@@ -9,7 +9,7 @@ import {
   Image,
   Modal,
 } from 'react-native';
-import {Layout} from '../components/organism';
+import {Layout, ModalRecord} from '../components/organism';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {CalendarList} from 'react-native-calendars';
 import moment from 'moment';
@@ -86,6 +86,7 @@ const ViewCreateSchedule = () => {
     });
   };
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalRecord, setModalRecord] = useState(true);
 
   return (
     <View style={{backgroundColor: '#fffafa', flex: 1}}>
@@ -140,6 +141,7 @@ const ViewCreateSchedule = () => {
           </TouchableOpacity>
         </View>
       </Modal>
+      <ModalRecord isActive={modalRecord} setActive={setModalRecord} />
       <DateTimePicker
         isVisible={isDateTimePickerVisible}
         onConfirm={handleDatePicked}
@@ -400,7 +402,7 @@ const ViewCreateSchedule = () => {
                   style={{fontSize: 22, marginTop: 2, color: '#bbb'}}
                 />
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => setModalRecord(true)}>
                 <MaterialIcons
                   name="record-voice-over"
                   style={{fontSize: 20, color: '#bbb'}}
