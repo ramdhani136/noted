@@ -21,7 +21,7 @@ import moment from 'moment';
 import {useNavigation} from '@react-navigation/native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {launchCamera} from 'react-native-image-picker';
 import DocumentPicker from 'react-native-document-picker';
 
 const ViewCreateSchedule = () => {
@@ -35,7 +35,7 @@ const ViewCreateSchedule = () => {
   const [viewImgUri, setViewImgUri] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [modalPdf, setModalPdf] = useState(false);
-  const [modalFileViewer, setModalFileViewer] = useState(false);
+
   // const [modalRecord, setModalRecord] = useState(false);
   const [files, setFiles] = useState([]);
   const [upFiles, setUpFiles] = useState([]);
@@ -43,7 +43,6 @@ const ViewCreateSchedule = () => {
   const [isDateTimePickerVisible, setDateTimePickerVisible] = useState(false);
   const [whatTime, setWhatTime] = useState('');
   const [sourcePdf, setSourcePdf] = useState('');
-  const [sourceFile, setSoureFile] = useState('');
 
   const handleAlarmSet = () => {
     setAlarmSet(!isAlarmSet);
@@ -193,7 +192,6 @@ const ViewCreateSchedule = () => {
             style={{
               right: 0,
               height: 45,
-              borderWidth: 1,
               position: 'absolute',
               display: 'flex',
               alignItems: 'center',
@@ -548,9 +546,7 @@ const ViewCreateSchedule = () => {
                       borderColor: '#ddd',
                       backgroundColor: 'whitesmoke',
                     }}>
-                    <Text>
-                      {list.name} ({list.type})
-                    </Text>
+                    <Text>{list.name}</Text>
                   </TouchableOpacity>
                 ) : list.type ===
                     'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
@@ -559,7 +555,6 @@ const ViewCreateSchedule = () => {
                   list.type === 'application/vnd.ms-excel' ||
                   list.type === 'application/msword' ? (
                   <TouchableOpacity
-                    onPress={() => FileViewer.open(list.uri)}
                     key={key}
                     style={{
                       marginTop: 12,
@@ -568,9 +563,7 @@ const ViewCreateSchedule = () => {
                       borderColor: '#ddd',
                       backgroundColor: 'whitesmoke',
                     }}>
-                    <Text>
-                      {list.name} ({list.type})
-                    </Text>
+                    <Text>{list.name}</Text>
                   </TouchableOpacity>
                 ) : (
                   <TouchableOpacity
@@ -582,9 +575,7 @@ const ViewCreateSchedule = () => {
                       borderColor: '#ddd',
                       backgroundColor: 'whitesmoke',
                     }}>
-                    <Text>
-                      {list.name} ({list.type})
-                    </Text>
+                    <Text>{list.name}</Text>
                   </TouchableOpacity>
                 ),
               )}
