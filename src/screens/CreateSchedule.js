@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -86,23 +86,18 @@ const ViewCreateSchedule = () => {
     });
   };
   const [modalVisible, setModalVisible] = useState(false);
-<<<<<<< HEAD
-<<<<<<< HEAD
+
   // const [modalRecord, setModalRecord] = useState(false);
   const [modalPdf, setModalPdf] = useState(false);
-=======
+
   const [modalRecord, setModalRecord] = useState(false);
-<<<<<<< HEAD
->>>>>>> parent of 5c42833 (updtae)
-=======
-  const [modalRecord, setModalRecord] = useState(false);
->>>>>>> parent of 5c42833 (updtae)
+
   const [files, setFiles] = useState([]);
   const [upFiles, setUpFiles] = useState([]);
 
   const pickFIle = async () => {
     try {
-      const res = await DocumentPicker.pickMultiple({
+      const res = await DocusmentPicker.pick({
         type: [
           DocumentPicker.types.images,
           DocumentPicker.types.pdf,
@@ -151,8 +146,6 @@ const ViewCreateSchedule = () => {
     setUpFiles(filteredArr);
     // console.log(filteredArr);
   }, [files]);
-=======
->>>>>>> parent of 9f3aeab (update)
 
   return (
     <View style={{backgroundColor: '#fffafa', flex: 1}}>
@@ -475,7 +468,7 @@ const ViewCreateSchedule = () => {
                   style={{fontSize: 20, color: '#bbb'}}
                 />
               </TouchableOpacity> */}
-              <TouchableOpacity>
+              <TouchableOpacity onPress={pickFIle}>
                 <MaterialIcons
                   name="attach-file"
                   style={{fontSize: 20, color: '#bbb'}}
@@ -507,6 +500,22 @@ const ViewCreateSchedule = () => {
                   />
                 </TouchableOpacity>
               ))}
+            {/* {upFiles.length > 0 &&
+              upFiles.map((list, key) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
+                    setViewImgUri(list.uri);
+                  }}
+                  key={key}>
+                  <Image
+                    style={{width: '100%', height: 210, marginTop: 12}}
+                    source={{
+                      uri: list.uri,
+                    }}
+                  />
+                </TouchableOpacity>
+              ))} */}
           </View>
         </View>
         <TouchableOpacity
