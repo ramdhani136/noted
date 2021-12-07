@@ -16,6 +16,11 @@ target 'noted' do
 
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
+
+  pod 'react-native-blob-util', :path => '../node_modules/react-native-blob-util'
+
+  pod 'react-native-pdf', :path => '../node_modules/react-native-pdf'
+
   pod 'RNAudioRecorderPlayer', :path => '../node_modules/react-native-audio-recorder-player'
 
   target 'notedTests' do

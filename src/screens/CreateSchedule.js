@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -9,15 +9,14 @@ import {
   Image,
   Modal,
 } from 'react-native';
-import {Layout} from '../components/organism';
+import {Layout, ModalRecord} from '../components/organism';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {CalendarList} from 'react-native-calendars';
 import moment from 'moment';
 import {useNavigation} from '@react-navigation/native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {launchCamera} from 'react-native-image-picker';
-import DocumentPicker from 'react-native-document-picker';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const ViewCreateSchedule = () => {
   const navigation = useNavigation();
@@ -87,7 +86,17 @@ const ViewCreateSchedule = () => {
     });
   };
   const [modalVisible, setModalVisible] = useState(false);
+<<<<<<< HEAD
+<<<<<<< HEAD
+  // const [modalRecord, setModalRecord] = useState(false);
+  const [modalPdf, setModalPdf] = useState(false);
+=======
   const [modalRecord, setModalRecord] = useState(false);
+<<<<<<< HEAD
+>>>>>>> parent of 5c42833 (updtae)
+=======
+  const [modalRecord, setModalRecord] = useState(false);
+>>>>>>> parent of 5c42833 (updtae)
   const [files, setFiles] = useState([]);
   const [upFiles, setUpFiles] = useState([]);
 
@@ -142,6 +151,8 @@ const ViewCreateSchedule = () => {
     setUpFiles(filteredArr);
     // console.log(filteredArr);
   }, [files]);
+=======
+>>>>>>> parent of 9f3aeab (update)
 
   return (
     <View style={{backgroundColor: '#fffafa', flex: 1}}>
@@ -173,12 +184,7 @@ const ViewCreateSchedule = () => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              if (typeImage === 'capture') {
-                setImageUri(imageUri.filter(item => item.isUri !== viewImgUri));
-              } else {
-                setUpFiles(upFiles.filter(item => item.uri !== viewImgUri));
-                setFiles(upFiles.filter(item => item.uri !== viewImgUri));
-              }
+              setImageUri(imageUri.filter(item => item.isUri !== viewImgUri));
               setModalVisible(false);
             }}
             style={{
@@ -202,6 +208,7 @@ const ViewCreateSchedule = () => {
         </View>
       </Modal>
       {/* <ModalRecord isActive={modalRecord} setActive={setModalRecord} /> */}
+
       <DateTimePicker
         isVisible={isDateTimePickerVisible}
         onConfirm={handleDatePicked}
@@ -468,7 +475,7 @@ const ViewCreateSchedule = () => {
                   style={{fontSize: 20, color: '#bbb'}}
                 />
               </TouchableOpacity> */}
-              <TouchableOpacity onPress={pickFIle}>
+              <TouchableOpacity>
                 <MaterialIcons
                   name="attach-file"
                   style={{fontSize: 20, color: '#bbb'}}
@@ -490,7 +497,6 @@ const ViewCreateSchedule = () => {
                   onPress={() => {
                     setModalVisible(!modalVisible);
                     setViewImgUri(list.isUri);
-                    setTypeImage('capture');
                   }}
                   key={key}>
                   <Image
@@ -501,27 +507,6 @@ const ViewCreateSchedule = () => {
                   />
                 </TouchableOpacity>
               ))}
-            {/* {console.log(upFiles.length)} */}
-            {upFiles.length > 0 &&
-              upFiles.map(
-                (list, id) =>
-                  list.type == 'image/jpeg' && (
-                    <TouchableOpacity
-                      onPress={() => {
-                        setModalVisible(!modalVisible);
-                        setViewImgUri(list.uri);
-                        setTypeImage('pick');
-                      }}
-                      key={id}>
-                      <Image
-                        style={{width: '100%', height: 210, marginTop: 12}}
-                        source={{
-                          uri: list.uri,
-                        }}
-                      />
-                    </TouchableOpacity>
-                  ),
-              )}
           </View>
         </View>
         <TouchableOpacity
