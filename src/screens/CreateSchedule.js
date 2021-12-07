@@ -17,6 +17,7 @@ import {useNavigation} from '@react-navigation/native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import DocumentPicker from 'react-native-document-picker';
 
 const ViewCreateSchedule = () => {
   const navigation = useNavigation();
@@ -97,7 +98,7 @@ const ViewCreateSchedule = () => {
 
   const pickFIle = async () => {
     try {
-      const res = await DocusmentPicker.pick({
+      const res = await DocumentPicker.pick({
         type: [
           DocumentPicker.types.images,
           DocumentPicker.types.pdf,
@@ -177,7 +178,11 @@ const ViewCreateSchedule = () => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              setImageUri(imageUri.filter(item => item.isUri !== viewImgUri));
+              if (typeImage === 'capture') {
+                setImageUri(imageUri.filter(item => item.isUri !== viewImgUri));
+              } else {
+                setUpFiles(upFiles.filter(item => item.uri !== viewImgUri));
+              }
               setModalVisible(false);
             }}
             style={{
@@ -490,6 +495,7 @@ const ViewCreateSchedule = () => {
                   onPress={() => {
                     setModalVisible(!modalVisible);
                     setViewImgUri(list.isUri);
+                    setTypeImage('capture');
                   }}
                   key={key}>
                   <Image
@@ -500,22 +506,39 @@ const ViewCreateSchedule = () => {
                   />
                 </TouchableOpacity>
               ))}
-            {/* {upFiles.length > 0 &&
-              upFiles.map((list, key) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    setModalVisible(!modalVisible);
-                    setViewImgUri(list.uri);
-                  }}
-                  key={key}>
-                  <Image
-                    style={{width: '100%', height: 210, marginTop: 12}}
-                    source={{
-                      uri: list.uri,
+            {upFiles.length > 0 &&
+              upFiles.map((list, key) =>
+                list.type === 'image/jpeg' ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setModalVisible(!modalVisible);
+                      setViewImgUri(list.uri);
+                      setTypeImage('picker');
                     }}
-                  />
-                </TouchableOpacity>
-              ))} */}
+                    key={key}>
+                    <Image
+                      style={{width: '100%', height: 210, marginTop: 12}}
+                      source={{
+                        uri: list.uri,
+                      }}
+                    />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    key={key}
+                    style={{
+                      marginTop: 12,
+                      borderWidth: 1,
+                      padding: 10,
+                      borderColor: '#ddd',
+                      backgroundColor: 'whitesmoke',
+                    }}>
+                    <Text>
+                      {list.name} ({list.type})
+                    </Text>
+                  </TouchableOpacity>
+                ),
+              )}
           </View>
         </View>
         <TouchableOpacity
