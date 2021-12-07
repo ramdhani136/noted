@@ -9,7 +9,12 @@ import {
   Image,
   Modal,
 } from 'react-native';
-import {Layout, ModalRecord} from '../components/organism';
+import {
+  FileViewerComponent,
+  Layout,
+  ModalRecord,
+  PdfComponent,
+} from '../components/organism';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {CalendarList} from 'react-native-calendars';
 import moment from 'moment';
@@ -26,7 +31,20 @@ const ViewCreateSchedule = () => {
   const [taskTime, setTaskTime] = useState(moment().format());
   const [taskText, setTaskText] = useState('');
   const [notesText, setNotesText] = useState('');
+  const [imageUri, setImageUri] = useState([]);
+  const [viewImgUri, setViewImgUri] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalPdf, setModalPdf] = useState(false);
+  const [modalFileViewer, setModalFileViewer] = useState(false);
+  // const [modalRecord, setModalRecord] = useState(false);
+  const [files, setFiles] = useState([]);
+  const [upFiles, setUpFiles] = useState([]);
+  const [typeImage, setTypeImage] = useState('');
   const [isDateTimePickerVisible, setDateTimePickerVisible] = useState(false);
+  const [whatTime, setWhatTime] = useState('');
+  const [sourcePdf, setSourcePdf] = useState('');
+  const [sourceFile, setSoureFile] = useState('');
+
   const handleAlarmSet = () => {
     setAlarmSet(!isAlarmSet);
   };
@@ -44,7 +62,6 @@ const ViewCreateSchedule = () => {
     setWhatTime(modeTime);
   };
   const hideDateTimePicker = () => setDateTimePickerVisible(false);
-  const [whatTime, setWhatTime] = useState('');
 
   const handleDatePicked = date => {
     const selectedDatePicked = currentDay;
@@ -59,9 +76,6 @@ const ViewCreateSchedule = () => {
       setAlarmTime(newModifiedDay);
     }
   };
-
-  const [imageUri, setImageUri] = useState([]);
-  const [viewImgUri, setViewImgUri] = useState('');
 
   const openCamera = () => {
     let options = {
@@ -86,15 +100,8 @@ const ViewCreateSchedule = () => {
       }
     });
   };
-  const [modalVisible, setModalVisible] = useState(false);
 
   // const [modalRecord, setModalRecord] = useState(false);
-  const [modalPdf, setModalPdf] = useState(false);
-
-  const [modalRecord, setModalRecord] = useState(false);
-
-  const [files, setFiles] = useState([]);
-  const [upFiles, setUpFiles] = useState([]);
 
   const pickFIle = async () => {
     try {
@@ -127,8 +134,6 @@ const ViewCreateSchedule = () => {
       }
     }
   };
-
-  const [typeImage, setTypeImage] = useState('');
 
   useEffect(() => {
     const uniqueValuesSet = new Set();
@@ -206,6 +211,12 @@ const ViewCreateSchedule = () => {
         </View>
       </Modal>
       {/* <ModalRecord isActive={modalRecord} setActive={setModalRecord} /> */}
+
+      <PdfComponent
+        isActive={modalPdf}
+        setActive={setModalPdf}
+        source={sourcePdf}
+      />
 
       <DateTimePicker
         isVisible={isDateTimePickerVisible}
@@ -522,6 +533,44 @@ const ViewCreateSchedule = () => {
                         uri: list.uri,
                       }}
                     />
+                  </TouchableOpacity>
+                ) : list.type === 'application/pdf' ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setModalPdf(!modalPdf);
+                      setSourcePdf(list.uri);
+                    }}
+                    key={key}
+                    style={{
+                      marginTop: 12,
+                      borderWidth: 1,
+                      padding: 10,
+                      borderColor: '#ddd',
+                      backgroundColor: 'whitesmoke',
+                    }}>
+                    <Text>
+                      {list.name} ({list.type})
+                    </Text>
+                  </TouchableOpacity>
+                ) : list.type ===
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+                  list.type ===
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+                  list.type === 'application/vnd.ms-excel' ||
+                  list.type === 'application/msword' ? (
+                  <TouchableOpacity
+                    onPress={() => FileViewer.open(list.uri)}
+                    key={key}
+                    style={{
+                      marginTop: 12,
+                      borderWidth: 1,
+                      padding: 10,
+                      borderColor: '#ddd',
+                      backgroundColor: 'whitesmoke',
+                    }}>
+                    <Text>
+                      {list.name} ({list.type})
+                    </Text>
                   </TouchableOpacity>
                 ) : (
                   <TouchableOpacity
