@@ -30,42 +30,50 @@ const HomeScreen = () => {
 
   const getSchedules = () => {
     axios
-      .get(`${API_URL}shedule`)
+      .get(`${API_URL}schedule`)
       .then(res => {
         setSchedules(res.data.data);
         setIsLoading(false);
       })
       .catch(err => {
         throw err;
-        setIsLoading(false);
       });
   };
 
   useEffect(() => {
     getSchedules();
   }, []);
-  // const [markedDate, setMarkedDate] = useState([
-  //   {
-  //     date: '12/04/2021',
-  //     dots: [
-  //       {
-  //         key: 1,
-  //         color: '#ff9898',
-  //         selectedDotColor: '#ff6d6d',
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     date: '12/05/2021',
-  //     dots: [
-  //       {
-  //         key: 1,
-  //         color: '#ff9898',
-  //         selectedDotColor: '#ff6d6d',
-  //       },
-  //     ],
-  //   },
-  // ]);
+
+  useEffect(() => {
+    const uniqueValuesSet = new Set();
+    const filteredArr = schedules.filter(obj => {
+      // check if name property value is already in the set
+      const isPresentInSet = uniqueValuesSet.has(obj.date);
+
+      // add name property value to Set
+      uniqueValuesSet.add(obj.date);
+
+      // return the negated value of
+      // isPresentInSet variable
+      return !isPresentInSet;
+    });
+
+    const dataMark = [];
+    filteredArr.map(item => {
+      dataMark.push({
+        date: moment(item.date, 'YYYY/MM/DD'),
+        dots: [
+          {
+            key: 1,
+            color: '#ff9898',
+            selectedDotColor: '#ff6d6d',
+          },
+        ],
+      });
+    });
+
+    setMarkedDate(dataMark);
+  }, [schedules]);
 
   const datesWhitelist = [
     {
