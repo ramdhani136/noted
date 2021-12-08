@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import React, {memo} from 'react';
+import {TouchableOpacity} from 'react-native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 
 const FloatingButton = ({action}) => {
@@ -31,4 +31,4 @@ const FloatingButton = ({action}) => {
   );
 };
 
-export default FloatingButton;
+export default memo(FloatingButton);

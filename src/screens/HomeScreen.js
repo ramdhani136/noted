@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
+  Dimensions,
   FlatList,
   SafeAreaView,
   ScrollView,
@@ -78,7 +79,7 @@ const HomeScreen = () => {
 
   const datesWhitelist = [
     {
-      start: moment(),
+      start: moment('2020-01-01'),
       end: moment().add(365, 'days'), // total 4 days enabled
     },
   ];
@@ -103,7 +104,6 @@ const HomeScreen = () => {
         style={{
           backgroundColor: '#fffafa',
           position: 'relative',
-          // borderWidth: 1,
           height: '100%',
         }}>
         <CalendarStrip
@@ -111,7 +111,6 @@ const HomeScreen = () => {
           daySelectionAnimation={{
             type: 'border',
             duration: 200,
-            // borderWidth: 1,
             borderHighlightColor: 'white',
           }}
           style={{
@@ -164,17 +163,7 @@ const HomeScreen = () => {
             setCurrentDate(selectedDate);
           }}
         />
-        {filterdata(schedules).length < 1 && (
-          <Text
-            style={{
-              textAlign: 'center',
-              marginTop: 120,
-              color: '#ddd',
-              fontSize: 15,
-            }}>
-            No schedule Data
-          </Text>
-        )}
+
         <FlatList
           keyExtractor={item => item.id}
           data={filterdata(schedules)}
@@ -239,60 +228,31 @@ const HomeScreen = () => {
                     )}
                   </View>
                   <Text style={{width: '80%', color: '#999', fontSize: 13.6}}>
-                    {item.date} - {item.time} | {item.note}
+                    {moment(item.date).format('LL')} -{' '}
+                    {moment(item.date + ' ' + item.time).format('LT')}
+                  </Text>
+                  <Text style={{width: '80%', color: '#999', fontSize: 13.6}}>
+                    {item.note}
                   </Text>
                 </View>
               </TouchableOpacity>
             );
           }}
         />
-
-        {/* <TouchableOpacity>
-            <View
-              style={{
-                display: 'flex',
-                width: '93%',
-                height: 110,
-                borderWidth: 1,
-                marginHorizontal: 12,
-                borderRadius: 5,
-                marginBottom: 15,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'white',
-                borderRightWidth: 4,
-                borderTopColor: '#eee',
-                borderLeftColor: '#eee',
-                borderBottomColor: '#eee',
-                borderRightColor: '#bfbfbf',
-                shadowColor: '#666',
-                shadowOffset: {width: 0, height: 2},
-                shadowOpacity: 0.8,
-                shadowRadius: 5,
-                elevation: 1,
-              }}>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <Text
-                  style={{
-                    width: '80%',
-                    fontWeight: 'bold',
-                    fontSize: 17,
-                    color: '#555',
-                  }}>
-                  Meeting
-                </Text>
-              </View>
-              <Text style={{width: '80%', color: '#999', fontSize: 13.6}}>
-                2021/11/30 - 07.00am | Having meeting with clients
-              </Text>
-            </View>
-          </TouchableOpacity> */}
-
+        {filterdata(schedules).length < 1 && !isLoading ? (
+          <Text
+            style={{
+              textAlign: 'center',
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              top: Dimensions.get('window').width / 1.1,
+              color: '#ddd',
+              fontSize: 15,
+            }}>
+            No schedule Data
+          </Text>
+        ) : null}
         <FloatingButton action={handleCreate} />
       </SafeAreaView>
     );
