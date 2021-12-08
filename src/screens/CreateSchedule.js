@@ -9,12 +9,7 @@ import {
   Image,
   Modal,
 } from 'react-native';
-import {
-  FileViewerComponent,
-  Layout,
-  ModalRecord,
-  PdfComponent,
-} from '../components/organism';
+import {Layout, PdfComponent} from '../components/organism';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {CalendarList} from 'react-native-calendars';
 import moment from 'moment';
@@ -156,7 +151,6 @@ const ViewCreateSchedule = () => {
     });
 
     setUpFiles(filteredArr);
-    // console.log(filteredArr);
   }, [files]);
 
   return (
@@ -165,7 +159,6 @@ const ViewCreateSchedule = () => {
         animationType="slide"
         visible={modalVisible}
         onRequestClose={() => {
-          // Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}>
         <View
@@ -175,10 +168,6 @@ const ViewCreateSchedule = () => {
             height: '100%',
             position: 'relative',
           }}>
-          {/* moment().format('YYYY')}-${moment().format('MM')}-${moment().format(
-      'DD',
-    )} */}
-
           <TouchableOpacity onPress={() => setModalVisible(false)}>
             <Image
               resizeMode={'contain'}
@@ -321,11 +310,6 @@ const ViewCreateSchedule = () => {
             borderRadius: 20,
             marginBottom: 20,
             paddingBottom: 20,
-            // shadowColor: '#666',
-            // shadowOffset: {width: 0, height: 2},
-            // shadowOpacity: 0.6,
-            // shadowRadius: 2,
-            // elevation: 2,
           }}>
           <View style={{width: '90%', marginHorizontal: '5%', marginTop: 20}}>
             <TextInput

@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
+  FlatList,
   SafeAreaView,
   ScrollView,
   Text,
@@ -9,14 +10,40 @@ import {
 import Layout from '../components/organism/Layout';
 import CalendarStrip from 'react-native-calendar-strip';
 import moment from 'moment';
-import Entypo from 'react-native-vector-icons/Entypo';
+
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {FloatingButton} from '../components/organism';
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
+import {API_URL} from '../config';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
   const [markedDate, setMarkedDate] = useState([]);
+  const [schedules, setSchedules] = useState([]);
+  const [currentDate, setCurrentDate] = useState(
+    `${moment().format('YYYY')}-${moment().format('MM')}-${moment().format(
+      'DD',
+    )}`,
+  );
+  const [isLoading, setIsLoading] = useState(true);
+
+  const getSchedules = () => {
+    axios
+      .get(`${API_URL}shedule`)
+      .then(res => {
+        setSchedules(res.data.data);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        throw err;
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getSchedules();
+  }, []);
   // const [markedDate, setMarkedDate] = useState([
   //   {
   //     date: '12/04/2021',
@@ -39,11 +66,6 @@ const HomeScreen = () => {
   //     ],
   //   },
   // ]);
-  const [currentDate, setCurrentDate] = useState(
-    `${moment().format('YYYY')}-${moment().format('MM')}-${moment().format(
-      'DD',
-    )}`,
-  );
 
   const datesWhitelist = [
     {
@@ -123,128 +145,77 @@ const HomeScreen = () => {
             setCurrentDate(selectedDate);
           }}
         />
-        <ScrollView
+        <FlatList
+          keyExtractor={item => item.id}
+          data={schedules}
+          refreshing={isLoading}
+          onRefresh={getSchedules}
           style={{
             width: '100%',
             height: '100%',
-          }}>
-          <TouchableOpacity>
-            <View
-              style={{
-                display: 'flex',
-                width: '93%',
-                height: 110,
-                borderWidth: 1,
-                marginHorizontal: 12,
-                borderRadius: 5,
-                marginBottom: 15,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'white',
-                borderRightWidth: 4,
-                borderTopColor: '#eee',
-                borderLeftColor: '#eee',
-                borderBottomColor: '#eee',
-                borderRightColor: '#E2DC00',
-                shadowColor: '#666',
-                shadowOffset: {width: 0, height: 2},
-                shadowOpacity: 0.8,
-                shadowRadius: 5,
-                elevation: 1,
-              }}>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                {/* <Entypo
-                  name="controller-record"
+          }}
+          renderItem={({item}) => {
+            return (
+              <TouchableOpacity>
+                <View
                   style={{
-                    marginRight: 4,
-                    fontSize: 12,
-                    marginLeft: 10,
-                    color: '#ffcc98',
-                  }}
-                /> */}
-                <Text
-                  style={{
-                    width: '80%',
-                    fontWeight: 'bold',
-                    fontSize: 17,
-                    color: '#555',
+                    display: 'flex',
+                    width: '93%',
+                    height: 110,
+                    borderWidth: 1,
+                    marginHorizontal: 12,
+                    borderRadius: 5,
+                    marginBottom: 15,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: 'white',
+                    borderRightWidth: 4,
+                    borderTopColor: '#eee',
+                    borderLeftColor: '#eee',
+                    borderBottomColor: '#eee',
+                    borderRightColor: '#E2DC00',
+                    shadowColor: '#666',
+                    shadowOffset: {width: 0, height: 2},
+                    shadowOpacity: 0.8,
+                    shadowRadius: 5,
+                    elevation: 1,
                   }}>
-                  Dinner
-                </Text>
-                <MaterialIcons
-                  name="alarm-on"
-                  style={{
-                    fontSize: 19,
-                    marginLeft: -20,
-                    color: '#ccc',
-                  }}
-                />
-              </View>
-              <Text style={{width: '80%', color: '#999', fontSize: 13.6}}>
-                2021/11/30 - 07.00am | Dinner with mr.Ujo
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View
-              style={{
-                display: 'flex',
-                width: '93%',
-                height: 110,
-                borderWidth: 1,
-                marginHorizontal: 12,
-                borderRadius: 5,
-                marginBottom: 15,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'white',
-                borderRightWidth: 4,
-                borderTopColor: '#eee',
-                borderLeftColor: '#eee',
-                borderBottomColor: '#eee',
-                borderRightColor: '#E2DC00',
-                shadowColor: '#666',
-                shadowOffset: {width: 0, height: 2},
-                shadowOpacity: 0.8,
-                shadowRadius: 5,
-                elevation: 1,
-              }}>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                {/* <Entypo
-                  name="controller-record"
-                  style={{
-                    marginRight: 4,
-                    fontSize: 12,
-                    marginLeft: 10,
-                    color: '#ffcc98',
-                  }}
-                /> */}
-                <Text
-                  style={{
-                    width: '80%',
-                    fontWeight: 'bold',
-                    fontSize: 17,
-                    color: '#555',
-                  }}>
-                  Zoom Meeting
-                </Text>
-              </View>
-              <Text style={{width: '80%', color: '#999', fontSize: 13.6}}>
-                2021/11/30 - 07.00am | With PT. Ekatunggal Tunas Mandiri
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        width: '80%',
+                        fontWeight: 'bold',
+                        fontSize: 17,
+                        color: '#555',
+                      }}>
+                      {item.name}
+                    </Text>
+                    {item.is_alarm === '1' && (
+                      <MaterialIcons
+                        name="alarm-on"
+                        style={{
+                          fontSize: 19,
+                          marginLeft: -20,
+                          color: '#ccc',
+                        }}
+                      />
+                    )}
+                  </View>
+                  <Text style={{width: '80%', color: '#999', fontSize: 13.6}}>
+                    {item.date} - {item.time} | {item.note}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            );
+          }}
+        />
+
+        {/* <TouchableOpacity>
             <View
               style={{
                 display: 'flex',
@@ -274,15 +245,6 @@ const HomeScreen = () => {
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}>
-                {/* <Entypo
-                  name="controller-record"
-                  style={{
-                    marginRight: 4,
-                    fontSize: 12,
-                    marginLeft: 10,
-                    color: '#bfbfbf',
-                  }}
-                /> */}
                 <Text
                   style={{
                     width: '80%',
@@ -297,8 +259,8 @@ const HomeScreen = () => {
                 2021/11/30 - 07.00am | Having meeting with clients
               </Text>
             </View>
-          </TouchableOpacity>
-        </ScrollView>
+          </TouchableOpacity> */}
+
         <FloatingButton action={handleCreate} />
       </SafeAreaView>
     );
