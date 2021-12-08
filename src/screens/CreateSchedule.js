@@ -217,6 +217,7 @@ const ViewCreateSchedule = () => {
                   );
                 } else {
                   setUpFiles(upFiles.filter(item => item.uri !== viewImgUri));
+                  setFiles(files.filter(item => item.uri !== viewImgUri));
                 }
                 setModalVisible(false);
               }}>
