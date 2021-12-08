@@ -119,7 +119,14 @@ const ViewCreateSchedule = () => {
           DocumentPicker.types.xlsx,
         ],
       });
-
+      if (res[0].name === undefined) {
+        res[0] = {
+          fileCopyUri: null,
+          name: `${moment()}.pdf`,
+          type: 'application/pdf',
+          uri: res[0].uri,
+        };
+      }
       for (let i = 0; i < res.length; i++) {
         setFiles([
           ...files,
@@ -168,6 +175,10 @@ const ViewCreateSchedule = () => {
             height: '100%',
             position: 'relative',
           }}>
+          {/* moment().format('YYYY')}-${moment().format('MM')}-${moment().format(
+      'DD',
+    )} */}
+
           <TouchableOpacity onPress={() => setModalVisible(false)}>
             <Image
               resizeMode={'contain'}
@@ -231,7 +242,6 @@ const ViewCreateSchedule = () => {
           marginTop: 20,
           flexDirection: 'row',
           justifyContent: 'flex-start',
-
           height: 40,
         }}>
         <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
@@ -533,11 +543,7 @@ const ViewCreateSchedule = () => {
                     />
                   </TouchableOpacity>
                 ) : list.type === 'application/pdf' ? (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setModalPdf(!modalPdf);
-                      setSourcePdf(list.uri);
-                    }}
+                  <View
                     key={key}
                     style={{
                       marginTop: 12,
@@ -545,16 +551,53 @@ const ViewCreateSchedule = () => {
                       padding: 10,
                       borderColor: '#ddd',
                       backgroundColor: 'whitesmoke',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}>
-                    <Text>{list.name}</Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{flex: 1}}
+                      onPress={() => {
+                        setModalPdf(!modalPdf);
+                        setSourcePdf(list.uri);
+                      }}>
+                      <Text>{list.name}</Text>
+                    </TouchableOpacity>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <TouchableOpacity style={{marginHorizontal: 10}}>
+                        <MaterialIcons
+                          name="file-download"
+                          style={{fontSize: 20, color: 'gray'}}
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setUpFiles(
+                            upFiles.filter(item => item.uri !== list.uri),
+                          );
+                          setFiles(files.filter(item => item.uri !== list.uri));
+                        }}>
+                        <MaterialIcons
+                          name="close"
+                          style={{fontSize: 20, color: 'gray'}}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
                 ) : list.type ===
                     'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
                   list.type ===
                     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
                   list.type === 'application/vnd.ms-excel' ||
                   list.type === 'application/msword' ? (
-                  <TouchableOpacity
+                  <View
                     key={key}
                     style={{
                       marginTop: 12,
@@ -562,11 +605,43 @@ const ViewCreateSchedule = () => {
                       padding: 10,
                       borderColor: '#ddd',
                       backgroundColor: 'whitesmoke',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}>
-                    <Text>{list.name}</Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity style={{flex: 1}}>
+                      <Text>{list.name}</Text>
+                    </TouchableOpacity>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <TouchableOpacity style={{marginHorizontal: 10}}>
+                        <MaterialIcons
+                          name="file-download"
+                          style={{fontSize: 20, color: 'gray'}}
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setUpFiles(
+                            upFiles.filter(item => item.uri !== list.uri),
+                          );
+                          setFiles(files.filter(item => item.uri !== list.uri));
+                        }}>
+                        <MaterialIcons
+                          name="close"
+                          style={{fontSize: 20, color: 'gray'}}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
                 ) : (
-                  <TouchableOpacity
+                  <View
                     key={key}
                     style={{
                       marginTop: 12,
@@ -574,9 +649,41 @@ const ViewCreateSchedule = () => {
                       padding: 10,
                       borderColor: '#ddd',
                       backgroundColor: 'whitesmoke',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}>
-                    <Text>{list.name}</Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity style={{flex: 1}}>
+                      <Text>{list.name}</Text>
+                    </TouchableOpacity>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <TouchableOpacity style={{marginHorizontal: 10}}>
+                        <MaterialIcons
+                          name="file-download"
+                          style={{fontSize: 20, color: 'gray'}}
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setUpFiles(
+                            upFiles.filter(item => item.uri !== list.uri),
+                          );
+                          setFiles(files.filter(item => item.uri !== list.uri));
+                        }}>
+                        <MaterialIcons
+                          name="close"
+                          style={{fontSize: 20, color: 'gray'}}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
                 ),
               )}
           </View>

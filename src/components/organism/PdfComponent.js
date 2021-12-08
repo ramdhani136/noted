@@ -21,7 +21,7 @@ const PdfComponent = ({isActive, setActive, source}) => {
             // console.log(`Current page: ${page}`);
           }}
           onError={error => {
-            // console.log(error);
+            console.log(error);
           }}
           onPressLink={uri => {
             // console.log(`Link pressed: ${uri}`);
