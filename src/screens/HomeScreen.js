@@ -165,7 +165,13 @@ const HomeScreen = () => {
           }}
         />
         {filterdata(schedules).length < 1 && (
-          <Text style={{textAlign: 'center', marginTop: 120, color: '#ddd'}}>
+          <Text
+            style={{
+              textAlign: 'center',
+              marginTop: 120,
+              color: '#ddd',
+              fontSize: 15,
+            }}>
             No schedule Data
           </Text>
         )}

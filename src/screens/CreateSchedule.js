@@ -188,7 +188,6 @@ const ViewCreateSchedule = () => {
               alignItems: 'center',
               flexDirection: 'row',
               justifyContent: 'space-between',
-              borderWidth: 1,
               marginTop: 10,
             }}>
             <TouchableOpacity>
