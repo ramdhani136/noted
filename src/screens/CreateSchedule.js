@@ -191,32 +191,44 @@ const ViewCreateSchedule = () => {
               }}
             />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              if (typeImage === 'capture') {
-                setImageUri(imageUri.filter(item => item.isUri !== viewImgUri));
-              } else {
-                setUpFiles(upFiles.filter(item => item.uri !== viewImgUri));
-              }
-              setModalVisible(false);
-            }}
+          <View
             style={{
-              right: 0,
-              height: 45,
+              width: '100%',
               position: 'absolute',
               display: 'flex',
               alignItems: 'center',
               flexDirection: 'row',
-              justifyContent: 'flex-end',
+              justifyContent: 'space-between',
+              borderWidth: 1,
+              marginTop: 10,
             }}>
-            <Text style={{color: '#ddd', marginRight: 3, fontSize: 15}}>
-              Remove
-            </Text>
-            <MaterialIcons
-              name="delete"
-              style={{color: '#ddd', fontSize: 20, marginRight: 10}}
-            />
-          </TouchableOpacity>
+            <TouchableOpacity>
+              <MaterialIcons
+                name="file-download"
+                style={{color: '#ddd', fontSize: 22, marginLeft: 10}}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{display: 'flex', flexDirection: 'row'}}
+              onPress={() => {
+                if (typeImage === 'capture') {
+                  setImageUri(
+                    imageUri.filter(item => item.isUri !== viewImgUri),
+                  );
+                } else {
+                  setUpFiles(upFiles.filter(item => item.uri !== viewImgUri));
+                }
+                setModalVisible(false);
+              }}>
+              <Text style={{color: '#ddd', marginRight: 3, fontSize: 15}}>
+                Remove
+              </Text>
+              <MaterialIcons
+                name="delete"
+                style={{color: '#ddd', fontSize: 20, marginRight: 10}}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
 
