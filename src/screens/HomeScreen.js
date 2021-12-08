@@ -16,6 +16,7 @@ import {FloatingButton} from '../components/organism';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import {API_URL} from '../config';
+import _ from 'lodash';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -86,6 +87,16 @@ const HomeScreen = () => {
     navigation.navigate('CreateSchedule');
   };
 
+  const filterdata = data => {
+    return _.filter(data, function (query) {
+      var date = currentDate
+        ? query.date.toLowerCase().includes(currentDate.toLowerCase())
+        : true;
+
+      return date;
+    });
+  };
+
   const ViewHome = () => {
     return (
       <SafeAreaView
@@ -153,9 +164,14 @@ const HomeScreen = () => {
             setCurrentDate(selectedDate);
           }}
         />
+        {filterdata(schedules).length < 1 && (
+          <Text style={{textAlign: 'center', marginTop: 120, color: '#ddd'}}>
+            No schedule Data
+          </Text>
+        )}
         <FlatList
           keyExtractor={item => item.id}
-          data={schedules}
+          data={filterdata(schedules)}
           refreshing={isLoading}
           onRefresh={getSchedules}
           style={{
@@ -173,7 +189,7 @@ const HomeScreen = () => {
                     borderWidth: 1,
                     marginHorizontal: 12,
                     borderRadius: 5,
-                    marginBottom: 15,
+                    marginBottom: 12,
                     justifyContent: 'center',
                     alignItems: 'center',
                     backgroundColor: 'white',
@@ -181,7 +197,9 @@ const HomeScreen = () => {
                     borderTopColor: '#eee',
                     borderLeftColor: '#eee',
                     borderBottomColor: '#eee',
-                    borderRightColor: '#E2DC00',
+                    // borderRightColor: '#E2DC00',
+                    borderRightColor:
+                      item.status === '1' ? '#E2DC00' : '#bfbfbf',
                     shadowColor: '#666',
                     shadowOffset: {width: 0, height: 2},
                     shadowOpacity: 0.8,
