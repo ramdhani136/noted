@@ -219,7 +219,6 @@ const ViewCreateSchedule = () => {
           </TouchableOpacity>
         </View>
       </Modal>
-      {/* <ModalRecord isActive={modalRecord} setActive={setModalRecord} /> */}
 
       <PdfComponent
         isActive={modalPdf}
