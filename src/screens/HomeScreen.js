@@ -231,7 +231,9 @@ const HomeScreen = () => {
                     {moment(item.date).format('LL')} -{' '}
                     {moment(item.date + ' ' + item.time).format('LT')}
                   </Text>
-                  <Text style={{width: '80%', color: '#999', fontSize: 13.6}}>
+                  <Text
+                    style={{width: '80%', color: '#999', fontSize: 13.6}}
+                    numberOfLines={1}>
                     {item.note}
                   </Text>
                 </View>
