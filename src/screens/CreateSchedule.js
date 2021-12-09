@@ -8,6 +8,8 @@ import {
   Switch,
   Image,
   Modal,
+  ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 import {Layout, PdfComponent} from '../components/organism';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -21,17 +23,30 @@ import DocumentPicker from 'react-native-document-picker';
 import axios from 'axios';
 import {API_URL} from '../config';
 
+const Loading = () => {
+  return (
+    <View
+      style={{
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <ActivityIndicator size="large" color="red" />
+    </View>
+  );
+};
+
 const ViewCreateSchedule = () => {
   const navigation = useNavigation();
   const [isAlarmSet, setAlarmSet] = useState(false);
   const [alarmTime, setAlarmTime] = useState(moment().format());
   const [taskTime, setTaskTime] = useState(moment().format());
-
   const [imageUri, setImageUri] = useState([]);
   const [viewImgUri, setViewImgUri] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [modalPdf, setModalPdf] = useState(false);
-
   // const [modalRecord, setModalRecord] = useState(false);
   const [files, setFiles] = useState([]);
   const [upFiles, setUpFiles] = useState([]);
@@ -39,6 +54,9 @@ const ViewCreateSchedule = () => {
   const [isDateTimePickerVisible, setDateTimePickerVisible] = useState(false);
   const [whatTime, setWhatTime] = useState('');
   const [sourcePdf, setSourcePdf] = useState('');
+  const [btnSubmitActive, setBtnSubmitActive] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [value, setValue] = useState({
     date: `${moment().format('YYYY')}-${moment().format(
       'MM',
@@ -176,19 +194,41 @@ const ViewCreateSchedule = () => {
     setUpFiles(filteredArr);
   }, [files]);
 
+  const validate = () => {
+    if (
+      value.name === '' ||
+      value.name === undefined ||
+      value.note === '' ||
+      value.note === undefined
+    ) {
+      setBtnSubmitActive(false);
+    } else {
+      setBtnSubmitActive(true);
+    }
+  };
+
+  useEffect(() => {
+    validate();
+  }, [value]);
+
   const onSubmit = () => {
+    setIsLoading(true);
+    setBtnSubmitActive(false);
     axios
       .post(`${API_URL}schedule`, value)
       .then(res => {
-        alert('sukses');
+        navigation.replace('HomeScreen');
+        setIsLoading(false);
       })
       .catch(err => {
         console.log(err);
+        setIsLoading(false);
       });
   };
 
   return (
     <View style={{backgroundColor: '#fffafa', flex: 1}}>
+      {isLoading && <Loading />}
       <Modal
         animationType="slide"
         visible={modalVisible}
@@ -719,25 +759,27 @@ const ViewCreateSchedule = () => {
               )}
           </View>
         </View>
-        <TouchableOpacity
-          style={{
-            borderWidth: 1,
-            width: '72%',
-            marginHorizontal: '14%',
-            height: 46,
-            marginBottom: 30,
-            marginTop: 10,
-            borderRadius: 7,
-            backgroundColor: 'red',
-            borderColor: 'red',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text onPress={onSubmit} style={{color: 'white'}}>
-            ADD YOUR TASK
-          </Text>
-        </TouchableOpacity>
+        {btnSubmitActive && (
+          <TouchableOpacity
+            style={{
+              borderWidth: 1,
+              width: '72%',
+              marginHorizontal: '14%',
+              height: 46,
+              marginBottom: 30,
+              marginTop: 10,
+              borderRadius: 7,
+              backgroundColor: 'red',
+              borderColor: 'red',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text onPress={onSubmit} style={{color: 'white'}}>
+              ADD YOUR TASK
+            </Text>
+          </TouchableOpacity>
+        )}
       </ScrollView>
     </View>
   );
