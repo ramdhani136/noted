@@ -18,14 +18,15 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {launchCamera} from 'react-native-image-picker';
 import DocumentPicker from 'react-native-document-picker';
+import axios from 'axios';
+import {API_URL} from '../config';
 
 const ViewCreateSchedule = () => {
   const navigation = useNavigation();
   const [isAlarmSet, setAlarmSet] = useState(false);
   const [alarmTime, setAlarmTime] = useState(moment().format());
   const [taskTime, setTaskTime] = useState(moment().format());
-  const [taskText, setTaskText] = useState('');
-  const [notesText, setNotesText] = useState('');
+
   const [imageUri, setImageUri] = useState([]);
   const [viewImgUri, setViewImgUri] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -38,9 +39,22 @@ const ViewCreateSchedule = () => {
   const [isDateTimePickerVisible, setDateTimePickerVisible] = useState(false);
   const [whatTime, setWhatTime] = useState('');
   const [sourcePdf, setSourcePdf] = useState('');
+  const [value, setValue] = useState({
+    date: `${moment().format('YYYY')}-${moment().format(
+      'MM',
+    )}-${moment().format('DD')}`,
+    name: '',
+    note: '',
+    time: moment(taskTime).format('HH:mm:ss'),
+    time_alarm: moment(taskTime).format('HH:mm:ss'),
+    id_user: 1,
+    is_alarm: '0',
+    status: '1',
+  });
 
   const handleAlarmSet = () => {
     setAlarmSet(!isAlarmSet);
+    setValue({...value, is_alarm: `${isAlarmSet ? '0' : '1'}`});
   };
   const [selectedDay, setSelectedDay] = useState({
     [`${moment().format('YYYY')}-${moment().format('MM')}-${moment().format(
@@ -66,8 +80,17 @@ const ViewCreateSchedule = () => {
     if (whatTime === 'taskTime') {
       setTaskTime(newModifiedDay);
       setAlarmTime(newModifiedDay);
+      setValue({
+        ...value,
+        time: moment(newModifiedDay).format('HH:mm:ss'),
+        time_alarm: moment(newModifiedDay).format('HH:mm:ss'),
+      });
     } else {
       setAlarmTime(newModifiedDay);
+      setValue({
+        ...value,
+        time_alarm: moment(newModifiedDay).format('HH:mm:ss'),
+      });
     }
   };
 
@@ -152,6 +175,17 @@ const ViewCreateSchedule = () => {
 
     setUpFiles(filteredArr);
   }, [files]);
+
+  const onSubmit = () => {
+    axios
+      .post(`${API_URL}schedule`, value)
+      .then(res => {
+        alert('sukses');
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   return (
     <View style={{backgroundColor: '#fffafa', flex: 1}}>
@@ -287,6 +321,7 @@ const ViewCreateSchedule = () => {
               },
             });
             setCurrentDay(day.dateString);
+            setValue({...value, date: day.dateString});
           }}
           // Enable horizontal scrolling, default = false
           horizontal={true}
@@ -322,8 +357,8 @@ const ViewCreateSchedule = () => {
                 color: '#222D31',
                 fontWeight: 'bold',
               }}
-              onChangeText={setTaskText}
-              value={taskText}
+              onChangeText={text => setValue({...value, name: text})}
+              value={value.name}
               placeholderTextColor="#ddd"
               placeholder="What do you need to do?"
             />
@@ -397,8 +432,8 @@ const ViewCreateSchedule = () => {
                 textAlignVertical: 'top',
                 fontSize: 17,
               }}
-              onChangeText={setNotesText}
-              value={notesText}
+              onChangeText={text => setValue({...value, note: text})}
+              value={value.note}
               placeholderTextColor="#ddd"
               placeholder="Enter notes about the task."
             />
@@ -495,6 +530,7 @@ const ViewCreateSchedule = () => {
               </TouchableOpacity>
             </View>
           </View>
+
           <View
             style={{
               marginTop: 5,
@@ -698,7 +734,9 @@ const ViewCreateSchedule = () => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Text style={{color: 'white'}}>ADD YOUR TASK</Text>
+          <Text onPress={onSubmit} style={{color: 'white'}}>
+            ADD YOUR TASK
+          </Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
