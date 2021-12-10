@@ -130,8 +130,15 @@ const ViewCreateSchedule = () => {
       } else if (response.customButton) {
         console.log(response.customButton);
       } else {
-        const source = 'data:image/jpeg;base64,' + response.assets[0].base64;
-        setImageUri([...imageUri, {isUri: source}]);
+        // const source = 'data:image/jpeg;base64,' + response.assets[0].base64;
+        setImageUri([
+          ...imageUri,
+          {
+            name: `${moment()}.jpg`,
+            uri: response.assets[0].uri,
+            type: 'image/jpeg',
+          },
+        ]);
       }
     });
   };
@@ -211,14 +218,71 @@ const ViewCreateSchedule = () => {
     validate();
   }, [value]);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setIsLoading(true);
     setBtnSubmitActive(false);
-    axios
+    await axios
       .post(`${API_URL}schedule`, value)
       .then(res => {
-        navigation.replace('HomeScreen');
-        setIsLoading(false);
+        function setUploadFile() {
+          if (upFiles.length > 0) {
+            for (let i = 0; i < upFiles.length; i++) {
+              const upload = new FormData();
+              upload.append('id_schedule', res.data.id);
+              upload.append('status', '1');
+              upFiles[i].type !== null
+                ? upload.append('type', upFiles[i].type)
+                : null;
+              upload.append('file', upFiles[i]);
+              axios
+                .post(`${API_URL}files`, upload, {
+                  headers: {
+                    'content-type': 'multipart/form-data',
+                  },
+                })
+                .then(res => {
+                  // console.log(res.data);
+                })
+                .catch(err => console.log(err));
+            }
+          }
+        }
+        function uploadPickCamera() {
+          if (imageUri.length > 0) {
+            for (let i = 0; i < imageUri.length; i++) {
+              const uploadPick = new FormData();
+              uploadPick.append('id_schedule', res.data.id);
+              uploadPick.append('status', '1');
+              imageUri[i].type !== null
+                ? uploadPick.append('type', imageUri[i].type)
+                : null;
+              uploadPick.append('file', imageUri[i]);
+              axios
+                .post(`${API_URL}files`, uploadPick, {
+                  headers: {
+                    'content-type': 'multipart/form-data',
+                  },
+                })
+                .then(res => {
+                  // console.log(res.data);
+                })
+                .catch(err => console.log(err));
+            }
+          }
+        }
+
+        function onSuccess() {
+          navigation.replace('HomeScreen');
+          setIsLoading(false);
+        }
+
+        async function getSetFilesData() {
+          const inFile = await setUploadFile();
+          const inPick = await uploadPickCamera(inFile);
+          await onSuccess(inPick);
+        }
+
+        getSetFilesData();
       })
       .catch(err => {
         console.log(err);
@@ -254,6 +318,7 @@ const ViewCreateSchedule = () => {
               }}
             />
           </TouchableOpacity>
+
           <View
             style={{
               width: '100%',
@@ -274,9 +339,7 @@ const ViewCreateSchedule = () => {
               style={{display: 'flex', flexDirection: 'row'}}
               onPress={() => {
                 if (typeImage === 'capture') {
-                  setImageUri(
-                    imageUri.filter(item => item.isUri !== viewImgUri),
-                  );
+                  setImageUri(imageUri.filter(item => item.uri !== viewImgUri));
                 } else {
                   setUpFiles(upFiles.filter(item => item.uri !== viewImgUri));
                   setFiles(files.filter(item => item.uri !== viewImgUri));
@@ -334,6 +397,7 @@ const ViewCreateSchedule = () => {
           New Task
         </Text>
       </View>
+
       <ScrollView>
         <CalendarList
           style={{
@@ -584,21 +648,21 @@ const ViewCreateSchedule = () => {
                 <TouchableOpacity
                   onPress={() => {
                     setModalVisible(!modalVisible);
-                    setViewImgUri(list.isUri);
+                    setViewImgUri(list.uri);
                     setTypeImage('capture');
                   }}
                   key={key}>
                   <Image
                     style={{width: '100%', height: 210, marginTop: 12}}
                     source={{
-                      uri: list.isUri,
+                      uri: list.uri,
                     }}
                   />
                 </TouchableOpacity>
               ))}
             {upFiles.length > 0 &&
               upFiles.map((list, key) =>
-                list.type === 'image/jpeg' ? (
+                list.type === 'image/jpeg' || list.type === 'image/png' ? (
                   <TouchableOpacity
                     onPress={() => {
                       setModalVisible(!modalVisible);
@@ -633,7 +697,7 @@ const ViewCreateSchedule = () => {
                         setModalPdf(!modalPdf);
                         setSourcePdf(list.uri);
                       }}>
-                      <Text>{list.name}</Text>
+                      <Text numberOfLines={1}>{list.name}</Text>
                     </TouchableOpacity>
                     <View
                       style={{
@@ -682,7 +746,7 @@ const ViewCreateSchedule = () => {
                       alignItems: 'center',
                     }}>
                     <TouchableOpacity style={{flex: 1}}>
-                      <Text>{list.name}</Text>
+                      <Text numberOfLines={1}>{list.name}</Text>
                     </TouchableOpacity>
                     <View
                       style={{
@@ -726,7 +790,7 @@ const ViewCreateSchedule = () => {
                       alignItems: 'center',
                     }}>
                     <TouchableOpacity style={{flex: 1}}>
-                      <Text>{list.name}</Text>
+                      <Text numberOfLines={1}>{list.name}</Text>
                     </TouchableOpacity>
                     <View
                       style={{
