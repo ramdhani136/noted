@@ -38,7 +38,7 @@ const Loading = () => {
   );
 };
 
-const ViewCreateSchedule = () => {
+const ViewCreateSchedule = ({doc}) => {
   const navigation = useNavigation();
   const [isAlarmSet, setAlarmSet] = useState(false);
   const [alarmTime, setAlarmTime] = useState(moment().format());
@@ -183,6 +183,27 @@ const ViewCreateSchedule = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (doc) {
+      setValue(doc);
+      if (doc.is_alarm === '1') {
+        setAlarmSet(true);
+      } else {
+        setAlarmSet(false);
+      }
+      let tanggal = `${doc.date} ${doc.time}`;
+      let tanggal_alarm = `${doc.date} ${doc.time_alarm}`;
+      setTaskTime(moment(tanggal));
+      setAlarmTime(moment(tanggal_alarm));
+      // setCurrentDay(moment(tanggal));
+    }
+
+    // setTaskTime(moment(doc.time).format('h:mm A'));
+    // console.log(doc.date .taskTime);
+    // setCurrentDay(moment(doc.date).format());
+    // console.log(currentDay);
+  }, []);
 
   useEffect(() => {
     const uniqueValuesSet = new Set();
@@ -849,10 +870,11 @@ const ViewCreateSchedule = () => {
   );
 };
 
-const CreateSchedule = () => {
+const CreateSchedule = ({route}) => {
+  const doc = route.params;
   return (
     <>
-      <Layout Child={ViewCreateSchedule} />
+      <Layout Child={ViewCreateSchedule} doc={doc} />
     </>
   );
 };

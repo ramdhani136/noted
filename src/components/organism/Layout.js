@@ -2,7 +2,7 @@ import React from 'react';
 import {SafeAreaView, Text, View} from 'react-native';
 import {BottomMenu} from './';
 
-const Layout = ({Child}) => {
+const Layout = ({Child, doc}) => {
   return (
     <>
       <View
@@ -12,7 +12,7 @@ const Layout = ({Child}) => {
           display: 'flex',
         }}>
         <View style={{flex: 1}}>
-          <Child />
+          <Child doc={doc} />
         </View>
         {/* <BottomMenu></BottomMenu> */}
       </View>
