@@ -1,5 +1,5 @@
-const API_URL = 'http://192.168.1.8:8000/api/';
-const BASE_URL = 'http://192.168.1.8:8000';
-const STORAGE_URL = 'http://192.168.1.8:8000/storage/files/';
+const API_URL = 'http://schedule.ekatunggal.com/api/';
+const BASE_URL = 'http://schedule.ekatunggal.com';
+const STORAGE_URL = 'http://schedule.ekatunggal.com/storage/';
 
 export {API_URL, BASE_URL, STORAGE_URL};

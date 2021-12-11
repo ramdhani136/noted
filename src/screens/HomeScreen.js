@@ -47,6 +47,12 @@ const HomeScreen = () => {
     getSchedules();
   }, []);
 
+  // useEffect(() => {
+  //   window.Echo.channel('location').listen('LocationCreated', event => {
+  //     setCustomerList(event.location);
+  //   });
+  // });
+
   useEffect(() => {
     const uniqueValuesSet = new Set();
     const filteredArr = schedules.filter(obj => {

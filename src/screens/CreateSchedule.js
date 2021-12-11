@@ -1166,7 +1166,7 @@ const ViewCreateSchedule = ({doc}) => {
             }}>
             <Text style={{color: 'white'}}>UPDATE</Text>
           </TouchableOpacity>
-        ) : upFiles.length > 0 || imageUri.length > 0 ? (
+        ) : (btnUpdate && upFiles.length > 0) || imageUri.length > 0 ? (
           <TouchableOpacity
             onPress={onUpdate}
             style={{
