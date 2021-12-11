@@ -21,7 +21,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {launchCamera} from 'react-native-image-picker';
 import DocumentPicker from 'react-native-document-picker';
 import axios from 'axios';
-import {API_URL} from '../config';
+import {API_URL, BASE_URL, STORAGE_URL} from '../config';
 
 const Loading = () => {
   return (
@@ -55,7 +55,10 @@ const ViewCreateSchedule = ({doc}) => {
   const [whatTime, setWhatTime] = useState('');
   const [sourcePdf, setSourcePdf] = useState('');
   const [btnSubmitActive, setBtnSubmitActive] = useState(false);
+  const [btnUpdate, setBtnUpdate] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [dbFiles, setDBFiles] = useState([]);
 
   const [value, setValue] = useState({
     date: `${moment().format('YYYY')}-${moment().format(
@@ -186,6 +189,7 @@ const ViewCreateSchedule = ({doc}) => {
 
   useEffect(() => {
     if (doc) {
+      setIsUpdate(true);
       setValue(doc);
       if (doc.is_alarm === '1') {
         setAlarmSet(true);
@@ -196,13 +200,18 @@ const ViewCreateSchedule = ({doc}) => {
       let tanggal_alarm = `${doc.date} ${doc.time_alarm}`;
       setTaskTime(moment(tanggal));
       setAlarmTime(moment(tanggal_alarm));
-      // setCurrentDay(moment(tanggal));
-    }
+      setSelectedDay({
+        [doc.date]: {
+          selected: true,
+          selectedColor: '#ff6d6d',
+        },
+      });
+      setCurrentDay(doc.date);
 
-    // setTaskTime(moment(doc.time).format('h:mm A'));
-    // console.log(doc.date .taskTime);
-    // setCurrentDay(moment(doc.date).format());
-    // console.log(currentDay);
+      axios.get(`${API_URL}files/${doc.id}`).then(res => {
+        setDBFiles(res.data.data);
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -237,6 +246,13 @@ const ViewCreateSchedule = ({doc}) => {
 
   useEffect(() => {
     validate();
+    if (isUpdate) {
+      if (JSON.stringify(doc) !== JSON.stringify(value)) {
+        setBtnUpdate(true);
+      } else {
+        setBtnUpdate(false);
+      }
+    }
   }, [value]);
 
   const onSubmit = async () => {
@@ -664,6 +680,175 @@ const ViewCreateSchedule = ({doc}) => {
               marginHorizontal: '5%',
               marginBottom: 10,
             }}>
+            {/* DB Files */}
+            {dbFiles.length > 0 &&
+              dbFiles.map((list, key) =>
+                list.type === 'image/jpeg' || list.type === 'image/png' ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setModalVisible(!modalVisible);
+                      setViewImgUri(`${STORAGE_URL}${list.name}`);
+                      setTypeImage('db');
+                    }}
+                    key={key}>
+                    <Image
+                      style={{width: '100%', height: 210, marginTop: 12}}
+                      source={{
+                        uri: `${STORAGE_URL}${list.name}`,
+                      }}
+                    />
+                  </TouchableOpacity>
+                ) : list.type === 'application/pdf' ? (
+                  <View
+                    key={key}
+                    style={{
+                      marginTop: 12,
+                      borderWidth: 1,
+                      padding: 10,
+                      borderColor: '#ddd',
+                      backgroundColor: 'whitesmoke',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <TouchableOpacity
+                      style={{flex: 1}}
+                      onPress={() => {
+                        setModalPdf(!modalPdf);
+                        setSourcePdf(`${STORAGE_URL}${list.name}`);
+                      }}>
+                      <Text numberOfLines={1}>{list.name}</Text>
+                    </TouchableOpacity>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <TouchableOpacity style={{marginHorizontal: 10}}>
+                        <MaterialIcons
+                          name="file-download"
+                          style={{fontSize: 20, color: 'gray'}}
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                      // onPress={() => {
+                      //   setUpFiles(
+                      //     upFiles.filter(item => item.uri !== list.uri),
+                      //   );
+                      //   setFiles(files.filter(item => item.uri !== list.uri));
+                      // }}
+                      >
+                        <MaterialIcons
+                          name="close"
+                          style={{fontSize: 20, color: 'gray'}}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                ) : list.type ===
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+                  list.type ===
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+                  list.type === 'application/vnd.ms-excel' ||
+                  list.type === 'application/msword' ? (
+                  <View
+                    key={key}
+                    style={{
+                      marginTop: 12,
+                      borderWidth: 1,
+                      padding: 10,
+                      borderColor: '#ddd',
+                      backgroundColor: 'whitesmoke',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <TouchableOpacity style={{flex: 1}}>
+                      <Text
+                        numberOfLines={1}>{`${STORAGE_URL}${list.name}`}</Text>
+                    </TouchableOpacity>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <TouchableOpacity style={{marginHorizontal: 10}}>
+                        <MaterialIcons
+                          name="file-download"
+                          style={{fontSize: 20, color: 'gray'}}
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                      // onPress={() => {
+                      //   setUpFiles(
+                      //     upFiles.filter(item => item.uri !== list.uri),
+                      //   );
+                      //   setFiles(files.filter(item => item.uri !== list.uri));
+                      // }}
+                      >
+                        <MaterialIcons
+                          name="close"
+                          style={{fontSize: 20, color: 'gray'}}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                ) : (
+                  <View
+                    key={key}
+                    style={{
+                      marginTop: 12,
+                      borderWidth: 1,
+                      padding: 10,
+                      borderColor: '#ddd',
+                      backgroundColor: 'whitesmoke',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <TouchableOpacity style={{flex: 1}}>
+                      <Text
+                        numberOfLines={1}>{`${STORAGE_URL}${list.name}`}</Text>
+                    </TouchableOpacity>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <TouchableOpacity style={{marginHorizontal: 10}}>
+                        <MaterialIcons
+                          name="file-download"
+                          style={{fontSize: 20, color: 'gray'}}
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                      // onPress={() => {
+                      //   setUpFiles(
+                      //     upFiles.filter(item => item.uri !== list.uri),
+                      //   );
+                      //   setFiles(files.filter(item => item.uri !== list.uri));
+                      // }}
+                      >
+                        <MaterialIcons
+                          name="close"
+                          style={{fontSize: 20, color: 'gray'}}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                ),
+              )}
+            {/* END */}
+
             {imageUri.length > 0 &&
               imageUri.map((list, key) => (
                 <TouchableOpacity
@@ -844,7 +1029,7 @@ const ViewCreateSchedule = ({doc}) => {
               )}
           </View>
         </View>
-        {btnSubmitActive && (
+        {btnSubmitActive && !isUpdate && (
           <TouchableOpacity
             style={{
               borderWidth: 1,
@@ -863,6 +1048,25 @@ const ViewCreateSchedule = ({doc}) => {
             <Text onPress={onSubmit} style={{color: 'white'}}>
               ADD YOUR TASK
             </Text>
+          </TouchableOpacity>
+        )}
+        {btnUpdate && isUpdate && (
+          <TouchableOpacity
+            style={{
+              borderWidth: 1,
+              width: '72%',
+              marginHorizontal: '14%',
+              height: 46,
+              marginBottom: 30,
+              marginTop: 10,
+              borderRadius: 7,
+              backgroundColor: 'red',
+              borderColor: 'red',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text style={{color: 'white'}}>UPDATE</Text>
           </TouchableOpacity>
         )}
       </ScrollView>
