@@ -10,6 +10,7 @@ import {
   Modal,
   ActivityIndicator,
   Dimensions,
+  Alert,
 } from 'react-native';
 import {Layout, PdfComponent} from '../components/organism';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -59,6 +60,7 @@ const ViewCreateSchedule = ({doc}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [dbFiles, setDBFiles] = useState([]);
+  const [idDbImage, setIdDbImage] = useState('');
 
   const [value, setValue] = useState({
     date: `${moment().format('YYYY')}-${moment().format(
@@ -180,11 +182,17 @@ const ViewCreateSchedule = ({doc}) => {
         ]);
       }
     } catch (err) {
-      if (DocumentPicker.isCancel(err)) {
+      if (DocumentPicker.isCancel(JSON.stringify(err))) {
       } else {
         throw err;
       }
     }
+  };
+
+  const getFiles = () => {
+    axios.get(`${API_URL}files/${doc.id}`).then(res => {
+      setDBFiles(res.data.data);
+    });
   };
 
   useEffect(() => {
@@ -207,10 +215,7 @@ const ViewCreateSchedule = ({doc}) => {
         },
       });
       setCurrentDay(doc.date);
-
-      axios.get(`${API_URL}files/${doc.id}`).then(res => {
-        setDBFiles(res.data.data);
-      });
+      getFiles();
     }
   }, []);
 
@@ -282,6 +287,7 @@ const ViewCreateSchedule = ({doc}) => {
                 })
                 .catch(err => console.log(err));
             }
+            return console.log('ok');
           }
         }
         function uploadPickCamera() {
@@ -303,8 +309,9 @@ const ViewCreateSchedule = ({doc}) => {
                 .then(res => {
                   // console.log(res.data);
                 })
-                .catch(err => console.log(err));
+                .catch(err => console.log(JSON.stringify(err)));
             }
+            return console.log('ok');
           }
         }
 
@@ -314,9 +321,9 @@ const ViewCreateSchedule = ({doc}) => {
         }
 
         async function getSetFilesData() {
-          const inFile = await setUploadFile();
-          const inPick = await uploadPickCamera(inFile);
-          await onSuccess(inPick);
+          const inPick = await uploadPickCamera();
+          const inFile = await setUploadFile(inFile);
+          await onSuccess(inFile);
         }
 
         getSetFilesData();
@@ -325,6 +332,104 @@ const ViewCreateSchedule = ({doc}) => {
         console.log(err);
         setIsLoading(false);
       });
+  };
+
+  const onUpdate = async () => {
+    setIsLoading(true);
+    setBtnUpdate(false);
+    await axios
+      .put(`${API_URL}schedule/${doc.id}`, value)
+      .then(res => {
+        function setUploadFile() {
+          if (upFiles.length > 0) {
+            for (let i = 0; i < upFiles.length; i++) {
+              const upload = new FormData();
+              upload.append('id_schedule', doc.id);
+              upload.append('status', '1');
+              upFiles[i].type !== null
+                ? upload.append('type', upFiles[i].type)
+                : null;
+              upload.append('file', upFiles[i]);
+              axios
+                .post(`${API_URL}files`, upload, {
+                  headers: {
+                    'content-type': 'multipart/form-data',
+                  },
+                })
+                .then(res => {
+                  // console.log(res.data);
+                })
+                .catch(err => console.log(err));
+            }
+            return console.log('ok');
+          }
+        }
+        function uploadPickCamera() {
+          if (imageUri.length > 0) {
+            for (let i = 0; i < imageUri.length; i++) {
+              const uploadPick = new FormData();
+              uploadPick.append('id_schedule', doc.id);
+              uploadPick.append('status', '1');
+              imageUri[i].type !== null
+                ? uploadPick.append('type', imageUri[i].type)
+                : null;
+              uploadPick.append('file', imageUri[i]);
+              axios
+                .post(`${API_URL}files`, uploadPick, {
+                  headers: {
+                    'content-type': 'multipart/form-data',
+                  },
+                })
+                .then(res => {
+                  // console.log(res.data);
+                })
+                .catch(err => console.log(JSON.stringify(err)));
+            }
+            return console.log('ok');
+          }
+        }
+
+        function onSuccess() {
+          navigation.replace('HomeScreen');
+          setIsLoading(false);
+        }
+
+        async function getSetFilesData() {
+          const inPick = await uploadPickCamera();
+          const inFile = await setUploadFile(inFile);
+          await onSuccess(inFile);
+        }
+
+        getSetFilesData();
+      })
+      .catch(err => {
+        console.log(err);
+        setIsLoading(false);
+      });
+  };
+
+  const showConfirmDialog = id => {
+    return Alert.alert(
+      'Are your sure?',
+      'Are you sure you want to remove this file?',
+      [
+        {
+          text: 'No',
+          onPress: () => {
+            setModalVisible(false);
+          },
+        },
+        {
+          text: 'Yes',
+          onPress: () => {
+            axios.delete(`${API_URL}files/${id}`).then(res => {
+              getFiles();
+            });
+            setModalVisible(false);
+          },
+        },
+      ],
+    );
   };
 
   return (
@@ -377,11 +482,14 @@ const ViewCreateSchedule = ({doc}) => {
               onPress={() => {
                 if (typeImage === 'capture') {
                   setImageUri(imageUri.filter(item => item.uri !== viewImgUri));
-                } else {
+                  setModalVisible(false);
+                } else if (typeImage === 'picker') {
                   setUpFiles(upFiles.filter(item => item.uri !== viewImgUri));
                   setFiles(files.filter(item => item.uri !== viewImgUri));
+                  setModalVisible(false);
+                } else {
+                  showConfirmDialog(idDbImage);
                 }
-                setModalVisible(false);
               }}>
               <Text style={{color: '#ddd', marginRight: 3, fontSize: 15}}>
                 Remove
@@ -689,6 +797,7 @@ const ViewCreateSchedule = ({doc}) => {
                       setModalVisible(!modalVisible);
                       setViewImgUri(`${STORAGE_URL}${list.name}`);
                       setTypeImage('db');
+                      setIdDbImage(list.id);
                     }}
                     key={key}>
                     <Image
@@ -734,13 +843,9 @@ const ViewCreateSchedule = ({doc}) => {
                         />
                       </TouchableOpacity>
                       <TouchableOpacity
-                      // onPress={() => {
-                      //   setUpFiles(
-                      //     upFiles.filter(item => item.uri !== list.uri),
-                      //   );
-                      //   setFiles(files.filter(item => item.uri !== list.uri));
-                      // }}
-                      >
+                        onPress={() => {
+                          showConfirmDialog(list.id);
+                        }}>
                         <MaterialIcons
                           name="close"
                           style={{fontSize: 20, color: 'gray'}}
@@ -785,13 +890,9 @@ const ViewCreateSchedule = ({doc}) => {
                         />
                       </TouchableOpacity>
                       <TouchableOpacity
-                      // onPress={() => {
-                      //   setUpFiles(
-                      //     upFiles.filter(item => item.uri !== list.uri),
-                      //   );
-                      //   setFiles(files.filter(item => item.uri !== list.uri));
-                      // }}
-                      >
+                        onPress={() => {
+                          showConfirmDialog(list.id);
+                        }}>
                         <MaterialIcons
                           name="close"
                           style={{fontSize: 20, color: 'gray'}}
@@ -831,13 +932,9 @@ const ViewCreateSchedule = ({doc}) => {
                         />
                       </TouchableOpacity>
                       <TouchableOpacity
-                      // onPress={() => {
-                      //   setUpFiles(
-                      //     upFiles.filter(item => item.uri !== list.uri),
-                      //   );
-                      //   setFiles(files.filter(item => item.uri !== list.uri));
-                      // }}
-                      >
+                        onPress={() => {
+                          showConfirmDialog(list.id);
+                        }}>
                         <MaterialIcons
                           name="close"
                           style={{fontSize: 20, color: 'gray'}}
@@ -1050,8 +1147,9 @@ const ViewCreateSchedule = ({doc}) => {
             </Text>
           </TouchableOpacity>
         )}
-        {btnUpdate && isUpdate && (
+        {btnUpdate && isUpdate ? (
           <TouchableOpacity
+            onPress={onUpdate}
             style={{
               borderWidth: 1,
               width: '72%',
@@ -1068,7 +1166,26 @@ const ViewCreateSchedule = ({doc}) => {
             }}>
             <Text style={{color: 'white'}}>UPDATE</Text>
           </TouchableOpacity>
-        )}
+        ) : upFiles.length > 0 || imageUri.length > 0 ? (
+          <TouchableOpacity
+            onPress={onUpdate}
+            style={{
+              borderWidth: 1,
+              width: '72%',
+              marginHorizontal: '14%',
+              height: 46,
+              marginBottom: 30,
+              marginTop: 10,
+              borderRadius: 7,
+              backgroundColor: 'red',
+              borderColor: 'red',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text style={{color: 'white'}}>UPDATE</Text>
+          </TouchableOpacity>
+        ) : null}
       </ScrollView>
     </View>
   );
