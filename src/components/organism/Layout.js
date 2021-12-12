@@ -2,7 +2,7 @@ import React from 'react';
 import {SafeAreaView, Text, View} from 'react-native';
 import {BottomMenu} from './';
 
-const Layout = ({Child, doc}) => {
+const Layout = ({Child, doc, btnActive}) => {
   return (
     <>
       <View
@@ -14,7 +14,7 @@ const Layout = ({Child, doc}) => {
         <View style={{flex: 1}}>
           <Child doc={doc} />
         </View>
-        <BottomMenu></BottomMenu>
+        <BottomMenu btnActive={btnActive}></BottomMenu>
       </View>
     </>
   );

@@ -301,7 +301,7 @@ const LayoutCheckList = () => {
 const CheckListScreen = () => {
   return (
     <>
-      <Layout Child={LayoutCheckList} />
+      <Layout btnActive="task" Child={LayoutCheckList} />
     </>
   );
 };

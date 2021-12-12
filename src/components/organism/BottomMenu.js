@@ -5,7 +5,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 
-const BottomMenu = () => {
+const BottomMenu = ({btnActive}) => {
   const navigation = useNavigation();
   return (
     <View
@@ -35,7 +35,7 @@ const BottomMenu = () => {
         /> */}
         <FontAwesome
           name="check-square-o"
-          style={{fontSize: 23, color: '#ccc'}}
+          style={{fontSize: 23, color: btnActive === 'task' ? '#ccc' : '#888'}}
         />
         {/* <Text style={{color: '#ccc'}}>Check</Text> */}
       </TouchableOpacity>
@@ -59,7 +59,10 @@ const BottomMenu = () => {
         }}>
         <MaterialIcons
           name="date-range"
-          style={{fontSize: 23, color: '#ccc'}}
+          style={{
+            fontSize: 23,
+            color: btnActive === 'schedule' ? '#ccc' : '#888',
+          }}
         />
         {/* <Text style={{color: '#999'}}>Schedules</Text> */}
       </TouchableOpacity>
@@ -71,7 +74,13 @@ const BottomMenu = () => {
           width: 45,
           height: 45,
         }}>
-        <FontAwesome name="user" style={{fontSize: 23, color: '#ccc'}} />
+        <FontAwesome
+          name="user"
+          style={{
+            fontSize: 23,
+            color: btnActive === 'profile' ? '#ccc' : '#888',
+          }}
+        />
         {/* <Text style={{color: '#ccc'}}>Profile</Text> */}
       </TouchableOpacity>
     </View>

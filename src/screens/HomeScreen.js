@@ -290,7 +290,7 @@ const HomeScreen = () => {
 
   return (
     <>
-      <Layout Child={ViewHome} />
+      <Layout btnActive="schedule" Child={ViewHome} />
     </>
   );
 };
