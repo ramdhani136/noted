@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {CreateSchedule, HomeScreen} from '../screens';
+import {CheckListScreen, CreateSchedule, HomeScreen} from '../screens';
 
 const Router = () => {
   const Stack = createNativeStackNavigator();
@@ -16,6 +16,11 @@ const Router = () => {
         <Stack.Screen
           name="CreateSchedule"
           component={CreateSchedule}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="CheckListScreen"
+          component={CheckListScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
