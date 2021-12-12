@@ -5,6 +5,7 @@ import {
   Dimensions,
   TouchableOpacity,
   ScrollView,
+  CheckBox,
 } from 'react-native';
 import {Layout} from '../components/organism';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -69,8 +70,20 @@ const LayoutCheckList = () => {
             borderRadius: 5,
             borderWidth: 1,
             borderColor: '#eee',
-            height: 500,
-          }}></View>
+            height: 'auto',
+          }}>
+          <View
+            style={{
+              width: '90%',
+              height: 70,
+              borderWidth: 1,
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginVertical: 10,
+              marginHorizontal: '5%',
+            }}></View>
+        </View>
       </ScrollView>
     </View>
   );
