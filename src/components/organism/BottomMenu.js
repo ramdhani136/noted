@@ -21,8 +21,10 @@ const BottomMenu = () => {
         borderTopWidth: 1,
       }}>
       <TouchableOpacity
-        onPress={() => navigation.navigate('CheckListScreen')}
+        onPress={() => navigation.replace('CheckListScreen')}
         style={{
+          width: 45,
+          height: 45,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -47,15 +49,17 @@ const BottomMenu = () => {
         <Text style={{color: '#ccc'}}>Notes</Text>
       </TouchableOpacity> */}
       <TouchableOpacity
-        onPress={() => navigation.navigate('HomeScreen')}
+        onPress={() => navigation.replace('HomeScreen')}
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          width: 45,
+          height: 45,
         }}>
         <MaterialIcons
           name="date-range"
-          style={{fontSize: 23, color: '#999'}}
+          style={{fontSize: 23, color: '#ccc'}}
         />
         {/* <Text style={{color: '#999'}}>Schedules</Text> */}
       </TouchableOpacity>
@@ -64,6 +68,8 @@ const BottomMenu = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          width: 45,
+          height: 45,
         }}>
         <FontAwesome name="user" style={{fontSize: 23, color: '#ccc'}} />
         {/* <Text style={{color: '#ccc'}}>Profile</Text> */}

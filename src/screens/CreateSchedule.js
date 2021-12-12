@@ -22,7 +22,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {launchCamera} from 'react-native-image-picker';
 import DocumentPicker from 'react-native-document-picker';
 import axios from 'axios';
-import {API_URL, BASE_URL, STORAGE_URL} from '../config';
+import {API_URL, STORAGE_URL} from '../config';
 
 const Loading = () => {
   return (

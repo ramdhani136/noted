@@ -25,6 +25,8 @@ target 'noted' do
 
   pod 'RNFileViewer', :path => '../node_modules/react-native-file-viewer'
 
+  pod 'RNCCheckbox', :path => '../node_modules/@react-native-community/checkbox'
+
   target 'notedTests' do
     inherit! :complete
     # Pods for testing
