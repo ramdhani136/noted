@@ -433,6 +433,18 @@ const ViewCreateSchedule = ({doc}) => {
     );
   };
 
+  const PressCheckIcon = () => {
+    if (btnSubmitActive && !isUpdate) {
+      onSubmit();
+    } else if (btnUpdate && isUpdate) {
+      onUpdate();
+    } else if (isUpdate && (upFiles.length > 0 || imageUri.length > 0)) {
+      onUpdate();
+    } else {
+      navigation.navigate('HomeScreen');
+    }
+  };
+
   return (
     <View style={{backgroundColor: '#fffafa', flex: 1}}>
       {isLoading && <Loading />}
@@ -549,10 +561,7 @@ const ViewCreateSchedule = ({doc}) => {
           }}>
           New Task
         </Text>
-        <TouchableOpacity
-          style={{flex: 1}}
-          // onPress={() => navigation.navigate('HomeScreen')}
-        >
+        <TouchableOpacity style={{flex: 1}} onPress={PressCheckIcon}>
           <AntDesign
             name="check"
             style={{

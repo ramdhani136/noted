@@ -7,7 +7,7 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
-import {Layout} from '../components/organism';
+import {FloatingButton, Layout} from '../components/organism';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CheckBox from '@react-native-community/checkbox';
@@ -16,6 +16,7 @@ import axios from 'axios';
 import moment from 'moment';
 import _ from 'lodash';
 import {useNavigation} from '@react-navigation/native';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 const Loading = () => {
   return (
@@ -36,11 +37,19 @@ const LayoutCheckList = () => {
   const navigation = useNavigation();
   const [schedules, setSchedules] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [dateTimePickerVisible, setDateTimePickerVisible] = useState(false);
   const [today, isToday] = useState(
     `${moment().format('YYYY')}-${moment().format('MM')}-${moment().format(
       'DD',
     )}`,
   );
+  const [isDate, setIsDate] = useState(
+    `${moment().format('YYYY')}-${moment().format('MM')}-${moment().format(
+      'DD',
+    )}`,
+  );
+
+  const hideDateTimePicker = () => setDateTimePickerVisible(false);
 
   const getSchedules = () => {
     axios
@@ -77,8 +86,8 @@ const LayoutCheckList = () => {
 
   const filterActive = data => {
     return _.filter(data, function (query) {
-      var date = today
-          ? query.date.toLowerCase().includes(today.toLowerCase())
+      var date = isDate
+          ? query.date.toLowerCase().includes(isDate.toLowerCase())
           : true,
         status = query.status ? query.status.toLowerCase().includes('1') : true;
 
@@ -88,8 +97,8 @@ const LayoutCheckList = () => {
 
   const filterCompleted = data => {
     return _.filter(data, function (query) {
-      var date = today
-          ? query.date.toLowerCase().includes(today.toLowerCase())
+      var date = isDate
+          ? query.date.toLowerCase().includes(isDate.toLowerCase())
           : true,
         status = query.status ? query.status.toLowerCase().includes('0') : true;
 
@@ -97,60 +106,155 @@ const LayoutCheckList = () => {
     });
   };
 
+  const handleDatePicked = date => {
+    setIsDate(
+      `${moment(date).format('YYYY')}-${moment(date).format('MM')}-${moment(
+        date,
+      ).format('DD')}`,
+    );
+
+    setDateTimePickerVisible(false);
+  };
+
   return (
-    <View
-      style={{
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
-        backgroundColor: '#fffafa',
-      }}>
-      {isLoading && <Loading />}
-      {/* Header */}
+    <>
+      <DateTimePicker
+        isVisible={dateTimePickerVisible}
+        onConfirm={handleDatePicked}
+        onCancel={hideDateTimePicker}
+        mode="date"
+        date={new Date()}
+        isDarkModeEnabled
+      />
       <View
         style={{
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginTop: 20,
+          width: Dimensions.get('window').width,
+          height: Dimensions.get('window').height,
+          backgroundColor: '#fffafa',
         }}>
+        {isLoading && <Loading />}
+        {/* Header */}
         <View
           style={{
-            flex: 1,
+            width: '100%',
             display: 'flex',
-            alignItems: 'center',
             flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginTop: 20,
           }}>
-          <TouchableOpacity>
-            <FontAwesome
-              name="navicon"
-              style={{fontSize: 18, marginHorizontal: 12, color: '#666'}}
-            />
-          </TouchableOpacity>
-          <Text style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
-            Today
-          </Text>
-        </View>
-        <View
-          style={{flex: 1, justifyContent: 'flex-end', flexDirection: 'row'}}>
-          <TouchableOpacity>
-            <MaterialIcons
-              name="more-vert"
-              style={{fontSize: 23, marginHorizontal: 12, color: '#666'}}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <ScrollView
-        style={{
-          width: Dimensions.get('window').width,
-          marginTop: 20,
-        }}>
-        {/* Task Active */}
-        {filterActive(schedules).length > 0 && (
           <View
             style={{
+              flex: 1,
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'row',
+            }}>
+            <TouchableOpacity>
+              <FontAwesome
+                name="navicon"
+                style={{fontSize: 18, marginHorizontal: 12, color: '#666'}}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setDateTimePickerVisible(true);
+              }}>
+              <Text style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
+                {today === isDate
+                  ? 'Today'
+                  : moment(isDate).format('DD MMMM YYYY')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{flex: 1, justifyContent: 'flex-end', flexDirection: 'row'}}>
+            <TouchableOpacity>
+              <MaterialIcons
+                name="more-vert"
+                style={{fontSize: 23, marginHorizontal: 12, color: '#666'}}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <ScrollView
+          style={{
+            width: Dimensions.get('window').width,
+            marginTop: 20,
+          }}>
+          {/* Task Active */}
+          {filterActive(schedules).length > 0 && (
+            <View
+              style={{
+                width: '95%',
+                marginHorizontal: '2.5%',
+                backgroundColor: 'white',
+                borderRadius: 5,
+                borderWidth: 1,
+                borderColor: '#eee',
+                height: 'auto',
+              }}>
+              {filterActive(schedules).map((item, id) => (
+                <View
+                  key={id}
+                  style={{
+                    width: '95%',
+                    height: 50,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginVertical: 10,
+                    marginHorizontal: '2.5%',
+                  }}>
+                  <CheckBox
+                    value={false}
+                    tintColors={{true: '#ff0000'}}
+                    onCheckColor={'#6F763F'}
+                    onFillColor={'#4DABEC'}
+                    onTintColor={'#F4DCF8'}
+                    animationDuration={0.5}
+                    disabled={false}
+                    onAnimationType={'bounce'}
+                    offAnimationType={'stroke'}
+                    onValueChange={() => updateStatus(item.id, '1')}
+                  />
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('CreateSchedule', item);
+                    }}
+                    style={{
+                      display: 'flex',
+                    }}>
+                    <Text
+                      style={{
+                        flex: 1,
+                        marginLeft: 10,
+                        marginTop: 5,
+                        color: '#333',
+                        fontSize: 15,
+                      }}>
+                      {item.name}
+                    </Text>
+                    <Text
+                      style={{
+                        flex: 1,
+                        marginLeft: 10,
+                        marginTop: -5,
+                        color: '#999',
+                      }}>
+                      {moment(`${item.date} ${item.time}`).format('h:mm A')}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
+          )}
+
+          {/* Task Complete */}
+
+          <View
+            style={{
+              marginVertical: 15,
               width: '95%',
               marginHorizontal: '2.5%',
               backgroundColor: 'white',
@@ -158,8 +262,19 @@ const LayoutCheckList = () => {
               borderWidth: 1,
               borderColor: '#eee',
               height: 'auto',
+              marginBottom: 90,
             }}>
-            {filterActive(schedules).map((item, id) => (
+            <Text
+              style={{
+                fontWeight: 'bold',
+                marginTop: 10,
+                marginLeft: 15,
+                color: '#333',
+                paddingBottom: 10,
+              }}>
+              COMPLETED
+            </Text>
+            {filterCompleted(schedules).map((item, id) => (
               <View
                 key={id}
                 style={{
@@ -172,7 +287,7 @@ const LayoutCheckList = () => {
                   marginHorizontal: '2.5%',
                 }}>
                 <CheckBox
-                  value={false}
+                  value={true}
                   tintColors={{true: '#ff0000'}}
                   onCheckColor={'#6F763F'}
                   onFillColor={'#4DABEC'}
@@ -181,7 +296,7 @@ const LayoutCheckList = () => {
                   disabled={false}
                   onAnimationType={'bounce'}
                   offAnimationType={'stroke'}
-                  onValueChange={() => updateStatus(item.id, '1')}
+                  onValueChange={() => updateStatus(item.id, '0')}
                 />
                 <TouchableOpacity
                   onPress={() => {
@@ -207,94 +322,28 @@ const LayoutCheckList = () => {
                       marginTop: -5,
                       color: '#999',
                     }}>
-                    {moment(`${item.date} ${item.time}`).format('h:mm A')}
+                    {moment(`${item.date} ${item.time}`).format('h:mm A')}{' '}
                   </Text>
                 </TouchableOpacity>
               </View>
             ))}
           </View>
-        )}
-
-        {/* Task Complete */}
-
-        <View
-          style={{
-            marginVertical: 15,
-            width: '95%',
-            marginHorizontal: '2.5%',
-            backgroundColor: 'white',
-            borderRadius: 5,
-            borderWidth: 1,
-            borderColor: '#eee',
-            height: 'auto',
-            marginBottom: 90,
-          }}>
-          <Text
-            style={{
-              fontWeight: 'bold',
-              marginTop: 10,
-              marginLeft: 15,
-              color: '#333',
-              paddingBottom: 10,
-            }}>
-            COMPLETED
-          </Text>
-          {filterCompleted(schedules).map((item, id) => (
-            <View
-              key={id}
-              style={{
-                width: '95%',
-                height: 50,
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginVertical: 10,
-                marginHorizontal: '2.5%',
-              }}>
-              <CheckBox
-                value={true}
-                tintColors={{true: '#ff0000'}}
-                onCheckColor={'#6F763F'}
-                onFillColor={'#4DABEC'}
-                onTintColor={'#F4DCF8'}
-                animationDuration={0.5}
-                disabled={false}
-                onAnimationType={'bounce'}
-                offAnimationType={'stroke'}
-                onValueChange={() => updateStatus(item.id, '0')}
-              />
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('CreateSchedule', item);
-                }}
+          {filterActive(schedules).length < 1 &&
+            filterCompleted(schedules).length < 1 && (
+              <Text
                 style={{
-                  display: 'flex',
+                  textAlign: 'center',
+                  marginTop: 40,
+                  color: '#ccc',
+                  fontSize: 14.5,
                 }}>
-                <Text
-                  style={{
-                    flex: 1,
-                    marginLeft: 10,
-                    marginTop: 5,
-                    color: '#333',
-                    fontSize: 15,
-                  }}>
-                  {item.name}
-                </Text>
-                <Text
-                  style={{
-                    flex: 1,
-                    marginLeft: 10,
-                    marginTop: -5,
-                    color: '#999',
-                  }}>
-                  {moment(`${item.date} ${item.time}`).format('h:mm A')}{' '}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          ))}
-        </View>
-      </ScrollView>
-    </View>
+                No Task Data
+              </Text>
+            )}
+          {/* <FloatingButton action={handleCreate} /> */}
+        </ScrollView>
+      </View>
+    </>
   );
 };
 
