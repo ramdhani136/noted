@@ -27,6 +27,8 @@ target 'noted' do
 
   pod 'RNCCheckbox', :path => '../node_modules/@react-native-community/checkbox'
 
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
   target 'notedTests' do
     inherit! :complete
     # Pods for testing
