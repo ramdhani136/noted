@@ -239,9 +239,10 @@ const ViewCreateSchedule = ({doc}) => {
   const validate = () => {
     if (
       value.name === '' ||
-      value.name === undefined ||
-      value.note === '' ||
-      value.note === undefined
+      value.name === undefined
+      // ||
+      // value.note === '' ||
+      // value.note === undefined
     ) {
       setBtnSubmitActive(false);
     } else {
@@ -749,7 +750,7 @@ const ViewCreateSchedule = ({doc}) => {
               justifyContent: 'space-between',
             }}>
             <Text style={{color: '#9CAAC4', fontSize: 16, marginBottom: 5}}>
-              Lampiran
+              File Attach
             </Text>
             <View
               style={{
