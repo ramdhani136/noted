@@ -524,13 +524,19 @@ const ViewCreateSchedule = ({doc}) => {
           alignItems: 'center',
           marginTop: 20,
           flexDirection: 'row',
-          justifyContent: 'flex-start',
+          justifyContent: 'space-between',
           height: 40,
         }}>
-        <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
+        <TouchableOpacity
+          style={{flex: 1}}
+          onPress={() => navigation.navigate('HomeScreen')}>
           <AntDesign
             name="arrowleft"
-            style={{marginLeft: 20, fontSize: 25, color: '#ff6d6d'}}
+            style={{
+              marginLeft: 20,
+              fontSize: 25,
+              color: '#ff6d6d',
+            }}
           />
         </TouchableOpacity>
         <Text
@@ -538,10 +544,25 @@ const ViewCreateSchedule = ({doc}) => {
             fontWeight: '500',
             fontSize: 17,
             color: '#555',
-            marginLeft: 100,
+            flex: 1,
+            textAlign: 'center',
           }}>
           New Task
         </Text>
+        <TouchableOpacity
+          style={{flex: 1}}
+          // onPress={() => navigation.navigate('HomeScreen')}
+        >
+          <AntDesign
+            name="check"
+            style={{
+              marginLeft: 55,
+              fontSize: 25,
+              color: '#ff6d6d',
+              textAlign: 'center',
+            }}
+          />
+        </TouchableOpacity>
       </View>
 
       <ScrollView>
