@@ -4,8 +4,18 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {API_URL} from '../../config';
 
 const BottomMenu = ({btnActive}) => {
+  const logOut = () => {
+    axios.post(`${API_URL}logout`).then(res => {
+      AsyncStorage.removeItem('user');
+      navigation.replace('LoginScreen');
+    });
+  };
+
   const navigation = useNavigation();
   return (
     <View
@@ -67,6 +77,7 @@ const BottomMenu = ({btnActive}) => {
         {/* <Text style={{color: '#999'}}>Schedules</Text> */}
       </TouchableOpacity>
       <TouchableOpacity
+        onPress={logOut}
         style={{
           display: 'flex',
           alignItems: 'center',

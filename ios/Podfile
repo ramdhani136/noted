@@ -29,6 +29,8 @@ target 'noted' do
 
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
+  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-async-storage/async-storage'
+
   target 'notedTests' do
     inherit! :complete
     # Pods for testing

@@ -19,6 +19,7 @@ import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import {API_URL} from '../config';
 import _ from 'lodash';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -32,15 +33,19 @@ const HomeScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const getSchedules = () => {
-    axios
-      .get(`${API_URL}schedule`)
-      .then(res => {
-        setSchedules(res.data.data);
-        setIsLoading(false);
-      })
-      .catch(err => {
-        throw err;
-      });
+    AsyncStorage.getItem('user').then(value => {
+      const valueJson = JSON.parse(value);
+      // setUserId(valueJson.id);
+      axios
+        .get(`${API_URL}schedule/${valueJson.id}`)
+        .then(res => {
+          setSchedules(res.data.data);
+          setIsLoading(false);
+        })
+        .catch(err => {
+          throw err;
+        });
+    });
   };
 
   useEffect(() => {
@@ -238,7 +243,7 @@ const HomeScreen = () => {
                         style={{
                           width: '80%',
                           fontWeight: 'bold',
-                          fontSize: 17,
+                          fontSize: 16,
                           color: '#555',
                         }}>
                         {item.name}

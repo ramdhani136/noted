@@ -17,6 +17,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import {useNavigation} from '@react-navigation/native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Loading = () => {
   return (
@@ -35,6 +36,7 @@ const Loading = () => {
 
 const LayoutCheckList = () => {
   const navigation = useNavigation();
+  const [userId, setUserId] = useState('');
   const [schedules, setSchedules] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dateTimePickerVisible, setDateTimePickerVisible] = useState(false);
@@ -52,15 +54,19 @@ const LayoutCheckList = () => {
   const hideDateTimePicker = () => setDateTimePickerVisible(false);
 
   const getSchedules = () => {
-    axios
-      .get(`${API_URL}schedule`)
-      .then(res => {
-        setSchedules(res.data.data);
-        setIsLoading(false);
-      })
-      .catch(err => {
-        throw err;
-      });
+    AsyncStorage.getItem('user').then(value => {
+      const valueJson = JSON.parse(value);
+      // setUserId(valueJson.id);
+      axios
+        .get(`${API_URL}schedule/${valueJson.id}`)
+        .then(res => {
+          setSchedules(res.data.data);
+          setIsLoading(false);
+        })
+        .catch(err => {
+          throw err;
+        });
+    });
   };
 
   useEffect(() => {

@@ -23,6 +23,7 @@ import {launchCamera} from 'react-native-image-picker';
 import DocumentPicker from 'react-native-document-picker';
 import axios from 'axios';
 import {API_URL, STORAGE_URL} from '../config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Loading = () => {
   return (
@@ -70,7 +71,7 @@ const ViewCreateSchedule = ({doc}) => {
     note: '',
     time: moment(taskTime).format('HH:mm:ss'),
     time_alarm: moment(taskTime).format('HH:mm:ss'),
-    id_user: 1,
+    id_user: null,
     is_alarm: '0',
     status: '1',
   });
@@ -216,6 +217,11 @@ const ViewCreateSchedule = ({doc}) => {
       });
       setCurrentDay(doc.date);
       getFiles();
+    } else {
+      AsyncStorage.getItem('user').then(data => {
+        const valueJson = JSON.parse(data);
+        setValue({...value, id_user: valueJson.id});
+      });
     }
   }, []);
 
@@ -315,18 +321,15 @@ const ViewCreateSchedule = ({doc}) => {
             return console.log('ok');
           }
         }
-
         function onSuccess() {
           navigation.replace('HomeScreen');
           setIsLoading(false);
         }
-
         async function getSetFilesData() {
           const inPick = await uploadPickCamera();
           const inFile = await setUploadFile(inFile);
           await onSuccess(inFile);
         }
-
         getSetFilesData();
       })
       .catch(err => {
@@ -448,6 +451,7 @@ const ViewCreateSchedule = ({doc}) => {
   return (
     <View style={{backgroundColor: '#fffafa', flex: 1}}>
       {isLoading && <Loading />}
+      {console.log(value)}
       <Modal
         animationType="slide"
         visible={modalVisible}
