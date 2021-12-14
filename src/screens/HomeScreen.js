@@ -243,7 +243,7 @@ const HomeScreen = () => {
                         style={{
                           width: '80%',
                           fontWeight: 'bold',
-                          fontSize: 16,
+                          fontSize: 16.5,
                           color: '#555',
                         }}>
                         {item.name}

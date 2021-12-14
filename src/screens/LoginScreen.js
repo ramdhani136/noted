@@ -8,6 +8,7 @@ import {
   Alert,
   Image,
   ActivityIndicator,
+  SafeAreaView,
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {API_URL} from '../config';
@@ -105,7 +106,7 @@ const LoginScreen = () => {
   });
 
   return (
-    <>
+    <SafeAreaView>
       {loading ? (
         <Loading />
       ) : (
@@ -120,7 +121,6 @@ const LoginScreen = () => {
             style={{
               width: '100%',
               height: 190,
-
               marginTop: 50,
               resizeMode: 'contain',
               marginBottom: 15,
@@ -130,16 +130,16 @@ const LoginScreen = () => {
           <Text
             style={{
               marginTop: 10,
-              marginLeft: 20,
-              fontSize: 18,
+              marginLeft: 27,
+              fontSize: 17,
               fontWeight: 'bold',
             }}>
             Sign in/Sign up
           </Text>
           <View
             style={{
-              width: '88%',
-              marginHorizontal: '6%',
+              width: '85%',
+              marginHorizontal: '7.5%',
               marginTop: 10,
             }}>
             <TextInput
@@ -177,6 +177,7 @@ const LoginScreen = () => {
                 placeholderTextColor="#ddd"
                 placeholder="Password"
                 secureTextEntry={isShow}
+                // autoFocus={true}
               />
               <TouchableOpacity
                 onPress={() => {
@@ -222,7 +223,7 @@ const LoginScreen = () => {
           </Text>
         </View>
       )}
-    </>
+    </SafeAreaView>
   );
 };
 
