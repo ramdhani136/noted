@@ -1,6 +1,7 @@
 import React from 'react';
 import {SafeAreaView, Text, View} from 'react-native';
 import {BottomMenu} from './';
+import {AsyncStorage} from 'react-native';
 
 const Layout = ({Child, doc, btnActive}) => {
   return (

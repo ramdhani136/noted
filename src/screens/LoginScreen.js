@@ -6,10 +6,14 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  Image,
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
+import {API_URL} from '../config';
+import {useNavigation} from '@react-navigation/native';
 
 const LoginScreen = () => {
+  const navigation = useNavigation();
   const [isShow, setIsShow] = useState(true);
   const [value, setValue] = useState({});
   const [isValid, setIsValid] = useState(false);
@@ -27,9 +31,38 @@ const LoginScreen = () => {
     }
   };
 
-  const onSubmit = () => {
-    if (isValid) {
-      Alert.alert('Success', 'Login');
+  const getUser = async () => {
+    await fetch(`${API_URL}user`).then(res => {
+      res
+        .json()
+        .then(json => {
+          console.log(json.name);
+          if (json.name !== undefined || json.name !== '') {
+            Alert.alert('Success', 'Login');
+          } else {
+            Alert.alert('Plese check your data!');
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    });
+  };
+
+  const onSubmit = async () => {
+    if (!isValid) {
+      const ambil = await fetch(`${API_URL}login`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        credentials: 'include',
+        body: JSON.stringify({
+          username: value.username,
+          password: value.password,
+        }),
+      });
+      const jalankan = await getUser();
+
+      return jalankan;
     } else {
       Alert.alert('Error', 'Plese check your data!');
     }
@@ -39,6 +72,10 @@ const LoginScreen = () => {
     validate();
   }, [value]);
 
+  useEffect(() => {
+    // _retrieveData();
+  });
+
   return (
     <View
       style={{
@@ -47,13 +84,20 @@ const LoginScreen = () => {
         backgroundColor: '#fff',
         position: 'relative',
       }}>
-      {/* <Image
-        style={{width: 200, height: 200}}
-        source={require('../assets/icon.svg')}
-      /> */}
+      <Image
+        style={{
+          width: '100%',
+          height: 190,
+
+          marginTop: 50,
+          resizeMode: 'contain',
+          marginBottom: 15,
+        }}
+        source={require('../assets/icon_login.png')}
+      />
       <Text
         style={{
-          marginTop: 100,
+          marginTop: 10,
           marginLeft: 20,
           fontSize: 18,
           fontWeight: 'bold',
@@ -64,10 +108,12 @@ const LoginScreen = () => {
         style={{
           width: '88%',
           marginHorizontal: '6%',
-          marginTop: 20,
+          marginTop: 10,
         }}>
         <TextInput
-          onChangeText={text => setValue({...value, username: text})}
+          onChangeText={text =>
+            setValue({...value, username: text.toLocaleLowerCase()})
+          }
           style={{
             borderWidth: 1,
             borderColor: '#ddd',
