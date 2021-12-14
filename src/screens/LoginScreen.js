@@ -9,6 +9,7 @@ import {
   Image,
   ActivityIndicator,
   SafeAreaView,
+  StatusBar,
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {API_URL} from '../config';
@@ -107,6 +108,7 @@ const LoginScreen = () => {
 
   return (
     <SafeAreaView>
+      <StatusBar hidden={true} />
       {loading ? (
         <Loading />
       ) : (

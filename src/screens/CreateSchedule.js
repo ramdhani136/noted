@@ -451,7 +451,6 @@ const ViewCreateSchedule = ({doc}) => {
   return (
     <View style={{backgroundColor: '#fffafa', flex: 1}}>
       {isLoading && <Loading />}
-      {console.log(value)}
       <Modal
         animationType="slide"
         visible={modalVisible}

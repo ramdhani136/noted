@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, Text, View} from 'react-native';
+import {SafeAreaView, StatusBar, Text, View} from 'react-native';
 import {BottomMenu} from './';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -17,6 +17,7 @@ const Layout = ({Child, doc, btnActive}) => {
   });
   return (
     <>
+      <StatusBar hidden={true} />
       <View
         style={{
           width: '100%',

@@ -6,8 +6,9 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native';
-import {FloatingButton, Layout} from '../components/organism';
+import {FloatingButton, Layout, ModalCreateTask} from '../components/organism';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CheckBox from '@react-native-community/checkbox';
@@ -50,6 +51,8 @@ const LayoutCheckList = () => {
       'DD',
     )}`,
   );
+
+  const [modalActive, setModalActive] = useState(false);
 
   const hideDateTimePicker = () => setDateTimePickerVisible(false);
 
@@ -124,6 +127,7 @@ const LayoutCheckList = () => {
 
   return (
     <>
+      <ModalCreateTask isActive={modalActive} setActive={setModalActive} />
       <DateTimePicker
         isVisible={dateTimePickerVisible}
         onConfirm={handleDatePicked}
@@ -346,9 +350,9 @@ const LayoutCheckList = () => {
                 No Task Data
               </Text>
             )}
-          {/* <FloatingButton action={handleCreate} /> */}
         </ScrollView>
       </View>
+      <FloatingButton action={() => setModalActive(true)} />
     </>
   );
 };
