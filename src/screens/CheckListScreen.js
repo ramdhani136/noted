@@ -59,7 +59,7 @@ const LayoutCheckList = () => {
   const getSchedules = () => {
     AsyncStorage.getItem('user').then(value => {
       const valueJson = JSON.parse(value);
-      // setUserId(valueJson.id);
+      setUserId(valueJson.id);
       axios
         .get(`${API_URL}schedule/${valueJson.id}`)
         .then(res => {
@@ -127,7 +127,13 @@ const LayoutCheckList = () => {
 
   return (
     <>
-      <ModalCreateTask isActive={modalActive} setActive={setModalActive} />
+      <ModalCreateTask
+        isActive={modalActive}
+        setActive={setModalActive}
+        setDate={setDateTimePickerVisible}
+        getSchedules={getSchedules}
+        date={isDate}
+      />
       <DateTimePicker
         isVisible={dateTimePickerVisible}
         onConfirm={handleDatePicked}

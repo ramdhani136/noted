@@ -5037,6 +5037,11 @@ rimraf@~2.2.6:
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.2.8.tgz#e439be2aaee327321952730f99a8929e4fc50582"
   integrity sha1-5Dm+Kq7jJzIZUnMPmaiSnk/FBYI=
 
+rn-keyboard-sticky-view@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/rn-keyboard-sticky-view/-/rn-keyboard-sticky-view-1.0.4.tgz#76b9714a163fa77aac9bc7ec800f7c06d76b5c2b"
+  integrity sha512-Ab+4TXYA6uGUtCmIXlyp9ta5y7oqHTpePfnMy/B9q76ssfQzzMHXGDY/rUIDL6hGC1tVJelt6HJYMzAQr9zRTQ==
+
 rsvp@^4.8.4:
   version "4.8.5"
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-4.8.5.tgz#c8f155311d167f68f21e168df71ec5b083113734"
