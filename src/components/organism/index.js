@@ -4,3 +4,4 @@ export {default as FloatingButton} from './FloatingButton';
 export {default as ModalRecord} from './ModalRecord';
 export {default as PdfComponent} from './PdfComponent';
 export {default as ModalCreateTask} from './ModalCreateTask';
+export {default as DrawerMenu} from './DrawerMenu';

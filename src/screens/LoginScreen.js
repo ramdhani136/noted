@@ -95,9 +95,8 @@ const LoginScreen = () => {
     const cekUser = async () => {
       await AsyncStorage.getItem('user').then(value => {
         if (value) {
-          navigation.navigate('HomeScreen').then(res => {
-            setLoading(false);
-          });
+          navigation.navigate('HomeScreen');
+          // setLoading(false);
         } else {
           setLoading(false);
         }

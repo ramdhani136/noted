@@ -11,7 +11,6 @@ import {
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import KeyboardStickyView from 'rn-keyboard-sticky-view';
 import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -116,65 +115,61 @@ const ModalCreateTask = ({
             backgroundColor: 'black',
             opacity: 0.2,
           }}></TouchableOpacity>
-        <KeyboardStickyView>
+
+        <View
+          style={{
+            width: '100%',
+            height: 90,
+            backgroundColor: 'white',
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8,
+            position: 'absolute',
+            bottom: 0,
+            padding: 5,
+            paddingBottom: 10,
+          }}>
+          <TextInput
+            onChangeText={text => setValue({...value, name: text})}
+            placeholder="What would you like to do?"
+            style={{
+              marginLeft: 10,
+              fontSize: 15,
+              marginBottom: 5,
+            }}
+            placeholderTextColor="#ddd"
+          />
           <View
             style={{
               width: '100%',
-              height: 90,
-              backgroundColor: 'white',
-              borderTopLeftRadius: 8,
-              borderTopRightRadius: 8,
-              position: 'absolute',
-              bottom: 0,
-              padding: 5,
-              paddingBottom: 10,
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: 20,
             }}>
-            <TextInput
-              onChangeText={text => setValue({...value, name: text})}
-              placeholder="What would you like to do?"
-              style={{
-                marginLeft: 10,
-                fontSize: 15,
-                marginBottom: 5,
-              }}
-              placeholderTextColor="#ddd"
-            />
             <View
               style={{
-                width: '100%',
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: 20,
               }}>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <TouchableOpacity
-                  style={{marginLeft: 13}}
-                  onPress={() => setDate(true)}>
-                  <Ionicons
-                    name="calendar"
-                    style={{fontSize: 17, color: 'gray'}}
-                  />
-                </TouchableOpacity>
-                <Text style={{marginLeft: 10, fontSize: 15, color: '#ddd'}}>
-                  {moment(date).format('DD MMMM YYYY')}
-                </Text>
-              </View>
-              <TouchableOpacity style={{marginRight: 10}} onPress={onSubmit}>
+              <TouchableOpacity
+                style={{marginLeft: 13}}
+                onPress={() => setDate(true)}>
                 <Ionicons
-                  name="send"
-                  style={{fontSize: 20, color: '#ff4c4c'}}
+                  name="calendar"
+                  style={{fontSize: 17, color: 'gray'}}
                 />
               </TouchableOpacity>
+              <Text style={{marginLeft: 10, fontSize: 15, color: '#ddd'}}>
+                {moment(date).format('DD MMMM YYYY')}
+              </Text>
             </View>
+            <TouchableOpacity style={{marginRight: 10}} onPress={onSubmit}>
+              <Ionicons name="send" style={{fontSize: 20, color: '#ff4c4c'}} />
+            </TouchableOpacity>
           </View>
-        </KeyboardStickyView>
+        </View>
       </Modal>
     </>
   );

@@ -166,7 +166,7 @@ const LayoutCheckList = () => {
               alignItems: 'center',
               flexDirection: 'row',
             }}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.openDrawer()}>
               <FontAwesome
                 name="navicon"
                 style={{fontSize: 18, marginHorizontal: 12, color: '#666'}}
