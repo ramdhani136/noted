@@ -37,6 +37,7 @@ const LoginScreen = () => {
   const [value, setValue] = useState({});
   const [isValid, setIsValid] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [login, setLogin] = useState(false);
 
   const validate = () => {
     if (
@@ -51,23 +52,6 @@ const LoginScreen = () => {
     }
   };
 
-  const getUser = async () => {
-    await fetch(`${API_URL}user`).then(res => {
-      res
-        .json()
-        .then(json => {
-          Alert.alert('Success', 'Login Successfuly');
-          navigation.replace('HomeScreen');
-          AsyncStorage.setItem('user', JSON.stringify(json));
-          setLoading(false);
-        })
-        .catch(err => {
-          Alert.alert('Failed', 'Plese check your data!');
-          setLoading(false);
-        });
-    });
-  };
-
   const onSubmit = async () => {
     if (!isValid) {
       const ambil = await fetch(`${API_URL}login`, {
@@ -78,7 +62,13 @@ const LoginScreen = () => {
           username: value.username,
           password: value.password,
         }),
-      });
+      })
+        .then(json => {
+          Alert.alert('Success', 'Login Successfuly');
+        })
+        .catch(err => {
+          Alert.alert('Failed', 'Please check your data!');
+        });
       const jalankan = await getUser();
 
       return jalankan;
@@ -87,22 +77,42 @@ const LoginScreen = () => {
     }
   };
 
+  const getUser = async () => {
+    await fetch(`${API_URL}user`).then(res => {
+      res
+        .json()
+        .then(json => {
+          setLogin(true);
+          AsyncStorage.setItem('user', JSON.stringify(json));
+          setLoading(false);
+        })
+        .catch(err => {
+          setLogin(false);
+          setLoading(false);
+        });
+    });
+  };
+
   useEffect(() => {
     validate();
   }, [value]);
 
   useEffect(() => {
-    const cekUser = async () => {
-      await AsyncStorage.getItem('user').then(value => {
-        if (value) {
-          navigation.navigate('HomeScreen');
-          // setLoading(false);
-        } else {
-          setLoading(false);
-        }
-      });
-    };
-    cekUser();
+    // const cekUser = async () => {
+    getUser();
+    if (login) {
+      navigation.replace('HomeScreen');
+    }
+    // await AsyncStorage.getItem('user').then(value => {
+    //   if (value) {
+    //     navigation.navigate('HomeScreen');
+    //     // setLoading(false);
+    //   } else {
+    //     setLoading(false);
+    //   }
+    // });
+    // };
+    // cekUser();
   });
 
   return (
