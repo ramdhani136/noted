@@ -63,8 +63,12 @@ const LoginScreen = () => {
           password: value.password,
         }),
       })
-        .then(json => {
-          Alert.alert('Success', 'Login Successfuly');
+        .then(res => {
+          if (res.status == 401) {
+            Alert.alert('Failed', 'Please check your data!');
+          } else {
+            Alert.alert('Success', 'Login Successfuly');
+          }
         })
         .catch(err => {
           Alert.alert('Failed', 'Please check your data!');
@@ -131,8 +135,8 @@ const LoginScreen = () => {
           <Image
             style={{
               width: '100%',
-              height: 190,
-              marginTop: 50,
+              height: 200,
+              marginTop: 60,
               resizeMode: 'contain',
               marginBottom: 15,
             }}
