@@ -7,6 +7,7 @@ import {
   ScrollView,
   ActivityIndicator,
   StatusBar,
+  Image,
 } from 'react-native';
 import {FloatingButton, Layout, ModalCreateTask} from '../components/organism';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -77,6 +78,7 @@ const LayoutCheckList = () => {
   }, []);
 
   const updateStatus = (id, newStatus) => {
+    var isStatus;
     if (newStatus === '0') {
       isStatus = '1';
     } else {
@@ -275,21 +277,23 @@ const LayoutCheckList = () => {
               marginHorizontal: '2.5%',
               backgroundColor: 'white',
               borderRadius: 5,
-              borderWidth: 1,
+              borderWidth: filterCompleted(schedules).length > 0 ? 1 : 0,
               borderColor: '#eee',
               height: 'auto',
               marginBottom: 90,
             }}>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                marginTop: 10,
-                marginLeft: 15,
-                color: '#333',
-                paddingBottom: 10,
-              }}>
-              COMPLETED
-            </Text>
+            {filterCompleted(schedules).length > 0 && (
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  marginTop: 10,
+                  marginLeft: 15,
+                  color: '#333',
+                  paddingBottom: 10,
+                }}>
+                COMPLETED
+              </Text>
+            )}
             {filterCompleted(schedules).map((item, id) => (
               <View
                 key={id}
@@ -346,15 +350,47 @@ const LayoutCheckList = () => {
           </View>
           {filterActive(schedules).length < 1 &&
             filterCompleted(schedules).length < 1 && (
-              <Text
+              <View
                 style={{
-                  textAlign: 'center',
-                  marginTop: 40,
-                  color: '#ccc',
-                  fontSize: 14.5,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}>
-                No Task Data
-              </Text>
+                <Image
+                  style={{
+                    width: 150,
+                    height: 180,
+                    resizeMode: 'contain',
+                  }}
+                  source={require('../assets/nodata.png')}
+                />
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                  }}>
+                  You have a free day
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    marginTop: 5,
+                    textAlign: 'center',
+                    color: '#ccc',
+                  }}>
+                  it'a all clear, Relax and recharge
+                </Text>
+              </View>
+              // <Text
+              //   style={{
+              //     textAlign: 'center',
+              //     marginTop: 40,
+              //     color: '#ccc',
+              //     fontSize: 14.5,
+              //   }}>
+              //   No Task Data
+              // </Text>
             )}
         </ScrollView>
       </View>

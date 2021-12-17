@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Image,
 } from 'react-native';
 import Layout from '../components/organism/Layout';
 import CalendarStrip from 'react-native-calendar-strip';
@@ -274,19 +275,64 @@ const HomeScreen = () => {
             }}
           />
           {filterdata(schedules).length < 1 && !isLoading ? (
-            <Text
+            <View
               style={{
-                textAlign: 'center',
+                width: '100%',
+                height: 200,
+                height: '68%',
+                marginTop: -50,
+                marginTop: 120,
                 position: 'absolute',
-                left: 0,
-                right: 0,
-                top: Dimensions.get('window').width / 1.1,
-                color: '#ddd',
-                fontSize: 15,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}>
-              No schedule Data
-            </Text>
-          ) : null}
+              <View
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Image
+                  style={{
+                    width: 150,
+                    height: 180,
+                    resizeMode: 'contain',
+                  }}
+                  source={require('../assets/nodata.png')}
+                />
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                  }}>
+                  You have a free day
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    marginTop: 5,
+                    textAlign: 'center',
+                    color: '#ccc',
+                  }}>
+                  it'a all clear, Relax and recharge
+                </Text>
+              </View>
+            </View>
+          ) : // <Text
+          //   style={{
+          //     textAlign: 'center',
+          //     position: 'absolute',
+          //     left: 0,
+          //     right: 0,
+          //     top: Dimensions.get('window').width / 1.1,
+          //     color: '#ddd',
+          //     fontSize: 15,
+          //   }}>
+          //   No schedule Data
+          // </Text>
+          null}
           <FloatingButton action={handleCreate} />
         </SafeAreaView>
       </>
