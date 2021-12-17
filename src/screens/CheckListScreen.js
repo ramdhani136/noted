@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
-  StatusBar,
   Image,
+  Alert,
 } from 'react-native';
 import {FloatingButton, Layout, ModalCreateTask} from '../components/organism';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -20,6 +20,9 @@ import _ from 'lodash';
 import {useNavigation} from '@react-navigation/native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import {RectButton} from 'react-native-gesture-handler';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Loading = () => {
   return (
@@ -33,6 +36,50 @@ const Loading = () => {
       }}>
       <ActivityIndicator size="large" color="red" />
     </View>
+  );
+};
+
+const renderRightActions = (progress, dragX) => {
+  const trans = dragX.interpolate({
+    inputRange: [0, 50, 100, 101],
+    outputRange: [-20, 0, 0, 1],
+  });
+  return (
+    <RectButton
+      style={{
+        width: '95%',
+        display: 'flex',
+        backgroundColor: '#e57474',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderRadius: 5,
+        flexDirection: 'row',
+        marginHorizontal: '2.5%',
+        marginVertical: 10,
+      }}>
+      <View
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          textAlign: 'center',
+          color: 'white',
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
+        <Text style={{color: 'white'}}> DELETE</Text>
+        <MaterialCommunityIcons
+          name="delete-empty"
+          style={{
+            fontSize: 25,
+            marginLeft: 3,
+            alignItems: 'center',
+            color: 'white',
+          }}
+        />
+      </View>
+    </RectButton>
   );
 };
 
@@ -52,6 +99,7 @@ const LayoutCheckList = () => {
       'DD',
     )}`,
   );
+  const [swipeRef, setSwipeRef] = useState([]);
 
   const [modalActive, setModalActive] = useState(false);
 
@@ -125,6 +173,44 @@ const LayoutCheckList = () => {
     );
 
     setDateTimePickerVisible(false);
+  };
+
+  const handleDelete = id => {
+    Alert.alert('Delete', 'Are you sure?', [
+      {text: 'NO', style: 'cancel'},
+      {text: 'YES', onPress: () => getDelete(id)},
+    ]);
+  };
+
+  const getDelete = id => {
+    axios
+      .delete(`${API_URL}schedule/${id}`)
+      .then(res => {
+        Alert.alert('Deleted', 'Data Success To Delete');
+        getDeleteFiles(id);
+        getSchedules();
+      })
+      .catch(err => {
+        console.log(JSON.stringify(err));
+      });
+  };
+
+  const getDeleteFiles = id => {
+    axios.get(`${API_URL}files/${id}`).then(res => {
+      if (res.data.data.length > 0) {
+        const file = res.data.data;
+        for (let i = 0; i < file.length; i++) {
+          axios
+            .delete(`${API_URL}files/${file[i].id}`)
+            .then(res => {
+              console.log(`${id} berhasil di hapus`);
+            })
+            .catch(err => {
+              console.log(JSON.stringify(err));
+            });
+        }
+      }
+    });
   };
 
   return (
@@ -213,57 +299,68 @@ const LayoutCheckList = () => {
                 height: 'auto',
               }}>
               {filterActive(schedules).map((item, id) => (
-                <View
-                  key={id}
-                  style={{
-                    width: '95%',
-                    height: 50,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    marginVertical: 10,
-                    marginHorizontal: '2.5%',
+                <Swipeable
+                  ref={ref => {
+                    swipeRef[item.id] = ref;
+                  }}
+                  renderRightActions={renderRightActions}
+                  onSwipeableRightOpen={() => {
+                    handleDelete(item.id);
+                    swipeRef[item.id].close();
                   }}>
-                  <CheckBox
-                    value={false}
-                    tintColors={{true: '#ff0000'}}
-                    onCheckColor={'#6F763F'}
-                    onFillColor={'#4DABEC'}
-                    onTintColor={'#F4DCF8'}
-                    animationDuration={0.5}
-                    disabled={false}
-                    onAnimationType={'bounce'}
-                    offAnimationType={'stroke'}
-                    onValueChange={() => updateStatus(item.id, '1')}
-                  />
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate('CreateSchedule', item);
-                    }}
+                  <View
+                    key={id}
                     style={{
+                      width: '95%',
+                      height: 50,
                       display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginVertical: 10,
+                      marginHorizontal: '2.5%',
+                      backgroundColor: 'white',
                     }}>
-                    <Text
+                    <CheckBox
+                      value={false}
+                      tintColors={{true: '#ff0000'}}
+                      onCheckColor={'#6F763F'}
+                      onFillColor={'#4DABEC'}
+                      onTintColor={'#F4DCF8'}
+                      animationDuration={0.5}
+                      disabled={false}
+                      onAnimationType={'bounce'}
+                      offAnimationType={'stroke'}
+                      onValueChange={() => updateStatus(item.id, '1')}
+                    />
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate('CreateSchedule', item);
+                      }}
                       style={{
-                        flex: 1,
-                        marginLeft: 10,
-                        marginTop: 5,
-                        color: '#333',
-                        fontSize: 15,
+                        display: 'flex',
                       }}>
-                      {item.name}
-                    </Text>
-                    <Text
-                      style={{
-                        flex: 1,
-                        marginLeft: 10,
-                        marginTop: -5,
-                        color: '#999',
-                      }}>
-                      {moment(`${item.date} ${item.time}`).format('h:mm A')}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+                      <Text
+                        style={{
+                          flex: 1,
+                          marginLeft: 10,
+                          marginTop: 5,
+                          color: '#333',
+                          fontSize: 15,
+                        }}>
+                        {item.name}
+                      </Text>
+                      <Text
+                        style={{
+                          flex: 1,
+                          marginLeft: 10,
+                          marginTop: -5,
+                          color: '#999',
+                        }}>
+                        {moment(`${item.date} ${item.time}`).format('h:mm A')}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </Swipeable>
               ))}
             </View>
           )}

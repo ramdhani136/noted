@@ -7,10 +7,10 @@ import NetInfo from '@react-native-community/netinfo';
 const Layout = ({Child, doc, btnActive}) => {
   const [isConnected, setConnected] = useState(true);
 
-  const unsubscribe = NetInfo.addEventListener(state => {
-    // // console.log(state.isConnected);
-    // setConnected(state.isConnected);
-  });
+  // const unsubscribe = NetInfo.addEventListener(state => {
+  //   // // console.log(state.isConnected);
+  //   // setConnected(state.isConnected);
+  // });
 
   const checkNetwork = () => {
     NetInfo.fetch().then(state => {
@@ -22,10 +22,18 @@ const Layout = ({Child, doc, btnActive}) => {
 
   useEffect(() => {
     checkNetwork();
-    return () => {
-      unsubscribe();
-    };
+    // return () => {
+    //   unsubscribe();
+    // };
   }, []);
+
+  useEffect(() => {
+    AsyncStorage.getItem('isLogin').then(value => {
+      if (!value) {
+        navigation.replace('LoginScreen');
+      }
+    });
+  });
 
   return (
     <>

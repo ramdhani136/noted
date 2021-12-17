@@ -9,6 +9,7 @@ import {
   HomeScreen,
   LoginScreen,
 } from '../../screens';
+import {DrawerContent} from '.';
 const Drawer = createDrawerNavigator();
 const DrawerMenu = () => {
   const MainStackNavigator = () => {
@@ -41,6 +42,7 @@ const DrawerMenu = () => {
 
   return (
     <Drawer.Navigator
+      drawerContent={props => <DrawerContent {...props} />}
       screenOptions={{
         headerShown: false,
       }}>
