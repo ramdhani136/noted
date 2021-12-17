@@ -68,7 +68,7 @@ const LayoutCheckList = () => {
           setIsLoading(false);
         })
         .catch(err => {
-          throw err;
+          setIsLoading(false);
         });
     });
   };
@@ -379,7 +379,7 @@ const LayoutCheckList = () => {
                     textAlign: 'center',
                     color: '#ccc',
                   }}>
-                  it'a all clear, Relax and recharge
+                  it's all clear, Relax and recharge
                 </Text>
               </View>
               // <Text
