@@ -12,6 +12,7 @@ const BottomMenu = ({btnActive}) => {
   const logOut = () => {
     axios.post(`${API_URL}logout`).then(res => {
       AsyncStorage.removeItem('user');
+      AsyncStorage.removeItem('isLogin');
       navigation.replace('LoginScreen');
     });
   };

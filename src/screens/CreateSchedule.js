@@ -63,6 +63,8 @@ const ViewCreateSchedule = ({doc}) => {
   const [dbFiles, setDBFiles] = useState([]);
   const [idDbImage, setIdDbImage] = useState('');
 
+  const [title, setTitle] = useState('New Task');
+
   const [value, setValue] = useState({
     date: `${moment().format('YYYY')}-${moment().format(
       'MM',
@@ -199,6 +201,7 @@ const ViewCreateSchedule = ({doc}) => {
   useEffect(() => {
     if (doc) {
       setIsUpdate(true);
+      setTitle('View Task');
       setValue(doc);
       if (doc.is_alarm === '1') {
         setAlarmSet(true);
@@ -218,6 +221,7 @@ const ViewCreateSchedule = ({doc}) => {
       setCurrentDay(doc.date);
       getFiles();
     } else {
+      setTitle('New Task');
       AsyncStorage.getItem('user').then(data => {
         const valueJson = JSON.parse(data);
         setValue({...value, id_user: valueJson.id});
@@ -562,7 +566,7 @@ const ViewCreateSchedule = ({doc}) => {
             flex: 1,
             textAlign: 'center',
           }}>
-          New Task
+          {title}
         </Text>
         <TouchableOpacity style={{flex: 1}} onPress={PressCheckIcon}>
           <AntDesign

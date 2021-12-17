@@ -88,6 +88,7 @@ const LoginScreen = () => {
         .then(json => {
           setLogin(true);
           AsyncStorage.setItem('user', JSON.stringify(json));
+          AsyncStorage.setItem('isLogin', JSON.stringify(true));
           setLoading(false);
         })
         .catch(err => {
@@ -102,21 +103,13 @@ const LoginScreen = () => {
   }, [value]);
 
   useEffect(() => {
-    // const cekUser = async () => {
     getUser();
-    if (login) {
-      navigation.replace('HomeScreen');
-    }
-    // await AsyncStorage.getItem('user').then(value => {
-    //   if (value) {
-    //     navigation.navigate('HomeScreen');
-    //     // setLoading(false);
-    //   } else {
-    //     setLoading(false);
-    //   }
-    // });
-    // };
-    // cekUser();
+
+    AsyncStorage.getItem('isLogin').then(value => {
+      if (value) {
+        navigation.replace('HomeScreen');
+      }
+    });
   });
 
   return (
