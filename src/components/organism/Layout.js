@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import {StatusBar, View} from 'react-native';
 import {BottomMenu} from './';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {DrawerMenu} from './';
 
 const Layout = ({Child, doc, btnActive}) => {
   return (

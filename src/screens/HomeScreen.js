@@ -4,23 +4,27 @@ import {
   Dimensions,
   FlatList,
   SafeAreaView,
-  ScrollView,
   Text,
   TouchableOpacity,
   View,
+  Button,
+  Animated,
   Image,
+  Alert,
 } from 'react-native';
 import Layout from '../components/organism/Layout';
 import CalendarStrip from 'react-native-calendar-strip';
 import moment from 'moment';
-
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {FloatingButton} from '../components/organism';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import {API_URL} from '../config';
 import _ from 'lodash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import {RectButton} from 'react-native-gesture-handler';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -127,6 +131,92 @@ const HomeScreen = () => {
   };
 
   const ViewHome = () => {
+    const [swipeRef, setSwipeRef] = useState([]);
+
+    const handleDelete = id => {
+      Alert.alert('Delete', 'Are you sure?', [
+        {text: 'NO', style: 'cancel'},
+        {text: 'YES', onPress: () => getDelete(id)},
+      ]);
+    };
+
+    const getDeleteFiles = id => {
+      axios.get(`${API_URL}files/${id}`).then(res => {
+        if (res.data.data.length > 0) {
+          const file = res.data.data;
+          for (let i = 0; i < file.length; i++) {
+            axios
+              .delete(`${API_URL}files/${file[i].id}`)
+              .then(res => {
+                console.log(`${id} berhasil di hapus`);
+              })
+              .catch(err => {
+                console.log(JSON.stringify(err));
+              });
+          }
+        }
+      });
+    };
+
+    const getDelete = id => {
+      axios
+        .delete(`${API_URL}schedule/${id}`)
+        .then(res => {
+          Alert.alert('Deleted', 'Data Success To Delete');
+          getDeleteFiles(id);
+          getSchedules();
+        })
+        .catch(err => {
+          console.log(JSON.stringify(err));
+        });
+    };
+
+    const renderRightActions = (progress, dragX) => {
+      const trans = dragX.interpolate({
+        inputRange: [0, 50, 100, 101],
+        outputRange: [-20, 0, 0, 1],
+      });
+      return (
+        <RectButton
+          style={{
+            width: '90%',
+            display: 'flex',
+            backgroundColor: '#e57474',
+            marginTop: 1,
+            marginBottom: 17,
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            borderWidth: 1,
+            borderRadius: 5,
+            flexDirection: 'row',
+            marginLeft: '5%',
+            marginRight: '5%',
+          }}>
+          <View
+            style={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              textAlign: 'center',
+              color: 'white',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <Text style={{color: 'white'}}> DELETE</Text>
+            <MaterialCommunityIcons
+              name="delete-empty"
+              style={{
+                fontSize: 25,
+                marginLeft: 3,
+                alignItems: 'center',
+                color: 'white',
+              }}
+            />
+          </View>
+        </RectButton>
+      );
+    };
+
     return (
       <>
         {isLoading && <Loading />}
@@ -205,72 +295,83 @@ const HomeScreen = () => {
             }}
             renderItem={({item}) => {
               return (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('CreateSchedule', item);
+                <Swipeable
+                  ref={ref => {
+                    swipeRef[item.id] = ref;
+                  }}
+                  renderRightActions={renderRightActions}
+                  onSwipeableRightOpen={() => {
+                    handleDelete(item.id);
+                    swipeRef[item.id].close();
                   }}>
-                  <View
-                    style={{
-                      display: 'flex',
-                      width: '93%',
-                      height: 110,
-                      borderWidth: 1,
-                      marginHorizontal: 12,
-                      borderRadius: 5,
-                      marginBottom: 12,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      backgroundColor: 'white',
-                      borderRightWidth: 4,
-                      borderTopColor: '#eee',
-                      borderLeftColor: '#eee',
-                      borderBottomColor: '#eee',
-                      // borderRightColor: '#E2DC00',
-                      borderRightColor:
-                        item.status === '1' ? '#E2DC00' : '#bfbfbf',
-                      shadowColor: '#666',
-                      shadowOffset: {width: 0, height: 2},
-                      shadowOpacity: 0.8,
-                      shadowRadius: 5,
-                      elevation: 1,
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('CreateSchedule', item);
                     }}>
                     <View
                       style={{
                         display: 'flex',
-                        flexDirection: 'row',
+                        width: '93%',
+                        height: 110,
+                        borderWidth: 1,
+                        marginHorizontal: 12,
+                        borderRadius: 5,
+                        marginBottom: 12,
+                        justifyContent: 'center',
                         alignItems: 'center',
+                        backgroundColor: 'white',
+                        borderRightWidth: 4,
+                        borderTopColor: '#eee',
+                        borderLeftColor: '#eee',
+                        borderBottomColor: '#eee',
+                        // borderRightColor: '#E2DC00',
+                        borderRightColor:
+                          item.status === '1' ? '#E2DC00' : '#bfbfbf',
+                        shadowColor: '#666',
+                        shadowOffset: {width: 0, height: 2},
+                        shadowOpacity: 0.8,
+                        shadowRadius: 5,
+                        elevation: 1,
                       }}>
-                      <Text
+                      <View
                         style={{
-                          width: '80%',
-                          fontWeight: 'bold',
-                          fontSize: 16.5,
-                          color: '#555',
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
                         }}>
-                        {item.name}
-                      </Text>
-                      {item.is_alarm === '1' && (
-                        <MaterialIcons
-                          name="alarm-on"
+                        <Text
                           style={{
-                            fontSize: 19,
-                            marginLeft: -20,
-                            color: '#ccc',
-                          }}
-                        />
-                      )}
+                            width: '80%',
+                            fontWeight: 'bold',
+                            fontSize: 16.5,
+                            color: '#555',
+                          }}>
+                          {item.name}
+                        </Text>
+                        {item.is_alarm === '1' && (
+                          <MaterialIcons
+                            name="alarm-on"
+                            style={{
+                              fontSize: 19,
+                              marginLeft: -20,
+                              color: '#ccc',
+                            }}
+                          />
+                        )}
+                      </View>
+                      <Text
+                        style={{width: '80%', color: '#999', fontSize: 13.6}}>
+                        {moment(item.date).format('LL')} -{' '}
+                        {moment(item.date + ' ' + item.time).format('LT')}
+                      </Text>
+                      <Text
+                        style={{width: '80%', color: '#999', fontSize: 13.6}}
+                        numberOfLines={1}>
+                        {item.note}
+                      </Text>
                     </View>
-                    <Text style={{width: '80%', color: '#999', fontSize: 13.6}}>
-                      {moment(item.date).format('LL')} -{' '}
-                      {moment(item.date + ' ' + item.time).format('LT')}
-                    </Text>
-                    <Text
-                      style={{width: '80%', color: '#999', fontSize: 13.6}}
-                      numberOfLines={1}>
-                      {item.note}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
+                  </TouchableOpacity>
+                </Swipeable>
               );
             }}
           />
