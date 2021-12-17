@@ -27,13 +27,13 @@ const Layout = ({Child, doc, btnActive}) => {
     // };
   }, []);
 
-  useEffect(() => {
-    AsyncStorage.getItem('isLogin').then(value => {
-      if (!value) {
-        navigation.replace('LoginScreen');
-      }
-    });
-  });
+  // useEffect(() => {
+  //   AsyncStorage.getItem('isLogin').then(value => {
+  //     if (!value) {
+  //       navigation.replace('LoginScreen');
+  //     }
+  //   });
+  // });
 
   return (
     <>
