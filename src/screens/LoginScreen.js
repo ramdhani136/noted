@@ -15,6 +15,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {API_URL} from '../config';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {inUser} from '../config/redux/slices/UserSlice';
+import {useDispatch} from 'react-redux';
 
 const Loading = () => {
   return (
@@ -32,6 +34,7 @@ const Loading = () => {
 };
 
 const LoginScreen = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [isShow, setIsShow] = useState(true);
   const [value, setValue] = useState({});
@@ -89,6 +92,7 @@ const LoginScreen = () => {
           setLogin(true);
           AsyncStorage.setItem('user', JSON.stringify(json));
           AsyncStorage.setItem('isLogin', JSON.stringify(true));
+          dispatch(inUser(json));
           setLoading(false);
         })
         .catch(err => {

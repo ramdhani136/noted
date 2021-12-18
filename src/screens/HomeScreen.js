@@ -25,8 +25,11 @@ import _ from 'lodash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {RectButton} from 'react-native-gesture-handler';
+import {useDispatch} from 'react-redux';
+import {getCount} from '../config/redux/slices/CountSlice';
 
 const HomeScreen = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [markedDate, setMarkedDate] = useState([]);
   const [schedules, setSchedules] = useState([]);
@@ -45,6 +48,7 @@ const HomeScreen = () => {
         .get(`${API_URL}schedule/${valueJson.id}`)
         .then(res => {
           setSchedules(res.data.data);
+          dispatch(getCount({schedule: res.data.data.length}));
           setIsLoading(false);
         })
         .catch(err => {

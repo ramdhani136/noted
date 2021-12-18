@@ -9,14 +9,6 @@ import axios from 'axios';
 import {API_URL} from '../../config';
 
 const BottomMenu = ({btnActive}) => {
-  const logOut = () => {
-    axios.post(`${API_URL}logout`).then(res => {
-      AsyncStorage.removeItem('user');
-      AsyncStorage.removeItem('isLogin');
-      navigation.replace('LoginScreen');
-    });
-  };
-
   const navigation = useNavigation();
   return (
     <View
@@ -78,7 +70,6 @@ const BottomMenu = ({btnActive}) => {
         {/* <Text style={{color: '#999'}}>Schedules</Text> */}
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={logOut}
         style={{
           display: 'flex',
           alignItems: 'center',

@@ -23,6 +23,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {RectButton} from 'react-native-gesture-handler';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useDispatch} from 'react-redux';
+import {getCount} from '../config/redux/slices/CountSlice';
 
 const Loading = () => {
   return (
@@ -84,6 +86,7 @@ const renderRightActions = (progress, dragX) => {
 };
 
 const LayoutCheckList = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [userId, setUserId] = useState('');
   const [schedules, setSchedules] = useState([]);
@@ -113,6 +116,7 @@ const LayoutCheckList = () => {
         .get(`${API_URL}schedule/${valueJson.id}`)
         .then(res => {
           setSchedules(res.data.data);
+          dispatch(getCount({schedule: res.data.data.length}));
           setIsLoading(false);
         })
         .catch(err => {
@@ -300,6 +304,7 @@ const LayoutCheckList = () => {
               }}>
               {filterActive(schedules).map((item, id) => (
                 <Swipeable
+                  key={id}
                   ref={ref => {
                     swipeRef[item.id] = ref;
                   }}

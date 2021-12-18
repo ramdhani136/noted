@@ -1,53 +1,36 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
-import {
-  Avatar,
-  Title,
-  Caption,
-  Paragraph,
-  Drawer,
-  Text,
-  TouchableRipple,
-  Switch,
-} from 'react-native-paper';
+import {Avatar, Title, Caption, Paragraph, Drawer} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {API_URL, BASE_URL} from '../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import {selectUser} from '../../config/redux/slices/UserSlice';
+import {selectCount} from '../../config/redux/slices/CountSlice';
+import {CommonActions} from '@react-navigation/native';
 
 const DrawerContent = props => {
-  const [user, setUser] = useState({});
-  const [countSchedule, setCountSchedule] = useState('');
+  // const [user, setUser] = useState({});
   const navigation = useNavigation();
+  const user = useSelector(selectUser);
+  const countSchedule = useSelector(selectCount);
   const logOut = () => {
     axios.post(`${API_URL}logout`).then(res => {
       AsyncStorage.removeItem('user');
       AsyncStorage.removeItem('isLogin');
       navigation.navigate('LoginScreen');
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 1,
+          routes: [{name: 'LoginScreen'}],
+        }),
+      );
     });
   };
-
-  const getSchedules = id => {
-    axios
-      .get(`${API_URL}schedule/${id}`)
-      .then(res => {
-        setCountSchedule(res.data.data.length);
-      })
-      .catch(err => {
-        throw err;
-      });
-  };
-
-  useEffect(() => {
-    AsyncStorage.getItem('user').then(value => {
-      const datauser = JSON.parse(value);
-      setUser(datauser);
-      getSchedules(datauser.id);
-    });
-  }, []);
 
   return (
     <View style={{flex: 1}}>
@@ -55,27 +38,30 @@ const DrawerContent = props => {
         <View style={styles.drawerContent}>
           <View style={styles.userInfoSection}>
             <View style={{flexDirection: 'row', marginTop: 15}}>
-              {user && (
+              {user.user && (
                 <Avatar.Image
+                  style={{borderWidth: 0}}
                   source={{
                     uri: user.uri
-                      ? 'https://www.dailysia.com/wp-content/uploads/2020/04/gong-yoo-1.jpg'
-                      : `${BASE_URL}/storage/avatar.png`,
+                      ? `${BASE_URL}/storage/${user.user.uri}`
+                      : `${BASE_URL}/storage/profile.jpg`,
                   }}
                   size={50}
                 />
               )}
               <View style={{marginLeft: 15, flexDirection: 'column'}}>
                 <Title style={[styles.title, {marginTop: -1}]}>
-                  {user && user.name}
+                  {user.user && user.user.name}
                 </Title>
-                <Caption style={styles.caption}>{user && user.email}</Caption>
+                <Caption style={styles.caption}>
+                  {user.user && user.user.email}
+                </Caption>
               </View>
             </View>
             <View style={styles.row}>
               <View style={styles.section}>
                 <Paragraph style={[styles.paragraph, styles.caption]}>
-                  {user && countSchedule}
+                  {countSchedule.count.schedule && countSchedule.count.schedule}
                 </Paragraph>
                 <Caption style={styles.caption}>Schedules</Caption>
               </View>
@@ -87,6 +73,7 @@ const DrawerContent = props => {
               </View> */}
             </View>
           </View>
+
           <Drawer.Section style={styles.drawerSection}>
             <DrawerItem
               icon={({color, size}) => (
