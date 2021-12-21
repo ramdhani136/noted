@@ -238,7 +238,11 @@ const ProfileView = () => {
               user.user
                 ? user.user.image
                   ? {uri: value.image}
+                  : image.uri !== undefined
+                  ? {uri: image.uri}
                   : profileImg
+                : image.uri !== undefined
+                ? {uri: image.uri}
                 : profileImg
             }
             size={70}
