@@ -54,6 +54,7 @@ const ViewCreateSchedule = ({doc}) => {
   const [upFiles, setUpFiles] = useState([]);
   const [typeImage, setTypeImage] = useState('');
   const [isDateTimePickerVisible, setDateTimePickerVisible] = useState(false);
+  const [isDateAlarm, setIsDateAlarm] = useState(false);
   const [whatTime, setWhatTime] = useState('');
   const [sourcePdf, setSourcePdf] = useState('');
   const [btnSubmitActive, setBtnSubmitActive] = useState(false);
@@ -62,6 +63,7 @@ const ViewCreateSchedule = ({doc}) => {
   const [isUpdate, setIsUpdate] = useState(false);
   const [dbFiles, setDBFiles] = useState([]);
   const [idDbImage, setIdDbImage] = useState('');
+  const [maxDate, setMaxDate] = useState('');
 
   const [title, setTitle] = useState('New Task');
 
@@ -92,10 +94,15 @@ const ViewCreateSchedule = ({doc}) => {
   });
   const [currentDay, setCurrentDay] = useState(moment().format());
   const showDateTimePicker = modeTime => {
-    setDateTimePickerVisible(true);
+    if (modeTime === 'taskTime') {
+      setDateTimePickerVisible(true);
+    } else {
+      setIsDateAlarm(true);
+    }
     setWhatTime(modeTime);
   };
   const hideDateTimePicker = () => setDateTimePickerVisible(false);
+  const hideDateAlarm = () => setIsDateAlarm(false);
 
   const handleDatePicked = date => {
     const selectedDatePicked = currentDay;
@@ -103,9 +110,11 @@ const ViewCreateSchedule = ({doc}) => {
     const minute = moment(date).minute();
     const newModifiedDay = moment(selectedDatePicked).hour(hour).minute(minute);
     hideDateTimePicker();
+    hideDateAlarm();
     if (whatTime === 'taskTime') {
       setTaskTime(newModifiedDay);
       setAlarmTime(newModifiedDay);
+      setMaxDate(date);
       setValue({
         ...value,
         time: moment(newModifiedDay).format('HH:mm:ss'),
@@ -537,6 +546,18 @@ const ViewCreateSchedule = ({doc}) => {
         date={new Date()}
         isDarkModeEnabled
       />
+
+      <DateTimePicker
+        isVisible={isDateAlarm}
+        onConfirm={handleDatePicked}
+        onCancel={hideDateAlarm}
+        mode="datetime"
+        date={new Date()}
+        isDarkModeEnabled
+        minimumDate={new Date()}
+        maximumDate={new Date(currentDay)}
+      />
+
       <View
         style={{
           display: 'flex',
