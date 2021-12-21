@@ -8,8 +8,10 @@ import {
   CreateSchedule,
   HomeScreen,
   LoginScreen,
+  ProfileScreen,
 } from '../../screens';
 import {DrawerContent} from '.';
+
 const Drawer = createDrawerNavigator();
 const DrawerMenu = () => {
   const MainStackNavigator = () => {
@@ -36,6 +38,11 @@ const DrawerMenu = () => {
         <Stack.Screen
           name="CheckListScreen"
           component={CheckListScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ProfileScreen"
+          component={ProfileScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

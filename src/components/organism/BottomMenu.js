@@ -70,6 +70,7 @@ const BottomMenu = ({btnActive}) => {
         {/* <Text style={{color: '#999'}}>Schedules</Text> */}
       </TouchableOpacity>
       <TouchableOpacity
+        onPress={() => navigation.navigate('ProfileScreen')}
         style={{
           display: 'flex',
           alignItems: 'center',

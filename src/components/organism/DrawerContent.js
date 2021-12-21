@@ -12,6 +12,7 @@ import {useSelector} from 'react-redux';
 import {selectUser} from '../../config/redux/slices/UserSlice';
 import {selectCount} from '../../config/redux/slices/CountSlice';
 import {CommonActions} from '@react-navigation/native';
+const profileImg = require('../../assets/profile.jpg');
 
 const DrawerContent = props => {
   // const [user, setUser] = useState({});
@@ -41,11 +42,16 @@ const DrawerContent = props => {
               {user.user && (
                 <Avatar.Image
                   style={{borderWidth: 0}}
-                  source={{
-                    uri: user.uri
-                      ? `${BASE_URL}/storage/${user.user.uri}`
-                      : `${BASE_URL}/storage/profile.jpg`,
-                  }}
+                  // source={{
+                  //   uri: user.uri
+                  //     ? `${BASE_URL}/storage/${user.user.uri}`
+                  //     : `${BASE_URL}/storage/profile.jpg`,
+                  // }}
+                  source={
+                    user.user.image
+                      ? {uri: `${BASE_URL}/storage/${user.user.image}`}
+                      : profileImg
+                  }
                   size={50}
                 />
               )}
@@ -54,7 +60,7 @@ const DrawerContent = props => {
                   {user.user && user.user.name}
                 </Title>
                 <Caption style={styles.caption}>
-                  {user.user && user.user.email}
+                  {user.user && `@${user.user.username}`}
                 </Caption>
               </View>
             </View>
@@ -105,7 +111,7 @@ const DrawerContent = props => {
                 <Ionicons name="settings-outline" size={size} color={color} />
               )}
               label="Settings"
-              onPress={logOut}
+              onPress={() => navigation.navigate('ProfileScreen')}
             />
           </Drawer.Section>
         </View>

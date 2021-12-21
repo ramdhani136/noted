@@ -3,9 +3,14 @@ import {StatusBar, Text, View} from 'react-native';
 import {BottomMenu} from './';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
+import axios from 'axios';
+import {API_URL} from '../../config';
+import {useDispatch} from 'react-redux';
+import {inUser} from '../../config/redux/slices/UserSlice';
 
 const Layout = ({Child, doc, btnActive}) => {
   const [isConnected, setConnected] = useState(true);
+  const dispatch = useDispatch();
 
   // const unsubscribe = NetInfo.addEventListener(state => {
   //   // // console.log(state.isConnected);
@@ -25,15 +30,11 @@ const Layout = ({Child, doc, btnActive}) => {
     // return () => {
     //   unsubscribe();
     // };
+    axios.get(`${API_URL}user`).then(res => {
+      dispatch(inUser(res.data));
+      AsyncStorage.setItem('user', JSON.stringify(res.data));
+    });
   }, []);
-
-  // useEffect(() => {
-  //   AsyncStorage.getItem('isLogin').then(value => {
-  //     if (!value) {
-  //       navigation.replace('LoginScreen');
-  //     }
-  //   });
-  // });
 
   return (
     <>
