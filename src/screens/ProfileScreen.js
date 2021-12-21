@@ -253,7 +253,7 @@ const ProfileView = () => {
             {user.user ? user.user.name : valueLocal.name}
           </Text>
           <Text style={{color: 'white', fontStyle: 'italic'}}>
-            {`@${user.user ? user.user.name : valueLocal.username}`}
+            {`@${user.user ? user.user.username : valueLocal.username}`}
           </Text>
         </View>
       </View>
