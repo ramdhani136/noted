@@ -63,7 +63,6 @@ const ViewCreateSchedule = ({doc}) => {
   const [isUpdate, setIsUpdate] = useState(false);
   const [dbFiles, setDBFiles] = useState([]);
   const [idDbImage, setIdDbImage] = useState('');
-  const [maxDate, setMaxDate] = useState('');
 
   const [title, setTitle] = useState('New Task');
 
@@ -114,7 +113,6 @@ const ViewCreateSchedule = ({doc}) => {
     if (whatTime === 'taskTime') {
       setTaskTime(newModifiedDay);
       setAlarmTime(newModifiedDay);
-      setMaxDate(date);
       setValue({
         ...value,
         time: moment(newModifiedDay).format('HH:mm:ss'),
@@ -555,7 +553,7 @@ const ViewCreateSchedule = ({doc}) => {
         date={new Date()}
         isDarkModeEnabled
         minimumDate={new Date()}
-        maximumDate={new Date(currentDay)}
+        maximumDate={new Date(value.date)}
       />
 
       <View
