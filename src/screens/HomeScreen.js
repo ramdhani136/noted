@@ -27,6 +27,7 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {RectButton} from 'react-native-gesture-handler';
 import {useDispatch} from 'react-redux';
 import {getCount} from '../config/redux/slices/CountSlice';
+import PushNotification from 'react-native-push-notification';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();

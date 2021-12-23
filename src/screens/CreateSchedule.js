@@ -79,6 +79,7 @@ const ViewCreateSchedule = ({doc}) => {
     status: '1',
   });
 
+  const [AlarmCounter, setAlarmCounter] = useState(new Date(value.date));
   const handleAlarmSet = () => {
     setAlarmSet(!isAlarmSet);
     setValue({...value, is_alarm: `${isAlarmSet ? '0' : '1'}`});
@@ -124,6 +125,7 @@ const ViewCreateSchedule = ({doc}) => {
         ...value,
         time_alarm: moment(newModifiedDay).format('HH:mm:ss'),
       });
+      setAlarmCounter(date);
     }
   };
 
@@ -1244,6 +1246,7 @@ const ViewCreateSchedule = ({doc}) => {
           </TouchableOpacity>
         ) : null}
       </ScrollView>
+      {console.log(AlarmCounter)}
     </View>
   );
 };
