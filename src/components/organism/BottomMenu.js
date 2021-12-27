@@ -13,7 +13,7 @@ const BottomMenu = ({btnActive}) => {
   return (
     <View
       style={{
-        height: 55,
+        height: 40,
         alignItems: 'center',
         display: 'flex',
         justifyContent: 'space-around',

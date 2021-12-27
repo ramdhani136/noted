@@ -605,9 +605,8 @@ const ViewCreateSchedule = ({doc}) => {
       <ScrollView>
         <CalendarList
           style={{
-            width: 360,
+            width: '100%',
             height: 350,
-            backgroundColor: '#fffafa',
           }}
           // monthFormat="yyyy MMMM"
           // markingType="custom"
@@ -636,7 +635,7 @@ const ViewCreateSchedule = ({doc}) => {
           // Enable paging on horizontal, default = false
           pagingEnabled={true}
           verticalScroll={false}
-          calendarWidth={360}
+          calendarWidth={Dimensions.get('window').width}
           markedDates={selectedDay}
 
           // Set custom calendarWidth.

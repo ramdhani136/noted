@@ -73,6 +73,8 @@ const LoginScreen = () => {
             Alert.alert('Failed', 'Please check your data!');
           } else {
             Alert.alert('Success', 'Login Successfuly');
+            // navigation.navigate('Home');
+            // navigation.replace('HomeScreen');
           }
         })
         .catch(err => {
@@ -114,6 +116,7 @@ const LoginScreen = () => {
 
     AsyncStorage.getItem('isLogin').then(value => {
       if (value) {
+        navigation.navigate('Home');
         navigation.replace('HomeScreen');
       }
     });

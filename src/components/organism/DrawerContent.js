@@ -8,30 +8,55 @@ import {API_URL, BASE_URL} from '../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
-import {selectUser} from '../../config/redux/slices/UserSlice';
+import {useSelector, useDispatch} from 'react-redux';
+import {inUser, selectUser} from '../../config/redux/slices/UserSlice';
 import {selectCount} from '../../config/redux/slices/CountSlice';
 import {CommonActions} from '@react-navigation/native';
 const profileImg = require('../../assets/profile.jpg');
 
 const DrawerContent = props => {
-  // const [user, setUser] = useState({});
+  const [valueLocal, setValueLocal] = useState({});
   const navigation = useNavigation();
   const user = useSelector(selectUser);
   const countSchedule = useSelector(selectCount);
+  const dispatch = useDispatch();
   const logOut = () => {
     axios.post(`${API_URL}logout`).then(res => {
       AsyncStorage.removeItem('user');
       AsyncStorage.removeItem('isLogin');
-      navigation.navigate('LoginScreen');
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 1,
-          routes: [{name: 'LoginScreen'}],
-        }),
-      );
+      dispatch(inUser({}));
+
+      const ToDrawer = () => {
+        navigation.navigate('login');
+      };
+
+      const ToLogin = () => {
+        navigation.navigate('LoginScreen');
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'login'}],
+          }),
+        );
+      };
+
+      const AfterLogout = async () => {
+        const drawer = await ToDrawer();
+        ToLogin(drawer);
+      };
+
+      AfterLogout();
     });
   };
+
+  useEffect(() => {
+    if (!user.user) {
+      AsyncStorage.getItem('user').then(value => {
+        const data = JSON.parse(value);
+        setValueLocal({name: data.name, username: data.username});
+      });
+    }
+  }, []);
 
   return (
     <View style={{flex: 1}}>
@@ -39,28 +64,29 @@ const DrawerContent = props => {
         <View style={styles.drawerContent}>
           <View style={styles.userInfoSection}>
             <View style={{flexDirection: 'row', marginTop: 15}}>
-              {user.user && (
-                <Avatar.Image
-                  style={{borderWidth: 0}}
-                  // source={{
-                  //   uri: user.uri
-                  //     ? `${BASE_URL}/storage/${user.user.uri}`
-                  //     : `${BASE_URL}/storage/profile.jpg`,
-                  // }}
-                  source={
-                    user.user.image
-                      ? {uri: `${BASE_URL}/storage/${user.user.image}`}
-                      : profileImg
-                  }
-                  size={50}
-                />
-              )}
+              <Avatar.Image
+                style={{borderWidth: 0}}
+                // source={{
+                //   uri: user.uri
+                //     ? `${BASE_URL}/storage/${user.user.uri}`
+                //     : `${BASE_URL}/storage/profile.jpg`,
+                // }}
+                source={
+                  user.user
+                    ? {uri: `${BASE_URL}/storage/${user.user.image}`}
+                    : profileImg
+                }
+                size={50}
+              />
+
               <View style={{marginLeft: 15, flexDirection: 'column'}}>
                 <Title style={[styles.title, {marginTop: -1}]}>
-                  {user.user && user.user.name}
+                  {user.user ? user.user.name : valueLocal.name}
                 </Title>
                 <Caption style={styles.caption}>
-                  {user.user && `@${user.user.username}`}
+                  {user.user
+                    ? `@${user.user.username}`
+                    : `@${valueLocal.username}`}
                 </Caption>
               </View>
             </View>

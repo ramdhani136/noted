@@ -21,15 +21,17 @@ import {FloatingButton} from '../components/organism';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import {API_URL} from '../config';
-import _ from 'lodash';
+import _, {first} from 'lodash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {RectButton} from 'react-native-gesture-handler';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {getCount} from '../config/redux/slices/CountSlice';
 import PushNotification from 'react-native-push-notification';
+import {selectUser} from '../config/redux/slices/UserSlice';
 
 const HomeScreen = () => {
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [markedDate, setMarkedDate] = useState([]);
@@ -61,6 +63,20 @@ const HomeScreen = () => {
 
   useEffect(() => {
     getSchedules();
+    // const Check = () => {
+    //   AsyncStorage.getItem('isLogin').then(value => {
+    //     if (value) {
+    //       // navigation.navigate('Home');
+    //       // navigation.replace('HomeScreen');
+    //       console.log(value);
+    //     }
+    //   });
+    // };
+    // const run = async () => {
+    //   const First = await getSchedules();
+    //   Check(first);
+    // };
+    // run();
   }, []);
 
   // useEffect(() => {
