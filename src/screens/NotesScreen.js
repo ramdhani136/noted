@@ -92,6 +92,7 @@ const ViewNotes = () => {
   const [swipeRef, setSwipeRef] = useState([]);
   const [value, setValue] = useState('');
   const [isActive, setIsActive] = useState(false);
+  const [selectItem, setSelectItem] = useState({});
 
   const getNotes = () => {
     axios
@@ -149,7 +150,12 @@ const ViewNotes = () => {
 
   return (
     <>
-      <CreateNote isActive={isActive} setIsActive={setIsActive} />
+      <CreateNote
+        isActive={isActive}
+        setIsActive={setIsActive}
+        selectItem={selectItem}
+        setSelectItem={setSelectItem}
+      />
       <View
         style={{
           width: '100%',
@@ -268,10 +274,10 @@ const ViewNotes = () => {
                   swipeRef[item.id].close();
                 }}>
                 <TouchableOpacity
-                //   onPress={() => {
-                //     navigation.navigate('CreateSchedule', item);
-                //   }}
-                >
+                  onPress={() => {
+                    setSelectItem(item);
+                    setIsActive(true);
+                  }}>
                   <View
                     style={{
                       display: 'flex',

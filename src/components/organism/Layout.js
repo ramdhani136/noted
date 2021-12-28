@@ -8,7 +8,7 @@ import {API_URL} from '../../config';
 import {useDispatch} from 'react-redux';
 import {inUser} from '../../config/redux/slices/UserSlice';
 
-const Layout = ({Child, doc, btnActive}) => {
+const Layout = ({Child, doc, btnActive, data}) => {
   const [isConnected, setConnected] = useState(true);
   const dispatch = useDispatch();
 
@@ -61,7 +61,7 @@ const Layout = ({Child, doc, btnActive}) => {
         )}
         {/* {console.log(isConnected)} */}
         <View style={{flex: 1}}>
-          <Child doc={doc} />
+          <Child doc={doc} data={data} />
         </View>
         <BottomMenu btnActive={btnActive}></BottomMenu>
       </View>
