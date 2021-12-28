@@ -4,3 +4,4 @@ export {default as CheckListScreen} from './CheckListScreen';
 export {default as LoginScreen} from './LoginScreen';
 export {default as ProfileScreen} from './ProfileScreen';
 export {default as NotesScreen} from './NotesScreen';
+export {default as CreateNote} from './CreateNote';
