@@ -9,6 +9,7 @@ import {
   CreateSchedule,
   HomeScreen,
   LoginScreen,
+  NotesScreen,
   ProfileScreen,
 } from '../../screens';
 import {DrawerContent} from '.';
@@ -47,6 +48,11 @@ const DrawerMenu = () => {
           component={ProfileScreen}
           options={{headerShown: false}}
         />
+        <Stack.Screen
+          name="NotesScreen"
+          component={NotesScreen}
+          options={{headerShown: false}}
+        />
       </Stack.Navigator>
     );
   };
@@ -80,6 +86,11 @@ const DrawerMenu = () => {
         <Stack.Screen
           name="ProfileScreen"
           component={ProfileScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="NotesScreen"
+          component={NotesScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

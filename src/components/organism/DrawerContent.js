@@ -3,6 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import {Avatar, Title, Caption, Paragraph, Drawer} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {API_URL, BASE_URL} from '../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -127,10 +128,18 @@ const DrawerContent = props => {
             />
             <DrawerItem
               icon={({color, size}) => (
-                <Icon name="note-outline" size={size} color={color} />
+                // <Icon name="note-outline" size={size} color={color} />
+                <MaterialIcons name="date-range" size={size} color={color} />
               )}
               label="Schedules"
               onPress={() => navigation.navigate('HomeScreen')}
+            />
+            <DrawerItem
+              icon={({color, size}) => (
+                <Icon name="note-outline" size={size} color={color} />
+              )}
+              label="Notes"
+              onPress={() => navigation.navigate('NotesScreen')}
             />
             <DrawerItem
               icon={({color, size}) => (
