@@ -10,6 +10,8 @@ import {
   ActivityIndicator,
   Alert,
   ScrollView,
+  Keyboard,
+  KeyboardEvent,
 } from 'react-native';
 import {Layout} from '../components/organism';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -35,6 +37,7 @@ const Loading = () => {
 
 const ViewCreatNote = ({data}) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [idnote, setId] = useState(null);
   const navigation = useNavigation();
   const [valueDefault, setValueDefault] = useState({});
@@ -46,6 +49,14 @@ const ViewCreatNote = ({data}) => {
   });
   const [isUpdate, setIsUpdate] = useState(false);
   const [title, setTitle] = useState('Create Note');
+
+  const onKeyboardDidShow = KeyboardEvent => {
+    setKeyboardHeight(KeyboardEvent.endCoordinates.height);
+  };
+
+  const onKeyboardDidHide = () => {
+    setKeyboardHeight(0);
+  };
 
   const onSubmit = () => {
     setIsLoading(true);
@@ -123,6 +134,12 @@ const ViewCreatNote = ({data}) => {
       setIsUpdate(false);
       setTitle('Create Note');
     }
+    Keyboard.addListener('keyboardDidShow', onKeyboardDidShow);
+    Keyboard.addListener('keyboardDidHide', onKeyboardDidHide);
+    return () => {
+      // Keyboard.removeListener('keyboardDidShow', onKeyboardDidShow);
+      // Keyboard.removeListener('keyboardDidHide', onKeyboardDidHide);
+    };
   }, []);
 
   return (
@@ -202,7 +219,7 @@ const ViewCreatNote = ({data}) => {
               onChangeText={text => setValue({...value, note: text})}
               value={value.note}
               multiline={true}
-              numberOfLines={22}
+              numberOfLines={keyboardHeight > 0 ? 10 : 22}
               placeholder="Note"
               style={{
                 //   borderBottomWidth: 1,

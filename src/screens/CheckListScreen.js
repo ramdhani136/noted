@@ -8,6 +8,8 @@ import {
   ActivityIndicator,
   Image,
   Alert,
+  Keyboard,
+  KeyboardEvent,
 } from 'react-native';
 import {FloatingButton, Layout, ModalCreateTask} from '../components/organism';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -125,8 +127,20 @@ const LayoutCheckList = () => {
     });
   };
 
+  const onKeyboardDidShow = KeyboardEvent => {
+    // setKeyboardHeight(KeyboardEvent.endCoordinates.height);
+    // console.log('open');
+  };
+
+  const onKeyboardDidHide = () => {
+    // setKeyboardHeight(0);
+    setModalActive(false);
+  };
+
   useEffect(() => {
     getSchedules();
+    Keyboard.addListener('keyboardDidShow', onKeyboardDidShow);
+    Keyboard.addListener('keyboardDidHide', onKeyboardDidHide);
   }, []);
 
   const updateStatus = (id, newStatus) => {
