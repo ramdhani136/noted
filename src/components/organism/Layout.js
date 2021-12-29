@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, memo} from 'react';
 import {StatusBar, Text, View} from 'react-native';
 import {BottomMenu} from './';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -69,4 +69,4 @@ const Layout = ({Child, doc, btnActive, data}) => {
   );
 };
 
-export default Layout;
+export default memo(Layout);

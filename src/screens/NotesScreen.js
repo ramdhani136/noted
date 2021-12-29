@@ -155,6 +155,7 @@ const ViewNotes = () => {
         setIsActive={setIsActive}
         selectItem={selectItem}
         setSelectItem={setSelectItem}
+        getNotes={getNotes}
       />
       <View
         style={{

@@ -7,25 +7,111 @@ import {
   TouchableOpacity,
   TextInput,
   SafeAreaView,
+  ActivityIndicator,
+  Alert,
+  ScrollView,
 } from 'react-native';
 import {Layout} from '../components/organism';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
+import axios from 'axios';
+import {API_URL} from '../config';
+
+const Loading = () => {
+  return (
+    <View
+      style={{
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <ActivityIndicator size="large" color="red" />
+    </View>
+  );
+};
 
 const ViewCreatNote = ({data}) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [idnote, setId] = useState(null);
   const navigation = useNavigation();
+  const [valueDefault, setValueDefault] = useState({});
   const [value, setValue] = useState({
     date: `${moment().format('YYYY')}-${moment().format(
       'MM',
     )}-${moment().format('DD')} ${moment().format('HH:mm:ss')}`,
+    id_user: 1,
   });
   const [isUpdate, setIsUpdate] = useState(false);
   const [title, setTitle] = useState('Create Note');
 
+  const onSubmit = () => {
+    setIsLoading(true);
+    if (
+      value.name === '' ||
+      value.name === null ||
+      value.name === undefined ||
+      value.note === '' ||
+      value.note === null ||
+      value.note === undefined
+    ) {
+      Alert.alert('Error', 'Check your data!');
+      setIsLoading(false);
+    } else {
+      if (!isUpdate) {
+        axios
+          .post(`${API_URL}notes`, value)
+          .then(res => {
+            data.getNotes();
+            data.setIsActive(false);
+            data.setSelectItem({});
+            setIsLoading(false);
+          })
+          .catch(err => {
+            console.log(JSON.stringify(err));
+            setIsLoading(false);
+            Alert.alert('Error', 'Check your data!');
+          });
+      } else {
+        getUpdate();
+      }
+    }
+  };
+
+  const getUpdate = () => {
+    if (JSON.stringify(value) !== JSON.stringify(valueDefault)) {
+      axios
+        .put(`${API_URL}notes/${idnote}`, value)
+        .then(res => {
+          data.getNotes();
+          data.setIsActive(false);
+          data.setSelectItem({});
+          setIsLoading(false);
+        })
+        .catch(err => {
+          console.log(JSON.stringify(err));
+          setIsLoading(false);
+          Alert.alert('Error', 'Check your data!');
+        });
+    } else {
+      data.setIsActive(false);
+      data.setSelectItem({});
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (data.selectItem.name !== undefined) {
+      setId(data.selectItem.id);
       setValue({
+        ...value,
+        name: data.selectItem.name,
+        date: data.selectItem.date,
+        note: data.selectItem.note,
+      });
+      setValueDefault({
         ...value,
         name: data.selectItem.name,
         date: data.selectItem.date,
@@ -41,13 +127,13 @@ const ViewCreatNote = ({data}) => {
 
   return (
     <>
+      {isLoading && <Loading />}
       <SafeAreaView
         style={{
-          width: Dimensions.get('window').width,
-          height: Dimensions.get('window').height,
+          width: '100%',
+          height: '100%',
           backgroundColor: '#fffafa',
         }}>
-        {console.log(isUpdate)}
         <View
           style={{
             display: 'flex',
@@ -82,10 +168,7 @@ const ViewCreatNote = ({data}) => {
             }}>
             {title}
           </Text>
-          <TouchableOpacity
-            style={{flex: 1}}
-            //    onPress={PressCheckIcon}
-          >
+          <TouchableOpacity style={{flex: 1}} onPress={onSubmit}>
             <AntDesign
               name="check"
               style={{
@@ -114,27 +197,34 @@ const ViewCreatNote = ({data}) => {
               fontWeight: 'bold',
             }}
           />
-          <TextInput
-            onChangeText={text => setValue({...value, note: text})}
-            value={value.note}
-            multiline={true}
-            numberOfLines={23}
-            placeholder="Note"
-            style={{
-              //   borderBottomWidth: 1,
-              //   borderColor: '#ddd',
-              fontSize: 16,
-              textAlignVertical: 'top',
-            }}
-          />
+          <ScrollView style={{height: '81%'}}>
+            <TextInput
+              onChangeText={text => setValue({...value, note: text})}
+              value={value.note}
+              multiline={true}
+              numberOfLines={22}
+              placeholder="Note"
+              style={{
+                //   borderBottomWidth: 1,
+                //   borderColor: '#ddd',
+                fontSize: 16,
+                textAlignVertical: 'top',
+              }}
+            />
+          </ScrollView>
         </View>
-        {console.log(value)}
       </SafeAreaView>
     </>
   );
 };
 
-const CreateNote = ({isActive, setIsActive, selectItem, setSelectItem}) => {
+const CreateNote = ({
+  isActive,
+  setIsActive,
+  selectItem,
+  setSelectItem,
+  getNotes,
+}) => {
   return (
     <Modal
       animationType="slide"
@@ -150,6 +240,7 @@ const CreateNote = ({isActive, setIsActive, selectItem, setSelectItem}) => {
           setIsActive: setIsActive,
           selectItem: selectItem,
           setSelectItem: setSelectItem,
+          getNotes: getNotes,
         }}
       />
     </Modal>

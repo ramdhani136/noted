@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, memo} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import {Avatar, Title, Caption, Paragraph, Drawer} from 'react-native-paper';
@@ -164,7 +164,7 @@ const DrawerContent = props => {
   );
 };
 
-export default DrawerContent;
+export default memo(DrawerContent);
 
 const styles = StyleSheet.create({
   drawerContent: {
