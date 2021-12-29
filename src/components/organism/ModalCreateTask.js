@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -115,61 +117,69 @@ const ModalCreateTask = ({
             backgroundColor: 'black',
             opacity: 0.2,
           }}></TouchableOpacity>
-
-        <View
-          style={{
-            width: '100%',
-            height: 90,
-            backgroundColor: 'white',
-            borderTopLeftRadius: 8,
-            borderTopRightRadius: 8,
-            position: 'absolute',
-            bottom: 0,
-            padding: 5,
-            paddingBottom: 10,
-          }}>
-          <TextInput
-            onChangeText={text => setValue({...value, name: text})}
-            placeholder="What would you like to do?"
-            style={{
-              marginLeft: 10,
-              fontSize: 15,
-              marginBottom: 5,
-            }}
-            placeholderTextColor="#ddd"
-          />
+        <KeyboardAvoidingView
+          keyboardVerticalOffset={Platform.OS === 'android' ? 0 : null}
+          behavior="position">
           <View
             style={{
               width: '100%',
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: 20,
+              height: 90,
+              backgroundColor: 'white',
+              borderTopLeftRadius: 8,
+              borderTopRightRadius: 8,
+              position: 'absolute',
+              bottom: 0,
+              padding: 5,
+              paddingBottom: 10,
             }}>
+            <TextInput
+              onChangeText={text => setValue({...value, name: text})}
+              placeholder="What would you like to do?"
+              style={{
+                marginLeft: 10,
+                fontSize: 15,
+                marginBottom: 5,
+              }}
+              placeholderTextColor="#ddd"
+              autoFocus
+            />
+
             <View
               style={{
+                width: '100%',
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: 20,
               }}>
-              <TouchableOpacity
-                style={{marginLeft: 13}}
-                onPress={() => setDate(true)}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <TouchableOpacity
+                  style={{marginLeft: 13}}
+                  onPress={() => setDate(true)}>
+                  <Ionicons
+                    name="calendar"
+                    style={{fontSize: 17, color: 'gray'}}
+                  />
+                </TouchableOpacity>
+                <Text style={{marginLeft: 10, fontSize: 15, color: '#ddd'}}>
+                  {moment(date).format('DD MMMM YYYY')}
+                </Text>
+              </View>
+              <TouchableOpacity style={{marginRight: 10}} onPress={onSubmit}>
                 <Ionicons
-                  name="calendar"
-                  style={{fontSize: 17, color: 'gray'}}
+                  name="send"
+                  style={{fontSize: 20, color: '#ff4c4c'}}
                 />
               </TouchableOpacity>
-              <Text style={{marginLeft: 10, fontSize: 15, color: '#ddd'}}>
-                {moment(date).format('DD MMMM YYYY')}
-              </Text>
             </View>
-            <TouchableOpacity style={{marginRight: 10}} onPress={onSubmit}>
-              <Ionicons name="send" style={{fontSize: 20, color: '#ff4c4c'}} />
-            </TouchableOpacity>
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
     </>
   );
